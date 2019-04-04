@@ -1,5 +1,3 @@
-import { netLog } from 'electron';
-
 const bitcoinJS = require('bitcoinjs-lib');
 const bitcoinJSForks = require('bitcoinforksjs-lib');
 const bitcoinZcash = require('bitgo-utxo-lib');
