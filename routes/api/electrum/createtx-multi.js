@@ -1,9 +1,11 @@
+import { netLog } from 'electron';
+
 const bitcoinJS = require('bitcoinjs-lib');
 const bitcoinJSForks = require('bitcoinforksjs-lib');
 const bitcoinZcash = require('bitgo-utxo-lib');
 const bitcoinPos = require('bitcoinjs-lib-pos');
 const coinSelect = require('coinselect');
-const { estimateTxSize } = require('agama-wallet-lib/src/utils');
+const bitcoinjsNetworks = require('agama-wallet-lib/src/bitcoinjs-networks');
 
 // not prod ready, only for voting!
 // needs a fix
@@ -233,7 +235,6 @@ module.exports = (api) => {
               if ((network === 'komodo' || network.toLowerCase() === 'kmd') &&
                   totalInterest > 0) {
                 // account for extra vout
-                // const _feeOverhead = outputs.length === 1 ? estimateTxSize(0, 1) * feeRate : 0;
                 const _feeOverhead = 0;
 
                 api.log(`max interest to claim ${totalInterest} (${totalInterest * 0.00000001})`, 'spv.createrawtx');
@@ -459,32 +460,36 @@ module.exports = (api) => {
 
   // single sig
   api.buildSignedTxMulti = (sendTo, changeAddress, wif, network, utxo, changeValue, spendValue, opreturn) => {
-    let key = api.isZcash(network) ? bitcoinZcash.ECPair.fromWIF(wif, api.getNetworkData(network)) : bitcoinJS.ECPair.fromWIF(wif, api.getNetworkData(network));
+    network = bitcoinjsNetworks[network.toLowerCase()] || bitcoinjsNetworks.kmd;
+    let key = network && network.isZcash ? bitcoinZcash.ECPair.fromWIF(wif, network) : bitcoinJS.ECPair.fromWIF(wif, network);
     let tx;
 
-    if (api.isZcash(network)) {
-      tx = new bitcoinZcash.TransactionBuilder(api.getNetworkData(network));
-    } else if (api.isPos(network)) {
-      tx = new bitcoinPos.TransactionBuilder(api.getNetworkData(network));
+    if (network &&
+        network.isZcash) {
+      tx = new bitcoinZcash.TransactionBuilder(network);
+    } else if (
+      network &&
+      netLog.isPoS
+    ) {
+      tx = new bitcoinPos.TransactionBuilder(network);
     } else {
-      tx = new bitcoinJS.TransactionBuilder(api.getNetworkData(network));
+      tx = new bitcoinJS.TransactionBuilder(network);
     }
 
     api.log('buildSignedTx', 'spv.createrawtx');
-    // console.log(`buildSignedTx priv key ${wif}`);
     api.log(`buildSignedTx pub key ${key.getAddress().toString()}`, 'spv.createrawtx');
-    // console.log('buildSignedTx std tx fee ' + api.electrumServers[network].txfee);
 
     for (let i = 0; i < utxo.length; i++) {
       tx.addInput(utxo[i].txid, utxo[i].vout);
     }
 
     for (let i = 0; i < sendTo.length; i++) {
-      if (api.isPos(network)) {
+      if (network &&
+          network.isPoS) {
         tx.addOutput(
           sendTo[i].address,
           Number(sendTo[i].value),
-          api.getNetworkData(network)
+          network
         );
       } else {
         tx.addOutput(sendTo[i].address, Number(sendTo[i].value));
@@ -492,11 +497,12 @@ module.exports = (api) => {
     }
 
     if (changeValue > 0) {
-      if (api.isPos(network)) {
+      if (network &&
+          network.isPoS) {
         tx.addOutput(
           changeAddress,
           Number(changeValue),
-          api.getNetworkData(network)
+          network
         );
       } else {
         tx.addOutput(changeAddress, Number(changeValue));
@@ -516,8 +522,8 @@ module.exports = (api) => {
 
     tx.setVersion(4);
 
-    if (network === 'komodo' ||
-        network.toUpperCase() === 'KMD') {
+    if (network &&
+        network.kmdInterest) {
       const _locktime = Math.floor(Date.now() / 1000) - 777;
       tx.setLockTime(_locktime);
       api.log(`kmd tx locktime set to ${_locktime}`, 'spv.createrawtx');
@@ -531,14 +537,14 @@ module.exports = (api) => {
     api.log(tx, 'spv.createrawtx');
 
     for (let i = 0; i < utxo.length; i++) {
-      if (api.isPos(network)) {
+      if (network &&
+          network.isPoS) {
         tx.sign(
-          api.getNetworkData(network),
+          network,
           i,
           key
         );
       } else {
-        // tx.sign(i, key);
         tx.sign(i, key, '', null, utxo[i].value);
       }
     }
