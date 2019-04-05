@@ -247,6 +247,13 @@ const chainParams = {
 		ac_public: 1,
 		addnode: '95.213.238.98',
 	},
+	MTST3: {
+		ac_supply: 100000,
+		ac_cc: 27410,
+		ac_reward: 300000000,
+		addnode: '136.243.58.134',
+		genproclimit: true,
+	},
 };
 
 module.exports = chainParams;
