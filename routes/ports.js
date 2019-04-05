@@ -51,6 +51,7 @@ const assetChainPorts = {
   RICK: 28223,
   MORTY: 63812,
   VOTE2019: 45888,
+  MTST3: 56141,
 };
 
 module.exports = assetChainPorts;
