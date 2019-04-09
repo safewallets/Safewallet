@@ -35,6 +35,10 @@ const chainParams = {
 		ac_cc: 2,
 		addnode: '51.75.122.83',
 	},
+        K64: {
+                ac_supply:64000777,
+                addnode: '18.197.20.211',
+        },
 	MSHARK: {
 		ac_supply: 1400000,
 	},
