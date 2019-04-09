@@ -17,12 +17,12 @@ module.exports = (api) => {
       // 2) check targets integrity
       async function _createRawTxMultOut() {
         const network = req.body.network || api.findNetworkObj(req.body.coin);
-        let ecl = await api.ecl(network);
         const initTargets = JSON.parse(JSON.stringify(req.body.targets));
         const changeAddress = req.body.change;
         const push = req.body.push;
         const opreturn = req.body.opreturn;
         const btcFee = req.body.btcfee ? Number(req.body.btcfee) : null;
+        let ecl = await api.ecl(network);
         let fee = api.electrumServers[network].txfee;
         let wif = req.body.wif;
         let targets = req.body.targets;
