@@ -388,7 +388,7 @@ function createAppCloseWindow() {
 					randomBytes: (size) => {
 						return randomBytes(size || 32).toString('hex');
 					},
-					nnVoteChain: 'BEER',
+					nnVoteChain: 'VOTE2019',
 				};
 				global.app = _global;
 			} else {
