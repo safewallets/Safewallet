@@ -24,7 +24,7 @@ module.exports = (api) => {
 
   api.electrumGetBlockInfo = (height, network) => {
     return new Promise((resolve, reject) => {
-      async function _electrumGetBlockInfo() {
+      (async function() {
         const ecl = await api.ecl(network);
 
         ecl.connect();
@@ -36,8 +36,7 @@ module.exports = (api) => {
 
           resolve(json);
         });
-      }
-      _electrumGetBlockInfo();
+      })();
     });
   }
 
@@ -64,7 +63,7 @@ module.exports = (api) => {
 
   api.electrumGetCurrentBlock = (network) => {
     return new Promise((resolve, reject) => {
-      async function _electrumGetCurrentBlock() {
+      (async function() {
         const ecl = await api.ecl(network);
 
         ecl.connect();
@@ -86,8 +85,7 @@ module.exports = (api) => {
             resolve(json);
           }
         });
-      };
-      _electrumGetCurrentBlock();
+      })();
     });
   }
 

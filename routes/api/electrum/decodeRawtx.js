@@ -25,7 +25,7 @@ module.exports = (api) => {
 
         res.end(JSON.stringify(retObj));
       } else {
-        async function _decodeRawTx() {
+        (async function() {
           const ecl = await api.ecl(req.query.network);
 
           api.log(decodedTx.inputs[0], 'spv.decoderawtx');
@@ -51,8 +51,7 @@ module.exports = (api) => {
 
             res.end(JSON.stringify(retObj));
           });
-        };
-        _decodeRawTx();
+        })();
       }
     } else {
       const retObj = {

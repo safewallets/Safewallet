@@ -22,7 +22,7 @@ module.exports = (api) => {
   api.get('/electrum/btcfees', (req, res, next) => {
     if (api.checkToken(req.query.token)) {
       if (checkTimestamp(btcFees.lastUpdated) > BTC_FEES_MIN_ELAPSED_TIME) {
-        async function _btcFees() {
+        (async function() {
           const _randomServer = api.electrumServers.btc.serverList[getRandomIntInclusive(0, api.electrumServers.btc.serverList.length - 1)].split(':');
           const ecl = await api.ecl(network, {
             port: _randomServer[1],
@@ -79,8 +79,7 @@ module.exports = (api) => {
               res.end(JSON.stringify(retObj));
             });
           });
-        };
-        _btcFees();
+        })();
       } else {
         api.log('btcfees, use cache', 'spv.btcFees');
 

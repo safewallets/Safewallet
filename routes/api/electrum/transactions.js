@@ -1,4 +1,4 @@
-const async = require('async');
+const asyncNPM = require('async');
 const Promise = require('bluebird');
 const { hex2str } = require('agama-wallet-lib/src/crypto/utils');
 const { isKomodoCoin } = require('agama-wallet-lib/src/coin-helpers');
@@ -34,7 +34,7 @@ module.exports = (api) => {
 
   api.listtransactions = (config, options) => {
     return new Promise((resolve, reject) => {
-      async function _listtransactions() {
+      (async function() {
         const network = config.network || api.findNetworkObj(config.coin);
         const ecl = await api.ecl(network);
         const isKv = config.kv;
@@ -125,7 +125,7 @@ module.exports = (api) => {
                   let index = 0;
 
                   // callback hell, use await?
-                  async.eachOfSeries(json, (transaction, ind, callback) => {
+                  asyncNPM.eachOfSeries(json, (transaction, ind, callback) => {
                     api.getBlockHeader(
                       transaction.height,
                       network,
@@ -200,7 +200,7 @@ module.exports = (api) => {
                           if (decodedTx &&
                               decodedTx.inputs &&
                               decodedTx.inputs.length) {
-                            async.eachOfSeries(decodedTx.inputs, (_decodedInput, ind2, callback2) => {
+                            asyncNPM.eachOfSeries(decodedTx.inputs, (_decodedInput, ind2, callback2) => {
                               const checkLoop = () => {
                                 index2++;
 
@@ -463,14 +463,13 @@ module.exports = (api) => {
             }
           });
         }
-      };
-      _listtransactions();
+      })();
     });
   };
 
   api.get('/electrum/gettransaction', (req, res, next) => {
     if (api.checkToken(req.query.token)) {
-      async function _getTransaction() {
+      (async function () {
         const network = req.query.network || api.findNetworkObj(req.query.coin);
         const ecl = await api.ecl(network);
 
@@ -489,8 +488,7 @@ module.exports = (api) => {
 
           res.end(JSON.stringify(retObj));
         });
-      };
-      _getTransaction();
+      })();
     } else {
       const retObj = {
         msg: 'error',

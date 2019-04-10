@@ -227,7 +227,7 @@ module.exports = (api) => {
 
   api.get('/electrum/listunspent', (req, res, next) => {
     if (api.checkToken(req.query.token)) {
-      async function _getListunspent() {
+      (async function () {
         const network = req.query.network || api.findNetworkObj(req.query.coin);
         const ecl = await api.ecl(network);
 
@@ -264,8 +264,7 @@ module.exports = (api) => {
             res.end(JSON.stringify(retObj));
           });
         }
-      };
-      _getListunspent();
+      })();
     } else {
       const retObj = {
         msg: 'error',

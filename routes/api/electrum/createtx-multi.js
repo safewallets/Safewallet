@@ -15,7 +15,7 @@ module.exports = (api) => {
     if (api.checkToken(req.body.token)) {
       // TODO: 1) unconf output(s) error message
       // 2) check targets integrity
-      async function _createRawTxMultOut() {
+      (async function() {
         const network = req.body.network || api.findNetworkObj(req.body.coin);
         const initTargets = JSON.parse(JSON.stringify(req.body.targets));
         const changeAddress = req.body.change;
@@ -348,7 +348,7 @@ module.exports = (api) => {
 
                   res.end(JSON.stringify(retObj));
                 } else {
-                  async function _pushtx() {
+                  (async function() {
                     ecl = await api.ecl(network);
 
                     ecl.connect();
@@ -430,8 +430,7 @@ module.exports = (api) => {
                         }
                       }
                     });
-                  }
-                  _pushtx();
+                  })();
                 }
               }
             }
@@ -444,7 +443,7 @@ module.exports = (api) => {
             res.end(JSON.stringify(retObj));
           }
         });
-      };
+      })();
       _createRawTxMultOut();
     } else {
       const retObj = {

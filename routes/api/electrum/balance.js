@@ -7,7 +7,7 @@ const UTXO_1MONTH_THRESHOLD_SECONDS = 2592000;
 module.exports = (api) => {
   api.get('/electrum/getbalance', (req, res, next) => {
     if (api.checkToken(req.query.token)) {
-      async function _getBalance() {
+      (async function() {
         const network = req.query.network || api.findNetworkObj(req.query.coin);
         const ecl = await api.ecl(network);
         const _address = ecl.protocolVersion && ecl.protocolVersion === '1.4' ? pubToElectrumScriptHashHex(req.query.address, btcnetworks[network.toLowerCase()] || btcnetworks.kmd) : req.query.address;
@@ -184,8 +184,7 @@ module.exports = (api) => {
             res.end(JSON.stringify(retObj));
           }
         });
-      };
-      _getBalance();
+      })();
     } else {
       const retObj = {
         msg: 'error',

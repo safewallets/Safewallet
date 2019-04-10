@@ -1,7 +1,7 @@
 module.exports = (api) => {
   api.get('/electrum/estimatefee', (req, res, next) => {
     if (api.checkToken(req.query.token)) {
-      async function _estimateFee() {
+      (async function () {
         const ecl = await api.ecl(req.query.network);
 
         ecl.connect();
@@ -17,8 +17,7 @@ module.exports = (api) => {
 
           res.end(JSON.stringify(retObj));
         });
-      };
-      _estimateFee();
+      })();
     } else {
       const retObj = {
         msg: 'error',

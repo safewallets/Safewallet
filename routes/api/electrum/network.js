@@ -190,7 +190,7 @@ module.exports = (api) => {
         req.query.proto,
       );
 
-      async function _serverTest() {
+      (async function () {
         const ecl = await api.ecl(null, {
           port: req.query.port,
           ip: req.query.address,
@@ -247,8 +247,7 @@ module.exports = (api) => {
             res.end(JSON.stringify(retObj));
           }
         });
-      };
-      _serverTest();
+      })();
     } else {
       const retObj = {
         msg: 'error',
