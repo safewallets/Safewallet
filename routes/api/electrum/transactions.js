@@ -3,6 +3,7 @@ const { hex2str } = require('agama-wallet-lib/src/crypto/utils');
 const { isKomodoCoin } = require('agama-wallet-lib/src/coin-helpers');
 const { pubToElectrumScriptHashHex } = require('agama-wallet-lib/src/keys');
 const btcnetworks = require('agama-wallet-lib/src/bitcoinjs-networks');
+const { sortTransactions } = require('agama-wallet-lib/src/utils');
 
 // TODO: add z -> pub, pub -> z flag for zcash forks
 
@@ -50,7 +51,7 @@ module.exports = (api) => {
             ecl.close();
             api.log(json, 'spv.listtransactions');
 
-            json = api.sortTransactions(json, 'timestamp');
+            json = sortTransactions(json, 'timestamp');
 
             const retObj = {
               msg: 'success',
@@ -76,7 +77,7 @@ module.exports = (api) => {
                   let _flatTxHistory = [];
                   let _flatTxHistoryFull = {};
                   
-                  json = api.sortTransactions(json);
+                  json = sortTransactions(json);
 
                   for (let i = 0; i < json.length; i++) {
                     _flatTxHistory.push(json[i].tx_hash);

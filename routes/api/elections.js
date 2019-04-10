@@ -1,6 +1,7 @@
 const bs58check = require('bs58check');
 const bitcoin = require('bitcoinjs-lib');
 const { hex2str } = require('agama-wallet-lib/src/crypto/utils');
+const { sortTransactions } = require('agama-wallet-lib/src/utils');
 
 module.exports = (api) => {
   api.elections = {};
@@ -188,7 +189,7 @@ module.exports = (api) => {
               json.length) {
             let _rawtx = [];
 
-            json = api.sortTransactions(json);
+            json = sortTransactions(json);
             // json = json.length > MAX_TX ? json.slice(0, MAX_TX) : json;
 
             api.log(json.length, 'elections.listtransactions');
