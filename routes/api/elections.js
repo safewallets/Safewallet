@@ -1,6 +1,5 @@
 const bs58check = require('bs58check');
 const bitcoin = require('bitcoinjs-lib');
-const Promise = require('bluebird');
 const { hex2str } = require('agama-wallet-lib/src/crypto/utils');
 
 module.exports = (api) => {

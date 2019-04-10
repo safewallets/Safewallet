@@ -1,5 +1,3 @@
-const Promise = require('bluebird');
-
 module.exports = (api) => {
   api.get('/electrum/getblockinfo', (req, res, next) => {
     if (api.checkToken(req.query.token)) {

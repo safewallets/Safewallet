@@ -1,5 +1,4 @@
 const asyncNPM = require('async');
-const Promise = require('bluebird');
 const { hex2str } = require('agama-wallet-lib/src/crypto/utils');
 const { isKomodoCoin } = require('agama-wallet-lib/src/coin-helpers');
 const { pubToElectrumScriptHashHex } = require('agama-wallet-lib/src/keys');

@@ -2,7 +2,6 @@
 
 const fs = require('fs-extra');
 const _fs = require('graceful-fs');
-const Promise = require('bluebird');
 
 // TODO: refactor into a loop
 

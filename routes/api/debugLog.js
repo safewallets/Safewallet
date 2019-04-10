@@ -1,6 +1,5 @@
 const path = require('path');
 const _fs = require('graceful-fs');
-const Promise = require('bluebird');
 const os = require('os');
 const fs = require('fs');
 
