@@ -28,7 +28,7 @@ module.exports = (api) => {
                   Number(currentHeight) > 0) {
                 // filter out unconfirmed utxos
                 for (let i = 0; i < _utxoJSON.length; i++) {
-                  if (Number(currentHeight) - Number(_utxoJSON[i].height) !== 0) {
+                  if ((Number(currentHeight) - Number(_utxoJSON[i].height) + 1) >= 0) {
                     _utxo.push(_utxoJSON[i]);
                   }
                 }
@@ -98,7 +98,7 @@ module.exports = (api) => {
                               timeElapsedFromLocktimeInSeconds: decodedTx.format.locktime ? _locktimeSec : 0,
                               timeTill1MonthInterestStopsInSeconds: decodedTx.format.locktime ? (UTXO_1MONTH_THRESHOLD_SECONDS - _locktimeSec > 0 ? UTXO_1MONTH_THRESHOLD_SECONDS - _locktimeSec : 0) : 0,
                               interestRulesCheckPass: !decodedTx.format.locktime || Number(decodedTx.format.locktime) === 0 || _locktimeSec > UTXO_1MONTH_THRESHOLD_SECONDS || _utxoItem.value < 1000000000 ? false : true,
-                              confirmations: Number(_utxoItem.height) === 0 ? 0 : currentHeight - _utxoItem.height,
+                              confirmations: Number(_utxoItem.height) === 0 ? 0 : currentHeight - _utxoItem.height + 1,
                               height: _utxoItem.height,
                               currentHeight,
                               spendable: true,
@@ -142,7 +142,7 @@ module.exports = (api) => {
                               address,
                               amount: Number(_utxoItem.value) * 0.00000001,
                               amountSats: _utxoItem.value,
-                              confirmations: Number(_utxoItem.height) === 0 ? 0 : currentHeight - _utxoItem.height,
+                              confirmations: Number(_utxoItem.height) === 0 ? 0 : currentHeight - _utxoItem.height + 1,
                               height: _utxoItem.height,
                               currentHeight,
                               spendable: true,

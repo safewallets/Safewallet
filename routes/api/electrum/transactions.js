@@ -214,7 +214,7 @@ module.exports = (api) => {
                                     outputs: decodedTx.outputs,
                                     height: transaction.height,
                                     timestamp: Number(transaction.height) === 0 || Number(transaction.height) === -1 ? Math.floor(Date.now() / 1000) : blockInfo.timestamp,
-                                    confirmations: Number(transaction.height) === 0 || Number(transaction.height) === -1 ? 0 : currentHeight - transaction.height,
+                                    confirmations: Number(transaction.height) === 0 || Number(transaction.height) === -1 ? 0 : currentHeight - transaction.height + 1,
                                   };
 
                                   const formattedTx = api.parseTransactionAddresses(
@@ -361,7 +361,7 @@ module.exports = (api) => {
                               outputs: 'cant parse',
                               height: transaction.height,
                               timestamp: Number(transaction.height) === 0 ? Math.floor(Date.now() / 1000) : blockInfo.timestamp,
-                              confirmations: Number(transaction.height) === 0 ? 0 : currentHeight - transaction.height,
+                              confirmations: Number(transaction.height) === 0 ? 0 : currentHeight - transaction.height + 1,
                               opreturn,
                             };
 
@@ -407,7 +407,7 @@ module.exports = (api) => {
                           outputs: 'cant parse',
                           height: transaction.height,
                           timestamp: 'cant get block info',
-                          confirmations: Number(transaction.height) === 0 ? 0 : currentHeight - transaction.height,
+                          confirmations: Number(transaction.height) === 0 ? 0 : currentHeight - transaction.height + 1,
                         };
                         const formattedTx = api.parseTransactionAddresses(
                           _parsedTx,
