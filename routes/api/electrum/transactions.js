@@ -49,15 +49,24 @@ module.exports = (api) => {
           ecl.blockchainAddressGetHistory(_address)
           .then((json) => {
             ecl.close();
-            api.log(json, 'spv.listtransactions');
 
-            json = sortTransactions(json, 'timestamp');
+            if (JSON.stringify(json).indexOf('"code":') > -1) {
+              const retObj = {
+                msg: 'error',
+                result: json,
+              };
+              resolve(retObj);
+            } else {
+              api.log(json, 'spv.listtransactions');
 
-            const retObj = {
-              msg: 'success',
-              result: json,
-            };
-            resolve(retObj);
+              json = sortTransactions(json, 'timestamp');
+
+              const retObj = {
+                msg: 'success',
+                result: json,
+              };
+              resolve(retObj);
+            }
           });
         } else {
           // !expensive call!
@@ -71,7 +80,8 @@ module.exports = (api) => {
               ecl.blockchainAddressGetHistory(_address)
               .then((json) => {
                 if (json &&
-                    json.length) {
+                    json.length &&
+                    JSON.stringify(json).indexOf('"code":') === -1) {
                   const _pendingTxs = api.findPendingTxByAddress(network, config.address);
                   let _rawtx = [];
                   let _flatTxHistory = [];
@@ -447,11 +457,19 @@ module.exports = (api) => {
                 } else {
                   ecl.close();
 
-                  const retObj = {
-                    msg: 'success',
-                    result: [],
-                  };
-                  resolve(retObj);
+                  if (JSON.stringify(json).indexOf('"code":') > -1) {
+                    const retObj = {
+                      msg: 'error',
+                      result: json,
+                    };
+                    resolve(retObj);
+                  } else {
+                    const retObj = {
+                      msg: 'success',
+                      result: [],
+                    };
+                    resolve(retObj);
+                  }
                 }
               });
             } else {
