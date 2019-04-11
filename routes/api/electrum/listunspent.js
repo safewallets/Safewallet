@@ -202,7 +202,16 @@ module.exports = (api) => {
             });
           } else {
             ecl.close();
-            resolve(api.CONNECTION_ERROR_OR_INCOMPLETE_DATA);
+
+            if (JSON.stringify(_utxoJSON).indexOf('"code":') > -1) {
+              const retObj = {
+                msg: 'error',
+                result: _utxoJSON,
+              };
+              resolve(retObj);
+            } else {
+              resolve(api.CONNECTION_ERROR_OR_INCOMPLETE_DATA);
+            }
           }
         });
       });
@@ -217,7 +226,15 @@ module.exports = (api) => {
               json.length) {
             resolve(json);
           } else {
-            resolve(api.CONNECTION_ERROR_OR_INCOMPLETE_DATA);
+            if (JSON.stringify(json).indexOf('"code":') > -1) {
+              const retObj = {
+                msg: 'error',
+                result: json,
+              };
+              resolve(retObj);
+            } else {
+              resolve(api.CONNECTION_ERROR_OR_INCOMPLETE_DATA);
+            }
           }
         });
       });
@@ -242,12 +259,17 @@ module.exports = (api) => {
           .then((listunspent) => {
             api.log('electrum listunspent ==>', 'spv.listunspent');
 
-            const retObj = {
-              msg: 'success',
-              result: listunspent,
-            };
+            if (listunspent.msg &&
+                listunspent.msg === 'error') {
+              res.end(JSON.stringify(listunspent));
+            } else {
+              const retObj = {
+                msg: 'success',
+                result: listunspent,
+              };
 
-            res.end(JSON.stringify(retObj));
+              res.end(JSON.stringify(retObj));
+            }
           });
         } else {
           api.listunspent(ecl, req.query.address, network)
@@ -255,12 +277,17 @@ module.exports = (api) => {
             ecl.close();
             api.log('electrum listunspent ==>', 'spv.listunspent');
 
-            const retObj = {
-              msg: 'success',
-              result: listunspent,
-            };
+            if (listunspent.msg &&
+                listunspent.msg === 'error') {
+              res.end(JSON.stringify(listunspent));
+            } else {
+              const retObj = {
+                msg: 'success',
+                result: listunspent,
+              };
 
-            res.end(JSON.stringify(retObj));
+              res.end(JSON.stringify(retObj));
+            }
           });
         }
       })();
