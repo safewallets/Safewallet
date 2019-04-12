@@ -3,7 +3,7 @@
 var installer = require('electron-installer-dmg');
 
 var options = {
-  appPath: 'build/Agama-linux-x64/',
+  appPath: 'build/Agama-darwin-x64/Agama.app',
   dest: 'build/',
   arch: 'amd64',
   icon: 'assets/icons/agama_icons/64x64.png',

@@ -7,7 +7,7 @@ var options = {
   dest: 'build/',
   arch: 'amd64',
   icon: 'assets/icons/agama_icons/64x64.png',
-  name: 'agama-app',
+  name: 'agama',
   bin: 'Agama',
   categories: ['Office', 'Internet'],
   homepage: 'https://komodoplatform.com',
