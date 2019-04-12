@@ -1,9 +1,9 @@
-// prequsites: https://www.npmjs.com/package/electron-installer-debian
+// prequsites: https://www.npmjs.com/package/electron-installer-dmg
 
-var installer = require('electron-installer-debian');
+var installer = require('electron-installer-dmg');
 
 var options = {
-  src: 'build/Agama-linux-x64/',
+  appPath: 'build/Agama-linux-x64/',
   dest: 'build/',
   arch: 'amd64',
   icon: 'assets/icons/agama_icons/64x64.png',
