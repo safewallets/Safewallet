@@ -18,23 +18,6 @@ api.appRuntimeLog = [];
 api.lockDownAddCoin = false;
 api._isWatchOnly = false;
 
-// dex cache
-api.mmupass = null;
-api.mmRatesInterval = null;
-api.mmPublic = {
-  coins: [],
-  mmupass: null,
-  swaps: [],
-  bids: [],
-  asks: [],
-  isAuth: false,
-  rates: {},
-  prices: [],
-  coinsHelper: {},
-  stats: [],
-  electrumServersList: {},
-};
-
 // spv vars and libs
 api.electrumCoins = {
   auth: false,
@@ -100,13 +83,6 @@ api = require('./api/electrum/cache.js')(api);
 api = require('./api/electrum/proxy.js')(api);
 api = require('./api/electrum/servers.js')(api);
 api = require('./api/electrum/csv.js')(api);
-api = require('./api/electrum/utils.js')(api);
-
-// dex
-/*api = require('./api/dex/coind.js')(api);
-api = require('./api/dex/mmControl.js')(api);
-api = require('./api/dex/mmRequest.js')(api);
-api = require('./api/dex/electrumServersList.js')(api);*/
 
 // core
 api = require('./api/addCoinShortcuts.js')(api);
@@ -130,7 +106,6 @@ api = require('./api/auth.js')(api);
 api = require('./api/coins.js')(api);
 api = require('./api/coindWalletKeys.js')(api);
 api = require('./api/addressBook.js')(api);
-api = require('./api/dice.js')(api);
 
 // elections
 api = require('./api/elections.js')(api);

@@ -1,5 +1,3 @@
-const Promise = require('bluebird');
-
 module.exports = (api) => {
   api.get('/electrum/getblockinfo', (req, res, next) => {
     if (api.checkToken(req.query.token)) {
@@ -24,7 +22,7 @@ module.exports = (api) => {
 
   api.electrumGetBlockInfo = (height, network) => {
     return new Promise((resolve, reject) => {
-      async function _electrumGetBlockInfo() {
+      (async function() {
         const ecl = await api.ecl(network);
 
         ecl.connect();
@@ -36,8 +34,7 @@ module.exports = (api) => {
 
           resolve(json);
         });
-      }
-      _electrumGetBlockInfo();
+      })();
     });
   }
 
@@ -64,7 +61,7 @@ module.exports = (api) => {
 
   api.electrumGetCurrentBlock = (network) => {
     return new Promise((resolve, reject) => {
-      async function _electrumGetCurrentBlock() {
+      (async function() {
         const ecl = await api.ecl(network);
 
         ecl.connect();
@@ -86,8 +83,7 @@ module.exports = (api) => {
             resolve(json);
           }
         });
-      };
-      _electrumGetCurrentBlock();
+      })();
     });
   }
 

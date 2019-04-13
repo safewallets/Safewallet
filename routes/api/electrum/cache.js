@@ -1,7 +1,6 @@
 const fs = require('fs-extra');
 const _fs = require('graceful-fs');
 const fsnode = require('fs');
-const Promise = require('bluebird');
 const {
   parseBlock,
   electrumMerkleRoot,
@@ -216,6 +215,10 @@ module.exports = (api) => {
   }
 
   api.getTransactionDecoded = (txid, network, data) => {
+    if (!api.electrumCache[network]) {
+      api.electrumCache[network] = {};
+    }
+
     if (!api.electrumCache[network].txDecoded) {
       api.electrumCache[network].txDecoded = {};
     }

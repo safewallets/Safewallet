@@ -1,6 +1,5 @@
 // TODO: watchonly spendable switch
 
-const Promise = require('bluebird');
 const { checkTimestamp } = require('agama-wallet-lib/src/time');
 const { pubToElectrumScriptHashHex } = require('agama-wallet-lib/src/keys');
 const btcnetworks = require('agama-wallet-lib/src/bitcoinjs-networks');
@@ -28,7 +27,7 @@ module.exports = (api) => {
                   Number(currentHeight) > 0) {
                 // filter out unconfirmed utxos
                 for (let i = 0; i < _utxoJSON.length; i++) {
-                  if (Number(currentHeight) - Number(_utxoJSON[i].height) !== 0) {
+                  if ((Number(currentHeight) - Number(_utxoJSON[i].height) + 1) >= 0) {
                     _utxo.push(_utxoJSON[i]);
                   }
                 }
@@ -98,7 +97,7 @@ module.exports = (api) => {
                               timeElapsedFromLocktimeInSeconds: decodedTx.format.locktime ? _locktimeSec : 0,
                               timeTill1MonthInterestStopsInSeconds: decodedTx.format.locktime ? (UTXO_1MONTH_THRESHOLD_SECONDS - _locktimeSec > 0 ? UTXO_1MONTH_THRESHOLD_SECONDS - _locktimeSec : 0) : 0,
                               interestRulesCheckPass: !decodedTx.format.locktime || Number(decodedTx.format.locktime) === 0 || _locktimeSec > UTXO_1MONTH_THRESHOLD_SECONDS || _utxoItem.value < 1000000000 ? false : true,
-                              confirmations: Number(_utxoItem.height) === 0 ? 0 : currentHeight - _utxoItem.height,
+                              confirmations: Number(_utxoItem.height) === 0 ? 0 : currentHeight - _utxoItem.height + 1,
                               height: _utxoItem.height,
                               currentHeight,
                               spendable: true,
@@ -142,7 +141,7 @@ module.exports = (api) => {
                               address,
                               amount: Number(_utxoItem.value) * 0.00000001,
                               amountSats: _utxoItem.value,
-                              confirmations: Number(_utxoItem.height) === 0 ? 0 : currentHeight - _utxoItem.height,
+                              confirmations: Number(_utxoItem.height) === 0 ? 0 : currentHeight - _utxoItem.height + 1,
                               height: _utxoItem.height,
                               currentHeight,
                               spendable: true,
@@ -203,7 +202,16 @@ module.exports = (api) => {
             });
           } else {
             ecl.close();
-            resolve(api.CONNECTION_ERROR_OR_INCOMPLETE_DATA);
+
+            if (JSON.stringify(_utxoJSON).indexOf('"code":') > -1) {
+              const retObj = {
+                msg: 'error',
+                result: _utxoJSON,
+              };
+              resolve(retObj);
+            } else {
+              resolve(api.CONNECTION_ERROR_OR_INCOMPLETE_DATA);
+            }
           }
         });
       });
@@ -218,7 +226,15 @@ module.exports = (api) => {
               json.length) {
             resolve(json);
           } else {
-            resolve(api.CONNECTION_ERROR_OR_INCOMPLETE_DATA);
+            if (JSON.stringify(json).indexOf('"code":') > -1) {
+              const retObj = {
+                msg: 'error',
+                result: json,
+              };
+              resolve(retObj);
+            } else {
+              resolve(api.CONNECTION_ERROR_OR_INCOMPLETE_DATA);
+            }
           }
         });
       });
@@ -227,7 +243,7 @@ module.exports = (api) => {
 
   api.get('/electrum/listunspent', (req, res, next) => {
     if (api.checkToken(req.query.token)) {
-      async function _getListunspent() {
+      (async function () {
         const network = req.query.network || api.findNetworkObj(req.query.coin);
         const ecl = await api.ecl(network);
 
@@ -243,12 +259,17 @@ module.exports = (api) => {
           .then((listunspent) => {
             api.log('electrum listunspent ==>', 'spv.listunspent');
 
-            const retObj = {
-              msg: 'success',
-              result: listunspent,
-            };
+            if (listunspent.msg &&
+                listunspent.msg === 'error') {
+              res.end(JSON.stringify(listunspent));
+            } else {
+              const retObj = {
+                msg: 'success',
+                result: listunspent,
+              };
 
-            res.end(JSON.stringify(retObj));
+              res.end(JSON.stringify(retObj));
+            }
           });
         } else {
           api.listunspent(ecl, req.query.address, network)
@@ -256,16 +277,20 @@ module.exports = (api) => {
             ecl.close();
             api.log('electrum listunspent ==>', 'spv.listunspent');
 
-            const retObj = {
-              msg: 'success',
-              result: listunspent,
-            };
+            if (listunspent.msg &&
+                listunspent.msg === 'error') {
+              res.end(JSON.stringify(listunspent));
+            } else {
+              const retObj = {
+                msg: 'success',
+                result: listunspent,
+              };
 
-            res.end(JSON.stringify(retObj));
+              res.end(JSON.stringify(retObj));
+            }
           });
         }
-      };
-      _getListunspent();
+      })();
     } else {
       const retObj = {
         msg: 'error',

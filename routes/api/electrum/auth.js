@@ -1,7 +1,10 @@
 const bs58check = require('bs58check');
 const bitcoinZcash = require('bitcoinjs-lib-zcash');
 const bitcoin = require('bitcoinjs-lib');
-const { seedToPriv } = require('agama-wallet-lib/src/keys');
+const {
+  seedToPriv,
+  stringToWif,
+} = require('agama-wallet-lib/src/keys');
 
 // TODO: merge spv and eth login/logout into a single func
 
@@ -65,11 +68,11 @@ module.exports = (api) => {
           if (isWif) {
             try {
               const _network = api.getNetworkData(key.toLowerCase());
-              const _key = api.isZcash(key.toLowerCase()) ? bitcoinZcash.ECPair.fromWIF(_seed, _network, true) : bitcoin.ECPair.fromWIF(_seed, _network, true);
+              const _key = stringToWif(_seed, _network, isIguana);
               keys = {
-                priv: _key.toWIF(),
-                pub: _key.getAddress(),
-                pubHex: _key.getPublicKeyBuffer().toString('hex'),
+                priv: _key.priv,
+                pub: _key.pub,
+                pubHex: _key.pubHex,
               };              
             } catch (e) {
               api.log(e, 'api.auth');

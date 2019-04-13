@@ -1,5 +1,4 @@
 const request = require('request');
-const Promise = require('bluebird');
 const fs = require('fs-extra');
 const _fs = require('graceful-fs');
 const fsnode = require('fs');

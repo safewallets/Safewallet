@@ -12,6 +12,7 @@ const appConfig = {
     debug: false,
     roundValues: false,
     experimentalFeatures: false,
+    notifications: false,
     dex: {
       walletUnlockTimeout: 3600,
     },
@@ -101,6 +102,12 @@ const appConfig = {
       display: true,
       initDisplay: true,
       displayName: 'Enable advanced features',
+      type: 'boolean',
+    },
+    notifications: {
+      display: true,
+      initDisplay: true,
+      displayName: 'Enable notifications',
       type: 'boolean',
     },
     dex: {

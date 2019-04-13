@@ -145,10 +145,11 @@ module.exports = (api) => {
         resolve(api.electrumServersV1_4[`${ip}:${port}:${proto}`]);
       } else {
         ecl.connect();
-        ecl.serverVersion()
+        ecl.serverVersion('', '1.0')
         .then((serverData) => {
-          ecl.close();
           let serverVersion = 0;
+
+          ecl.close();
           api.log('getServerVersion non-cached', 'electrum.version.check');
 
           if (serverData &&
@@ -183,7 +184,13 @@ module.exports = (api) => {
 
   api.get('/electrum/servers/test', (req, res, next) => {
     if (api.checkToken(req.query.token)) {
-      async function _serverTest() {
+      api.getServerVersion(
+        req.query.port,
+        req.query.ip,
+        req.query.proto,
+      );
+
+      (async function () {
         const ecl = await api.ecl(null, {
           port: req.query.port,
           ip: req.query.address,
@@ -191,15 +198,16 @@ module.exports = (api) => {
         });
 
         ecl.connect();
-        ecl.serverVersion()
+        ecl.serverVersion('', '1.0')
         .then((serverData) => {
           ecl.close();
           api.log('serverData', 'spv.server.test');
-          api.log(serverData, 'spv.server,test');
+          api.log(serverData, 'spv.server.test');
 
-          if (serverData &&
+          if ((serverData &&
               typeof serverData === 'string' &&
-              serverData.indexOf('Electrum') > -1) {
+              serverData.indexOf('Electrum') > -1) ||
+              (serverData && JSON.stringify(serverData).indexOf('unsupported protocol version: 1.0'))) {
             const retObj = {
               msg: 'success',
               result: true,
@@ -239,8 +247,7 @@ module.exports = (api) => {
             res.end(JSON.stringify(retObj));
           }
         });
-      };
-      _serverTest();
+      })();
     } else {
       const retObj = {
         msg: 'error',

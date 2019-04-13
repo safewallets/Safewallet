@@ -1,7 +1,7 @@
 const bs58check = require('bs58check');
 const bitcoin = require('bitcoinjs-lib');
-const Promise = require('bluebird');
 const { hex2str } = require('agama-wallet-lib/src/crypto/utils');
+const { sortTransactions } = require('agama-wallet-lib/src/utils');
 
 module.exports = (api) => {
   api.elections = {};
@@ -189,7 +189,7 @@ module.exports = (api) => {
               json.length) {
             let _rawtx = [];
 
-            json = api.sortTransactions(json);
+            json = sortTransactions(json);
             // json = json.length > MAX_TX ? json.slice(0, MAX_TX) : json;
 
             api.log(json.length, 'elections.listtransactions');
@@ -200,7 +200,7 @@ module.exports = (api) => {
                 .then((blockInfo) => {
                   if (blockInfo &&
                       blockInfo.timestamp) {
-                    ecl.blockchainTransactionGet(transaction['tx_hash'])
+                    ecl.blockchainTransactionGet(transaction.tx_hash)
                     .then((_rawtxJSON) => {
                       //api.log('electrum gettransaction ==>', true);
                       //api.log((index + ' | ' + (_rawtxJSON.length - 1)), true);
@@ -208,11 +208,24 @@ module.exports = (api) => {
 
                       // decode tx
                       const _network = api.getNetworkData(network);
-                      const decodedTx = api.electrumJSTxDecoder(
-                        _rawtxJSON,
-                        network,
-                        _network
-                      );
+                      if (api.getTransactionDecoded(transaction.tx_hash, network)) {
+                        decodedTx = api.getTransactionDecoded(
+                          transaction.tx_hash,
+                          network
+                        );
+                      } else {
+                        decodedTx = api.electrumJSTxDecoder(
+                          _rawtxJSON,
+                          network,
+                          _network
+                        );
+                        api.getTransactionDecoded(
+                          transaction.tx_hash,
+                          network,
+                          decodedTx
+                        );
+                      }
+
                       let _res = {};
                       let _opreturnFound = false;
                       let _region;
@@ -238,12 +251,12 @@ module.exports = (api) => {
                               decodedTx.outputs[i].scriptPubKey.addresses &&
                               decodedTx.outputs[i].scriptPubKey.addresses[0] &&
                               decodedTx.outputs[i].scriptPubKey.addresses[0] !== _address) {
-                            if (_region === 'ne2k18-na-1-eu-2-ae-3-sh-4') {
+                            if (_region === `ne2k1${new Date().getFullYear().toString().substr(-1)}-na-1-eu-2-ar-3-sh-4`) {
                               const _regionsLookup = [
-                                'ne2k18-na',
-                                'ne2k18-eu',
-                                'ne2k18-ae',
-                                'ne2k18-sh'
+                                `ne2k1${new Date().getFullYear().toString().substr(-1)}-na`,
+                                `ne2k1${new Date().getFullYear().toString().substr(-1)}-eu`,
+                                `ne2k1${new Date().getFullYear().toString().substr(-1)}-ar`,
+                                `ne2k1${new Date().getFullYear().toString().substr(-1)}-sh`
                               ];
 
                               api.log(`i voted ${decodedTx.outputs[i].value} for ${decodedTx.outputs[i].scriptPubKey.addresses[0]}`, 'elections.listtransactions');
@@ -251,7 +264,7 @@ module.exports = (api) => {
                                 address: decodedTx.outputs[i].scriptPubKey.addresses[0],
                                 amount: decodedTx.outputs[i].value,
                                 region: _regionsLookup[i],
-                                timestamp: blockInfo.timestamp,
+                                timestamp: Number(transaction.height) === 0 || Number(transaction.height) === -1 ? Math.floor(Date.now() / 1000) : blockInfo.timestamp,
                               });
                               resolve(true);
                             } else {
@@ -260,21 +273,23 @@ module.exports = (api) => {
                                 address: decodedTx.outputs[i].scriptPubKey.addresses[0],
                                 amount: decodedTx.outputs[i].value,
                                 region: _region,
-                                timestamp: blockInfo.timestamp,
+                                timestamp: Number(transaction.height) === 0 || Number(transaction.height) === -1 ? Math.floor(Date.now() / 1000) : blockInfo.timestamp,
                               });
                               resolve(true);
                             }
+                          } else {
+                            resolve(true);
                           }
 
                           if (type === 'candidate') {
-                            if (_region === 'ne2k18-na-1-eu-2-ae-3-sh-4') {
+                            if (_region === `ne2k1${new Date().getFullYear().toString().substr(-1)}-na-1-eu-2-ar-3-sh-4`) {
                               if (decodedTx.outputs[i].scriptPubKey.addresses[0] === _address &&
                                   decodedTx.outputs[i].scriptPubKey.asm.indexOf('OP_RETURN') === -1) {
                                 const _regionsLookup = [
-                                  'ne2k18-na',
-                                  'ne2k18-eu',
-                                  'ne2k18-ae',
-                                  'ne2k18-sh'
+                                  `ne2k1${new Date().getFullYear().toString().substr(-1)}-na`,
+                                  `ne2k1${new Date().getFullYear().toString().substr(-1)}-eu`,
+                                  `ne2k1${new Date().getFullYear().toString().substr(-1)}-ar`,
+                                  `ne2k1${new Date().getFullYear().toString().substr(-1)}-sh`,
                                 ];
 
                                 api.electionsDecodeTx(
@@ -290,7 +305,7 @@ module.exports = (api) => {
                                   api.log(`i received ${decodedTx.outputs[i].value} from ${res.outputAddresses[0]} out ${i} region ${_regionsLookup[i]}`, 'elections.listtransactions');
                                   _rawtx.push({
                                     address: res.outputAddresses[0],
-                                    timestamp: blockInfo.timestamp,
+                                    timestamp: Number(transaction.height) === 0 || Number(transaction.height) === -1 ? Math.floor(Date.now() / 1000) : blockInfo.timestamp,                                    
                                     amount: decodedTx.outputs[i].value,
                                     region: _regionsLookup[i],
                                   });
@@ -316,7 +331,7 @@ module.exports = (api) => {
                                 ) {
                                   _candidate.address = decodedTx.outputs[i].scriptPubKey.addresses[0];
                                   _candidate.region = _region;
-                                  _candidate.timestamp = blockInfo.timestamp;
+                                  _candidate.timestamp = Number(transaction.height) === 0 || Number(transaction.height) === -1 ? Math.floor(Date.now() / 1000) : blockInfo.timestamp;                                  ;
                                 }
 
                                 if (i === decodedTx.outputs.length - 1) {
@@ -344,7 +359,7 @@ module.exports = (api) => {
                               _regularTx[1]) {
                             _rawtx.push({
                               address: _regularTx[type === 'voter' ? 0 : 1].address || 'self',
-                              timestamp: _regularTx[type === 'voter' ? 0 : 1].timestamp,
+                              timestamp: Number(transaction.height) === 0 || Number(transaction.height) === -1 ? Math.floor(Date.now() / 1000) : _regularTx[type === 'voter' ? 0 : 1].timestamp,
                               amount: _regularTx[type === 'voter' ? 0 : 1].amount,
                               region: 'unknown',
                               regularTx: true,
@@ -355,7 +370,7 @@ module.exports = (api) => {
                                 (type === 'candidate' && _regularTx.type !== 'sent')) {
                               _rawtx.push({
                                 address: _regularTx.address || 'self',
-                                timestamp: _regularTx.timestamp,
+                                timestamp: Number(transaction.height) === 0 || Number(transaction.height) === -1 ? Math.floor(Date.now() / 1000) : _regularTx.timestamp,
                                 amount: _regularTx.amount,
                                 region: 'unknown',
                                 regularTx: true,

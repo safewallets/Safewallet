@@ -6,7 +6,6 @@ const disableCoins = [
   'mzc', // no servers
   'zet', // no servers
   'jbs', // no servers
-  'grs',
   'wc', // needs kv edit
   'xwc', // needs kv edit
   'put', // needs kv edit

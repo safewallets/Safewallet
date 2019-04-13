@@ -388,14 +388,9 @@ function createAppCloseWindow() {
 					randomBytes: (size) => {
 						return randomBytes(size || 32).toString('hex');
 					},
+					nnVoteChain: 'VOTE2019',
 				};
 				global.app = _global;
-				/*for (let i = 0; i < process.argv.length; i++) {
-				    if (process.argv[i].indexOf('nvote') > -1) {
-				      console.log('enable notary node elections ui');
-				      mainWindow.nnVoteChain = 'VOTE2018';
-				    }
-				  }*/
 			} else {
 				mainWindow = new BrowserWindow({
 					width: 500,

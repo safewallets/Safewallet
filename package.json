@@ -1,7 +1,7 @@
 {
   "name": "Agama",
   "productName": "Agama",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Agama Wallet Desktop App",
   "main": "main.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "make-rpm": "node make-rpm.js",
     "make-deb": "node make-deb.js",
     "update-agamalib": "rm -rf node_modules/agama-wallet-lib/ && npm install",
-    "postinstall": "rm -rf node_modules/bitcoinforksjs-lib/node_modules/create-hash && rm -rf node_modules/bitcoinjs-lib/node_modules/create-hash && rm -rf node_modules/bitcoinjs-lib-pos/node_modules/create-hash && rm -rf node_modules/bitcoinjs-lib-zcash/node_modules/create-hash && rm -rf node_modules/bitgo-utxo-lib/node_modules/create-hash"
+    "postinstall": "node postinstall.js"
   },
   "repository": "https://github.com/KomodoPlatform/Agama/",
   "homepage": "http://komodoplatform.com",
@@ -20,8 +20,7 @@
     "komodo",
     "multicoin",
     "wallet",
-    "spv",
-    "jumblr"
+    "spv"
   ],
   "author": {
     "name": "Komodo Platform Team",
@@ -31,29 +30,29 @@
   "license": "MIT",
   "devDependencies": {
     "cross-env": "^5.2.0",
-    "electron": "4.0.0",
+    "electron": "4.1.1",
     "electron-devtools-installer": "^2.2.4"
   },
   "dependencies": {
     "adm-zip": "^0.4.7",
-    "agama-wallet-lib": "git://github.com/pbca26/agama-wallet-lib#dev",
+    "agama-wallet-lib": "git+https://github.com/pbca26/agama-wallet-lib#dev",
     "arch": "^2.1.0",
     "async": "^2.6.0",
     "bigi": "^1.4.2",
     "bip39": "^2.5.0",
-    "bitcoinforksjs-lib": "git://github.com/SuperNETorg/bitcoinjs-lib#opt-in-bitcoincash-sighash",
-    "bitcoinjs-lib": "git://github.com/SuperNETorg/bitcoinjs-lib.git",
-    "bitcoinjs-lib-pos": "git://github.com/KomodoPlatform/bitcoinjs-lib-pos",
-    "bitcoinjs-lib-zcash": "git://github.com/pbca26/bitcoinjs-lib#zcash",
+    "bitcoinforksjs-lib": "git+https://github.com/SuperNETorg/bitcoinjs-lib#opt-in-bitcoincash-sighash",
+    "bitcoinjs-lib": "git+https://github.com/SuperNETorg/bitcoinjs-lib.git",
+    "bitcoinjs-lib-pos": "git+https://github.com/KomodoPlatform/bitcoinjs-lib-pos",
+    "bitcoinjs-lib-zcash": "git+https://github.com/pbca26/bitcoinjs-lib#zcash",
     "bitgo-utxo-lib": "git+https://github.com/pbca26/bitgo-utxo-lib.git",
-    "bluebird": "^3.4.7",
+    "bitgo-utxo-lib-groestl": "git+https://github.com/SuperNETorg/bitgo-utxo-lib",
     "body-parser": "^1.15.2",
     "buffer-reverse": "^1.0.1",
     "coinselect": "github:bitcoinjs/coinselect",
-    "create-hash": "git://github.com/pbca26/createHash#electron-v4",
-    "electron": "4.0.0",
+    "create-hash": "git+https://github.com/pbca26/createHash#electron-v4",
+    "electron": "4.1.1",
     "ethereumjs-util": "^6.0.0",
-    "ethers": "git://github.com/pbca26/ethers.js",
+    "ethers": "git+https://github.com/pbca26/ethers.js",
     "express": "^4.14.0",
     "fix-path": "^2.1.0",
     "fs-extra": "^7.0.0",
@@ -61,7 +60,6 @@
     "hoek": "^5.0.4",
     "iocane": "^1.0.0",
     "js-sha256": "^0.7.1",
-    "marketmaker": "git://github.com/pbca26/marketmaker",
     "nodejs-aes256": "^1.0.1",
     "passwd-strength": "git+https://github.com/pbca26/passwd-strength.git",
     "portscanner": "^2.1.1",
@@ -71,7 +69,7 @@
     "semver-compare": "^1.0.0",
     "sha256": "^0.2.0",
     "socket.io": "^2.1.1",
-    "tx-decoder": "git://github.com/pbca26/tx-decoder.git",
+    "tx-decoder": "git+https://github.com/pbca26/tx-decoder.git",
     "wif": "^2.0.6",
     "winston": "^3.1.0"
   }

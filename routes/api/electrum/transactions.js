@@ -1,9 +1,9 @@
-const async = require('async');
-const Promise = require('bluebird');
+const asyncNPM = require('async');
 const { hex2str } = require('agama-wallet-lib/src/crypto/utils');
 const { isKomodoCoin } = require('agama-wallet-lib/src/coin-helpers');
 const { pubToElectrumScriptHashHex } = require('agama-wallet-lib/src/keys');
 const btcnetworks = require('agama-wallet-lib/src/bitcoinjs-networks');
+const { sortTransactions } = require('agama-wallet-lib/src/utils');
 
 // TODO: add z -> pub, pub -> z flag for zcash forks
 
@@ -34,7 +34,7 @@ module.exports = (api) => {
 
   api.listtransactions = (config, options) => {
     return new Promise((resolve, reject) => {
-      async function _listtransactions() {
+      (async function() {
         const network = config.network || api.findNetworkObj(config.coin);
         const ecl = await api.ecl(network);
         const isKv = config.kv;
@@ -49,15 +49,24 @@ module.exports = (api) => {
           ecl.blockchainAddressGetHistory(_address)
           .then((json) => {
             ecl.close();
-            api.log(json, 'spv.listtransactions');
 
-            json = api.sortTransactions(json, 'timestamp');
+            if (JSON.stringify(json).indexOf('"code":') > -1) {
+              const retObj = {
+                msg: 'error',
+                result: json,
+              };
+              resolve(retObj);
+            } else {
+              api.log(json, 'spv.listtransactions');
 
-            const retObj = {
-              msg: 'success',
-              result: json,
-            };
-            resolve(retObj);
+              json = sortTransactions(json, 'timestamp');
+
+              const retObj = {
+                msg: 'success',
+                result: json,
+              };
+              resolve(retObj);
+            }
           });
         } else {
           // !expensive call!
@@ -71,13 +80,14 @@ module.exports = (api) => {
               ecl.blockchainAddressGetHistory(_address)
               .then((json) => {
                 if (json &&
-                    json.length) {
+                    json.length &&
+                    JSON.stringify(json).indexOf('"code":') === -1) {
                   const _pendingTxs = api.findPendingTxByAddress(network, config.address);
                   let _rawtx = [];
                   let _flatTxHistory = [];
                   let _flatTxHistoryFull = {};
                   
-                  json = api.sortTransactions(json);
+                  json = sortTransactions(json);
 
                   for (let i = 0; i < json.length; i++) {
                     _flatTxHistory.push(json[i].tx_hash);
@@ -125,7 +135,7 @@ module.exports = (api) => {
                   let index = 0;
 
                   // callback hell, use await?
-                  async.eachOfSeries(json, (transaction, ind, callback) => {
+                  asyncNPM.eachOfSeries(json, (transaction, ind, callback) => {
                     api.getBlockHeader(
                       transaction.height,
                       network,
@@ -200,7 +210,7 @@ module.exports = (api) => {
                           if (decodedTx &&
                               decodedTx.inputs &&
                               decodedTx.inputs.length) {
-                            async.eachOfSeries(decodedTx.inputs, (_decodedInput, ind2, callback2) => {
+                            asyncNPM.eachOfSeries(decodedTx.inputs, (_decodedInput, ind2, callback2) => {
                               const checkLoop = () => {
                                 index2++;
 
@@ -214,7 +224,7 @@ module.exports = (api) => {
                                     outputs: decodedTx.outputs,
                                     height: transaction.height,
                                     timestamp: Number(transaction.height) === 0 || Number(transaction.height) === -1 ? Math.floor(Date.now() / 1000) : blockInfo.timestamp,
-                                    confirmations: Number(transaction.height) === 0 || Number(transaction.height) === -1 ? 0 : currentHeight - transaction.height,
+                                    confirmations: Number(transaction.height) === 0 || Number(transaction.height) === -1 ? 0 : currentHeight - transaction.height + 1,
                                   };
 
                                   const formattedTx = api.parseTransactionAddresses(
@@ -361,7 +371,7 @@ module.exports = (api) => {
                               outputs: 'cant parse',
                               height: transaction.height,
                               timestamp: Number(transaction.height) === 0 ? Math.floor(Date.now() / 1000) : blockInfo.timestamp,
-                              confirmations: Number(transaction.height) === 0 ? 0 : currentHeight - transaction.height,
+                              confirmations: Number(transaction.height) === 0 ? 0 : currentHeight - transaction.height + 1,
                               opreturn,
                             };
 
@@ -407,7 +417,7 @@ module.exports = (api) => {
                           outputs: 'cant parse',
                           height: transaction.height,
                           timestamp: 'cant get block info',
-                          confirmations: Number(transaction.height) === 0 ? 0 : currentHeight - transaction.height,
+                          confirmations: Number(transaction.height) === 0 ? 0 : currentHeight - transaction.height + 1,
                         };
                         const formattedTx = api.parseTransactionAddresses(
                           _parsedTx,
@@ -447,11 +457,19 @@ module.exports = (api) => {
                 } else {
                   ecl.close();
 
-                  const retObj = {
-                    msg: 'success',
-                    result: [],
-                  };
-                  resolve(retObj);
+                  if (JSON.stringify(json).indexOf('"code":') > -1) {
+                    const retObj = {
+                      msg: 'error',
+                      result: json,
+                    };
+                    resolve(retObj);
+                  } else {
+                    const retObj = {
+                      msg: 'success',
+                      result: [],
+                    };
+                    resolve(retObj);
+                  }
                 }
               });
             } else {
@@ -463,14 +481,13 @@ module.exports = (api) => {
             }
           });
         }
-      };
-      _listtransactions();
+      })();
     });
   };
 
   api.get('/electrum/gettransaction', (req, res, next) => {
     if (api.checkToken(req.query.token)) {
-      async function _getTransaction() {
+      (async function () {
         const network = req.query.network || api.findNetworkObj(req.query.coin);
         const ecl = await api.ecl(network);
 
@@ -489,8 +506,7 @@ module.exports = (api) => {
 
           res.end(JSON.stringify(retObj));
         });
-      };
-      _getTransaction();
+      })();
     } else {
       const retObj = {
         msg: 'error',

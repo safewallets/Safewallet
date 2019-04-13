@@ -1,5 +1,4 @@
 const request = require('request');
-const Promise = require('bluebird');
 const { randomBytes } = require('crypto');
 const signature = require('agama-wallet-lib/src/message');
 const API_KEY_DEV = 'cRbHFJTlL6aSfZ0K2q7nj6MgV5Ih4hbA2fUG0ueO';

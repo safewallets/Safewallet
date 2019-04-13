@@ -1,4 +1,3 @@
-const Promise = require('bluebird');
 const reverse = require('buffer-reverse');
 const crypto = require('crypto');
 const _sha256 = (data) => {
@@ -43,7 +42,7 @@ module.exports = (api) => {
   api.verifyMerkle = (txid, height, serverList, mainServer, network) => {
     // select random server
     return new Promise((resolve, reject) => {
-      async function _verifyMerkle() {
+      (async function () {
         if (serverList.length === 0) {
           resolve(false);
         } else {
@@ -66,7 +65,7 @@ module.exports = (api) => {
           .then((merkleData) => {
             ecl.close();
 
-            async function __verifyMerkle() {
+            (async function () {
               if (merkleData &&
                   merkleData.merkle &&
                   merkleData.pos) {
@@ -119,12 +118,10 @@ module.exports = (api) => {
                 ecl.close();
                 resolve(api.CONNECTION_ERROR_OR_INCOMPLETE_DATA);
               }
-            };
-            __verifyMerkle();
+            })();
           });
         }
-      };
-      _verifyMerkle();
+      })();
     });
   }
 

@@ -75,18 +75,14 @@ module.exports = (api) => {
 
       httpRequest();
     } else if (
-      selection === 'REVS' ||
-      selection === 'JUMRLR' ||
-      selection === 'MNZ' ||
-      selection === 'BTCH' ||
-      selection === 'PIRATE'
+      selection !== 'KMD' &&
+      chainParams[selection]
     ) {
       herdData = {
         ac_name: selection,
         ac_options: [
           '-daemon=0',
           '-server',
-          `-ac_name=${selection}`,
         ],
       };
       herdData = prepAcOptions(herdData, selection);
@@ -104,14 +100,12 @@ module.exports = (api) => {
         ac_options: [
           '-daemon=0',
           '-server',
-          `-ac_name=REVS`,
         ],
       }, {
         ac_name: 'JUMBLR',
         ac_options: [
           '-daemon=0',
           '-server',
-          `-ac_name=JUMBLR`,
         ],
       }];
 

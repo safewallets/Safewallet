@@ -51,7 +51,7 @@ module.exports = (api) => {
 
   api.createTx = (req, res, next, reqType = 'query') => {
     if (api.checkToken(req[reqType].token)) {
-      async function _createTx() {
+      (async function() {
         // TODO: unconf output(s) error message
         const network = req[reqType].network || api.findNetworkObj(req[reqType].coin);
         let ecl = await api.ecl(network);
@@ -433,7 +433,7 @@ module.exports = (api) => {
 
                     res.end(JSON.stringify(retObj));
                   } else {
-                    async function _pushtx() {
+                    (async function() {
                       ecl = await api.ecl(network);
                       ecl.connect();
                       ecl.blockchainTransactionBroadcast(_rawtx)
@@ -528,8 +528,7 @@ module.exports = (api) => {
                           res.end(JSON.stringify(retObj));
                         }
                       });
-                    }
-                    _pushtx();
+                    })();
                   }
                 }
               }
@@ -543,8 +542,7 @@ module.exports = (api) => {
             res.end(JSON.stringify(retObj));
           }
         });
-      };
-      _createTx();
+      })();
     } else {
       const retObj = {
         msg: 'error',
@@ -557,7 +555,7 @@ module.exports = (api) => {
 
   api.post('/electrum/pushtx', (req, res, next) => {
     if (api.checkToken(req.body.token)) {
-      async function _pushtx() {
+      (async function() {
         const rawtx = req.body.rawtx;
         const _network = req.body.network;
         const ecl = await api.ecl(_network);
@@ -645,8 +643,7 @@ module.exports = (api) => {
             res.end(JSON.stringify(retObj));
           }
         });
-      };
-      _pushtx();
+      })();
     } else {
       const retObj = {
         msg: 'error',
