@@ -50,7 +50,7 @@ module.exports = (api) => {
         let isWif = false;
 
         if (_seed.match('^[a-zA-Z0-9]{34}$') &&
-            api.appConfig.experimentalFeatures) {
+            api.appConfig.userAgreement) {
           api.log('watchonly pub addr');
           api.electrumKeys[key] = {
             priv: _seed,

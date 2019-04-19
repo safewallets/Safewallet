@@ -48,6 +48,7 @@ const appConfig = {
     exchanges: {
       coinswitchKey: '',
     },
+    userAgreement: false,
     // coinControl: false,
     // darkmode: false,
   },
@@ -99,7 +100,7 @@ const appConfig = {
       type: 'boolean',
     },
     experimentalFeatures: {
-      display: true,
+      display: false,
       initDisplay: true,
       displayName: 'Enable advanced features',
       type: 'boolean',
@@ -285,6 +286,12 @@ const appConfig = {
         info: 'Your personal Coinswitch API key',
         type: 'string',
       },
+    },
+    userAgreement: {
+      display: false,
+      displayName: 'User agreement',
+      info: 'User agreement',
+      type: 'boolean',
     },
     /*coinControl: {
       display: true,

@@ -253,5 +253,40 @@ module.exports = (api) => {
     });
   }
 
+  /*
+   *  type: GET
+   *
+   */
+  api.get('/useragreement', (req, res, next) => {
+    if (api.checkToken(req.query.token)) {
+      if (req.query.accepted) {
+        api.appConfig.userAgreement = true;
+
+        api.saveLocalAppConf(api.appConfig);
+        
+        const retObj = {
+          msg: 'success',
+          result: 'okay',
+        };
+  
+        res.end(JSON.stringify(retObj));
+      } else {
+        const retObj = {
+          msg: 'error',
+          result: 'must accept terms',
+        };
+  
+        res.end(JSON.stringify(retObj));
+      }
+    } else {
+      const retObj = {
+        msg: 'error',
+        result: 'unauthorized access',
+      };
+
+      res.end(JSON.stringify(retObj));
+    }
+  });
+
   return api;
 };
