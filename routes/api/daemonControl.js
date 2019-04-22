@@ -191,13 +191,15 @@ module.exports = (api) => {
               datadir: '-datadir=',
               rescan: '-rescan',
               gen: '-gen',
+              regtest: '-regtest',
             };
             let _customParam = '';
 
             if (data.ac_custom_param === 'silent' ||
                 data.ac_custom_param === 'reindex' ||
                 data.ac_custom_param === 'rescan' ||
-                data.ac_custom_param === 'gen') {
+                data.ac_custom_param === 'gen' ||
+                data.ac_custom_param === 'regtest') {
               _customParam = ` ${_customParamDict[data.ac_custom_param]}`;
             } else if (
               data.ac_custom_param === 'change' &&
