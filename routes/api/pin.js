@@ -8,11 +8,38 @@ const iocane = require('iocane');
 const session = iocane.createSession()
   .use('cbc')
   .setDerivationRounds(300000);
-
 const encrypt = session.encrypt.bind(session);
 const decrypt = session.decrypt.bind(session);
+const pinObjSchema = require('./pinSchema');
 
 module.exports = (api) => {
+  api.updateActiveWalletFSData = () => {
+    const fsObj = JSON.stringify({
+      type: api.wallet.type,
+      data: api.wallet.data,
+    });
+
+    encrypt(fsObj, api.wallet.pin)
+    .then((encryptedString) => {
+      fs.writeFile(`${api.agamaDir}/shepherd/pin/${api.wallet.fname}.pin`, encryptedString, (err) => {
+        if (err) {
+          api.log(`error writing pin file ${api.wallet.fname}.pin`, 'pin');
+        }
+      });
+    });
+  };
+
+  api.get('/getwalletdata', async (req, res, next) => {
+    if (api.checkToken(req.query.token)) {
+      const retObj = {
+        msg: 'success',
+        result: api.wallet,
+      };
+
+      res.end(JSON.stringify(retObj));
+    }
+  });
+
   /*
    *  type: POST
    *  params: none
@@ -21,85 +48,101 @@ module.exports = (api) => {
     if (api.checkToken(req.body.token)) {
       const _pin = req.body.key;
       const _str = req.body.string;
+      const _type = req.body.type;
 
-      if (_pin &&
-          _str) {
-        const hash = sha256.create().update(_str);
-        let bytes = hash.array();
-        bytes[0] &= 248;
-        bytes[31] &= 127;
-        bytes[31] |= 64;
+      if (_type &&
+          pinObjSchema[_type]) {
+        if (_pin &&
+            _str) {
+          const hash = sha256.create().update(_str);
+          let bytes = hash.array();
+          bytes[0] &= 248;
+          bytes[31] &= 127;
+          bytes[31] |= 64;
 
-        const d = bigi.fromBuffer(bytes);
-        const keyPair = new bitcoin.ECPair(d, null, { network: api.getNetworkData('btc') });
-        const keys = {
-          pub: keyPair.getAddress(),
-          priv: keyPair.toWIF(),
-        };
-        const pubkey = req.body.pubkey ? req.body.pubkey : keyPair.getAddress();
-
-        if (passwdStrength(_pin) < 29) {
-          api.log('seed storage weak pin!', 'pin');
-
-          const retObj = {
-            msg: 'error',
-            result: false,
+          const d = bigi.fromBuffer(bytes);
+          const keyPair = new bitcoin.ECPair(d, null, { network: api.getNetworkData('btc') });
+          const keys = {
+            pub: keyPair.getAddress(),
+            priv: keyPair.toWIF(),
           };
+          const pubkey = req.body.pubkey ? req.body.pubkey : keyPair.getAddress();
 
-          res.end(JSON.stringify(retObj));
-        } else {
-          const _customPinFilenameTest = /^[0-9a-zA-Z-_]+$/g;
+          if (passwdStrength(_pin) < 29) {
+            api.log('seed storage weak pin!', 'pin');
 
-          if (_customPinFilenameTest.test(pubkey)) {
-            encrypt(req.body.string, _pin)
-            .then((encryptedString) => {
-              fs.writeFile(`${api.agamaDir}/shepherd/pin/${pubkey}.pin`, encryptedString, (err) => {
-                if (err) {
-                  api.log('error writing pin file', 'pin');
-
-                  const retObj = {
-                    msg: 'error',
-                    result: 'error writing pin file',
-                  };
-
-                  res.end(JSON.stringify(retObj));
-                } else {
-                  const retObj = {
-                    msg: 'success',
-                    result: pubkey,
-                  };
-
-                  res.end(JSON.stringify(retObj));
-                }
-              });
-            });
-          } else {
             const retObj = {
               msg: 'error',
-              result: 'pin file name can only contain alphanumeric characters, dash "-" and underscore "_"',
+              result: false,
             };
 
             res.end(JSON.stringify(retObj));
+          } else {
+            const _customPinFilenameTest = /^[0-9a-zA-Z-_]+$/g;
+
+            if (_customPinFilenameTest.test(pubkey)) {
+              const fsObj = JSON.stringify({
+                type: _type,
+                data: pinObjSchema[_type],
+              });
+
+              encrypt(fsObj, _pin)
+              .then((encryptedString) => {
+                fs.writeFile(`${api.agamaDir}/shepherd/pin/${pubkey}.pin`, encryptedString, (err) => {
+                  if (err) {
+                    api.log('error writing pin file', 'pin');
+
+                    const retObj = {
+                      msg: 'error',
+                      result: 'error writing pin file',
+                    };
+
+                    res.end(JSON.stringify(retObj));
+                  } else {
+                    const retObj = {
+                      msg: 'success',
+                      result: pubkey,
+                    };
+
+                    res.end(JSON.stringify(retObj));
+                  }
+                });
+              });
+            } else {
+              const retObj = {
+                msg: 'error',
+                result: 'pin file name can only contain alphanumeric characters, dash "-" and underscore "_"',
+              };
+
+              res.end(JSON.stringify(retObj));
+            }
           }
+        } else {
+          const _paramsList = [
+            'key',
+            'string'
+          ];
+          let retObj = {
+            msg: 'error',
+            result: '',
+          };
+          let _errorParamsList = [];
+
+          for (let i = 0; i < _paramsList.length; i++) {
+            if (!req.query[_paramsList[i]]) {
+              _errorParamsList.push(_paramsList[i]);
+            }
+          }
+
+          retObj.result = `missing param ${_errorParamsList.join(', ')}`;
+          res.end(JSON.stringify(retObj));
         }
       } else {
-        const _paramsList = [
-          'key',
-          'string'
-        ];
-        let retObj = {
+        const retObj = {
           msg: 'error',
-          result: '',
+          result: 'missing or wrong type param',
         };
-        let _errorParamsList = [];
 
-        for (let i = 0; i < _paramsList.length; i++) {
-          if (!req.query[_paramsList[i]]) {
-            _errorParamsList.push(_paramsList[i]);
-          }
-        }
-
-        retObj.result = `missing param ${_errorParamsList.join(', ')}`;
         res.end(JSON.stringify(retObj));
       }
     } else {
@@ -154,10 +197,32 @@ module.exports = (api) => {
                 decrypt(data, _key)
                 .then((decryptedKey) => {
                   api.log(`pin ${_pubkey} decrypted`, 'pin');
+                  console.log(decryptedKey);
+
+                  const decryptedKeyObj = JSON.parse(decryptedKey);
+                  
+                  if (typeof decryptedKeyObj === 'object') { // v2
+                    api.wallet = {
+                      fname: _pubkey,
+                      pin: _key,
+                      type: decryptedKeyObj.type,
+                      data: decryptedKeyObj.data,
+                    };
+                  } else { // v1
+                    let objv1 = JSON.parse(JSON.stringify(pinObjSchema.default));
+                    objv1.keys.seed = decryptedKey;
+
+                    api.wallet = {
+                      fname: _pubkey,
+                      pin: _key,
+                      type: 'default',
+                      data: objv1,
+                    };
+                  }
 
                   const retObj = {
                     msg: 'success',
-                    result: decryptedKey,
+                    result: api.wallet.data.keys.seed,
                   };
 
                   res.end(JSON.stringify(retObj));
