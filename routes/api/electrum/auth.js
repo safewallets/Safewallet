@@ -134,6 +134,13 @@ module.exports = (api) => {
       api.eth.coins = {};
       api.eth.connect = {};
       api.eth.wallet = {};
+      
+      api.wallet = {
+        fname: null,
+        pin: null,
+        type: null,
+        data: null,
+      };
 
       const retObj = {
         msg: 'success',
