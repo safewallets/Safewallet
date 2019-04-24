@@ -81,9 +81,16 @@ module.exports = (api) => {
             const _customPinFilenameTest = /^[0-9a-zA-Z-_]+$/g;
 
             if (_customPinFilenameTest.test(pubkey)) {
+              let _data = pinObjSchema[_type]; 
+
+              if (pinObjSchema[_type].keys.hasOwnProperty('seed')) {
+                _data = JSON.parse(JSON.stringify(pinObjSchema[_type]));
+                _data.keys.seed = _str;
+              }
+
               const fsObj = JSON.stringify({
                 type: _type,
-                data: pinObjSchema[_type],
+                data: _data,
               });
 
               encrypt(fsObj, _pin)
@@ -197,7 +204,6 @@ module.exports = (api) => {
                 decrypt(data, _key)
                 .then((decryptedKey) => {
                   api.log(`pin ${_pubkey} decrypted`, 'pin');
-                  console.log(decryptedKey);
 
                   const decryptedKeyObj = JSON.parse(decryptedKey);
                   
@@ -222,7 +228,10 @@ module.exports = (api) => {
 
                   const retObj = {
                     msg: 'success',
-                    result: api.wallet.data.keys.seed,
+                    result: {
+                      seed: api.wallet.data.keys.seed,
+                      coins: api.wallet.data.coins,
+                    },
                   };
 
                   res.end(JSON.stringify(retObj));

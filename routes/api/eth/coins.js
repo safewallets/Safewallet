@@ -54,6 +54,9 @@ module.exports = (api) => {
           api.eth.coins[_coinuc] = {};
         }
 
+        api.wallet.data.coins = api.getActiveCoins();
+        api.updateActiveWalletFSData();
+
         const retObj = {
           msg: 'success',
           result: 'true',
@@ -62,7 +65,7 @@ module.exports = (api) => {
       } else {
         const retObj = {
           msg: 'error',
-          result: _coinuc + ' is active',
+          result: `${_coinuc} is active`,
         };
         res.end(JSON.stringify(retObj));
       }
