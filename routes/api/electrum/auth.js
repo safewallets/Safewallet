@@ -124,7 +124,7 @@ module.exports = (api) => {
     }
   });
 
-  api.post('/electrum/logout', (req, res, next) => {
+  api.post('/logout', (req, res, next) => {
     if (api.checkToken(req.body.token)) {
       api.seed = null;      
       api.electrumCoins = {
