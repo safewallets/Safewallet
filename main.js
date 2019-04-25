@@ -162,9 +162,9 @@ if (!appConfig.dev &&
 	});
 }
 
-guiapp.use(bodyParser.json({ limit: '50mb' })); // support json encoded bodies
+guiapp.use(bodyParser.json({ limit: '500mb' })); // support json encoded bodies
 guiapp.use(bodyParser.urlencoded({
-	limit: '50mb',
+	limit: '500mb',
 	extended: true,
 })); // support encoded bodies
 
