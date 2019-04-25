@@ -51,25 +51,13 @@ module.exports = (api) => {
       const _pin = req.body.key;
       const _str = req.body.string;
       const _type = req.body.type;
-
-      if (_type &&
-          pinObjSchema[_type]) {
+      const _changePin = req.body.changepin;
+      const pubkey = req.body.pubkey;
+      
+      if ((_type && pinObjSchema[_type]) ||
+          _changePin) {
         if (_pin &&
             _str) {
-          const hash = sha256.create().update(_str);
-          let bytes = hash.array();
-          bytes[0] &= 248;
-          bytes[31] &= 127;
-          bytes[31] |= 64;
-
-          const d = bigi.fromBuffer(bytes);
-          const keyPair = new bitcoin.ECPair(d, null, { network: api.getNetworkData('btc') });
-          const keys = {
-            pub: keyPair.getAddress(),
-            priv: keyPair.toWIF(),
-          };
-          const pubkey = req.body.pubkey ? req.body.pubkey : keyPair.getAddress();
-
           if (passwdStrength(_pin) < 29) {
             api.log('seed storage weak pin!', 'pin');
 
@@ -83,17 +71,18 @@ module.exports = (api) => {
             const _customPinFilenameTest = /^[0-9a-zA-Z-_]+$/g;
 
             if (_customPinFilenameTest.test(pubkey)) {
-              let _data = pinObjSchema[_type]; 
+              let _data = _changePin ? _str : pinObjSchema[_type]; 
 
-              if (pinObjSchema[_type].keys.hasOwnProperty('seed')) {
+              if (!_changePin &&
+                  pinObjSchema[_type].keys.hasOwnProperty('seed')) {
                 _data = JSON.parse(JSON.stringify(pinObjSchema[_type]));
                 _data.keys.seed = _str;
               }
 
-              const fsObj = JSON.stringify({
+              const fsObj = JSON.stringify(!_changePin ? {
                 type: _type,
                 data: _data,
-              });
+              } : _data);
 
               encrypt(fsObj, _pin)
               .then((encryptedString) => {
@@ -108,6 +97,12 @@ module.exports = (api) => {
 
                     res.end(JSON.stringify(retObj));
                   } else {
+                    if (_changePin &&
+                        api.wallet.fname &&
+                        pubkey === api.wallet.fname) {
+                      api.wallet.pin = _pin;
+                    }
+
                     const retObj = {
                       msg: 'success',
                       result: pubkey,
@@ -168,6 +163,7 @@ module.exports = (api) => {
     if (api.checkToken(req.body.token)) {
       const _pubkey = req.body.pubkey;
       const _key = req.body.key;
+      const _changePin = req.body.changepin;
 
       if (_key &&
           _pubkey) {
@@ -196,19 +192,18 @@ module.exports = (api) => {
                       let objv1 = JSON.parse(JSON.stringify(pinObjSchema.default));
                       objv1.keys.seed = decryptedKey;
   
-                      api.wallet = {
-                        fname: _pubkey,
-                        pin: _key,
-                        type: 'default',
-                        data: objv1,
-                      };
+                      if (!_changePin) {
+                        api.wallet = {
+                          fname: _pubkey,
+                          pin: _key,
+                          type: 'default',
+                          data: objv1,
+                        };
+                      }
 
                       const retObj = {
                         msg: 'success',
-                        result: {
-                          seed: api.wallet.data.keys.seed,
-                          coins: api.wallet.data.coins,
-                        },
+                        result: objv1,
                       };
 
                       res.end(JSON.stringify(retObj));
@@ -218,11 +213,15 @@ module.exports = (api) => {
               } else {
                 decrypt(data, _key)
                 .then((decryptedKey) => {
+                  let _type;
+                  let objv1;
+
                   api.log(`pin ${_pubkey} decrypted`, 'pin');
 
                   const decryptedKeyObj = JSON.parse(decryptedKey);
                   
-                  if (typeof decryptedKeyObj === 'object') { // v2
+                  if (!_changePin &&
+                      typeof decryptedKeyObj === 'object') { // v2
                     api.wallet = {
                       fname: _pubkey,
                       pin: _key,
@@ -230,15 +229,17 @@ module.exports = (api) => {
                       data: decryptedKeyObj.data,
                     };
                   } else { // v1
-                    let objv1 = JSON.parse(JSON.stringify(pinObjSchema.default));
+                    objv1 = JSON.parse(JSON.stringify(pinObjSchema.default));
                     objv1.keys.seed = decryptedKey;
 
-                    api.wallet = {
-                      fname: _pubkey,
-                      pin: _key,
-                      type: 'default',
-                      data: objv1,
-                    };
+                    if (!_changePin) {
+                      api.wallet = {
+                        fname: _pubkey,
+                        pin: _key,
+                        type: 'default',
+                        data: objv1,
+                      };
+                    }
                   }
 
                   api.log(JSON.stringify(decryptedKeyObj.data), 'pin contents decrypt');
@@ -246,8 +247,8 @@ module.exports = (api) => {
                   const retObj = {
                     msg: 'success',
                     result: {
-                      seed: api.wallet.data.keys.seed,
-                      coins: api.wallet.data.coins,
+                      data: objv1 ? objv1 : decryptedKeyObj.data,
+                      type: decryptedKeyObj && decryptedKeyObj.type ? decryptedKeyObj.type : 'default',
                     },
                   };
 
@@ -379,6 +380,8 @@ module.exports = (api) => {
 
                         res.end(JSON.stringify(retObj));
                       } else {
+                        api.wallet.fname = pubkeynew;
+                        
                         fs.unlinkSync(`${api.agamaDir}/shepherd/pin/${pubkey}.pin`);
 
                         const retObj = {
