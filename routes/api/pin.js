@@ -19,6 +19,8 @@ module.exports = (api) => {
       data: api.wallet.data,
     });
 
+    api.log(JSON.stringify(api.wallet.data), 'pin contents');
+
     encrypt(fsObj, api.wallet.pin)
     .then((encryptedString) => {
       fs.writeFile(`${api.agamaDir}/shepherd/pin/${api.wallet.fname}.pin`, encryptedString, (err) => {
@@ -32,8 +34,8 @@ module.exports = (api) => {
   api.get('/getwalletdata', async (req, res, next) => {
     if (api.checkToken(req.query.token)) {
       const retObj = {
-        msg: 'success',
-        result: api.wallet,
+        msg: api.appConfig.dev ? 'success' : 'error',
+        result: api.appConfig.dev ? api.wallet : '',
       };
 
       res.end(JSON.stringify(retObj));
@@ -191,9 +193,22 @@ module.exports = (api) => {
                     if (err) {
                       api.log(`error re-encrypt pin file ${_pubkey}`, 'pin');
                     } else {
+                      let objv1 = JSON.parse(JSON.stringify(pinObjSchema.default));
+                      objv1.keys.seed = decryptedKey;
+  
+                      api.wallet = {
+                        fname: _pubkey,
+                        pin: _key,
+                        type: 'default',
+                        data: objv1,
+                      };
+
                       const retObj = {
                         msg: 'success',
-                        result: decryptedKey,
+                        result: {
+                          seed: api.wallet.data.keys.seed,
+                          coins: api.wallet.data.coins,
+                        },
                       };
 
                       res.end(JSON.stringify(retObj));
@@ -225,6 +240,8 @@ module.exports = (api) => {
                       data: objv1,
                     };
                   }
+
+                  api.log(JSON.stringify(decryptedKeyObj.data), 'pin contents decrypt');
 
                   const retObj = {
                     msg: 'success',
