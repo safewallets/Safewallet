@@ -211,14 +211,20 @@ module.exports = (api) => {
                   });
                 });
               } else {
+                // TODO: detect corrupted data
                 decrypt(data, _key)
                 .then((decryptedKey) => {
                   let _type;
                   let objv1;
+                  let decryptedKeyObj;
 
                   api.log(`pin ${_pubkey} decrypted`, 'pin');
 
-                  const decryptedKeyObj = JSON.parse(decryptedKey);
+                  try {
+                    decryptedKeyObj = JSON.parse(decryptedKey);
+                  } catch (e) {
+                    decryptedKeyObj = decryptedKey;
+                  }
                   
                   if (!_changePin &&
                       typeof decryptedKeyObj === 'object') { // v2
@@ -242,7 +248,7 @@ module.exports = (api) => {
                     }
                   }
 
-                  api.log(JSON.stringify(decryptedKeyObj.data), 'pin contents decrypt');
+                  api.log(JSON.stringify(typeof decryptedKeyObj === 'object' ? decryptedKeyObj.data : decryptedKeyObj), 'pin contents decrypt');
 
                   const retObj = {
                     msg: 'success',
