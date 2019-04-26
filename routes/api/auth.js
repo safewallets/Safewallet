@@ -19,6 +19,7 @@ module.exports = (api) => {
 
       retObj = {
         status: api.seed || Object.keys(api.coindInstanceRegistry).length ? 'unlocked' : 'locked',
+        isPin: api.wallet.fname ? true : false,
       };
 
       res.end(JSON.stringify(retObj));
