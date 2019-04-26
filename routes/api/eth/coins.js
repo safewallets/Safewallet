@@ -54,8 +54,10 @@ module.exports = (api) => {
           api.eth.coins[_coinuc] = {};
         }
 
-        api.wallet.data.coins = api.getActiveCoins();
-        api.updateActiveWalletFSData();
+        if (api.wallet.fname) {
+          api.wallet.data.coins = api.getActiveCoins();
+          api.updateActiveWalletFSData();
+        }
 
         const retObj = {
           msg: 'success',

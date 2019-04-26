@@ -60,8 +60,10 @@ module.exports = (api) => {
       api.auth(api.seed, true);
     }
 
-    api.wallet.data.coins = api.getActiveCoins();
-    api.updateActiveWalletFSData();
+    if (api.wallet.fname) {
+      api.wallet.data.coins = api.getActiveCoins();
+      api.updateActiveWalletFSData();
+    }
 
     return true;
   }

@@ -167,8 +167,10 @@ module.exports = (api) => {
         delete api.coindInstanceRegistry[_chain ? _chain : 'komodod'];
         delete api.native.startParams[_chain ? _chain : 'komodod'];
 
-        api.wallet.data.coins = api.getActiveCoins();
-        api.updateActiveWalletFSData();
+        if (api.wallet.fname) {
+          api.wallet.data.coins = api.getActiveCoins();
+          api.updateActiveWalletFSData();
+        }
 
         const retObj = {
           msg: 'success',
@@ -183,8 +185,10 @@ module.exports = (api) => {
           api.electrumKeys = {};
         }
 
-        api.wallet.data.coins = api.getActiveCoins();
-        api.updateActiveWalletFSData();
+        if (api.wallet.fname) {
+          api.wallet.data.coins = api.getActiveCoins();
+          api.updateActiveWalletFSData();
+        }
 
         const retObj = {
           msg: 'success',
@@ -201,8 +205,10 @@ module.exports = (api) => {
           api.eth.connect = null;
         }
 
-        api.wallet.data.coins = api.getActiveCoins();
-        api.updateActiveWalletFSData();
+        if (api.wallet.fname) {
+          api.wallet.data.coins = api.getActiveCoins();
+          api.updateActiveWalletFSData();
+        }
 
         const retObj = {
           msg: 'success',
