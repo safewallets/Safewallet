@@ -29,6 +29,9 @@ git checkout master && git pull origin master
 npm update && npm install
 npm run build && npm start
 ```
+
+*Note:* if you have errors during build on master branch try to checkout and build from dev (both agama and easydex-gui repos). Usually dev has all latest fixes including build scripts. Master is merged when new release comes out.
+
 Leave the above process running and use a new terminal windows/tab when proceeding with the below steps.
 
 Now please create a directory called `bin` inside `assets/` and afterwards copy `komodod` and `komodo-cli` to a new subfolder named after the operating system you are building Agama for: `linux64`, `osx` or `win64`. 
