@@ -13,24 +13,26 @@ const decrypt = session.decrypt.bind(session);
 const pinObjSchema = require('./pinSchema');
 const nativePorts = require('../ports');
 const erc20Contracts = require('agama-wallet-lib/src/eth-erc20-contract-id');
+const modes = [
+  'native',
+  'spv',
+  'eth',
+];
 
 module.exports = (api) => {
   api.pinFilterOutDisabledCoins = (coinsList) => {
     const coinsCheckList = {
       native: nativePorts,
       spv: api.electrumServersFlag,
-      erc20Contracts: erc20Contracts,
+      eth: erc20Contracts,
     };
-    const modes = [
-      'native',
-      'spv',
-      'eth',
-    ];
 
     for (let i = 0; i < modes.length; i++) {
       if (coinsList[modes[i]]) {
         for (let j = 0; j < coinsList[modes[i]].length; j++) {
-          if (!coinsCheckList[modes[i]][modes[i] === 'spv' ? coinsList[modes[i]][j].toLowerCase() : coinsList[modes[i]][j]]) {
+          if (coinsList[modes[i]][j].toLowerCase() !== 'eth' && 
+              coinsList[modes[i]][j].toLowerCase() !== 'eth_ropsten' &&
+              !coinsCheckList[modes[i]][modes[i] === 'spv' ? coinsList[modes[i]][j].toLowerCase() : coinsList[modes[i]][j]]) {
             api.log(`disable ${coinsList[modes[i]][j]} in ${modes[i]} mode`, 'pin.decrypt.coins');
             coinsList[modes[i]] = coinsList[modes[i]].filter(x => x === coinsList[modes[i]][j]);
           }
