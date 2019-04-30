@@ -63,18 +63,19 @@ module.exports = (api) => {
     return coinsList;
   };
 
+  // TODO: load native, eth coins
   api.loadCoinsListFromFile = () => {
     try {
       if (fs.existsSync(`${api.agamaDir}/shepherd/coinslist.json`)) {
         let _coinsList = JSON.parse(fs.readFileSync(`${api.agamaDir}/shepherd/coinslist.json`, 'utf8'));
         _coinsList = api.fsCoinsListFilterOutDisabledCoins(_coinsList);
 
-        for (let i = 0; i < _coinsList.length; i++) {
-          const _coin = _coinsList[i].selectedCoin.split('|');
+        for (let key in _coinsList) {
+          if (_coinsList[key].mode === 'spv') {
+            const _coin = _coinsList[key].coin.value.split('|')[0];
 
-          if (_coinsList[i].spvMode.checked) {
-            api.addElectrumCoin(_coin[0]);
-            api.log(`add spv coin ${_coin[0]} from file`, 'spv.coins');
+            api.addElectrumCoin(_coin);
+            api.log(`add spv coin ${_coin} from file`, 'spv.coins');
           }
         }
       }
