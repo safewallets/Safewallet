@@ -63,7 +63,6 @@ module.exports = (api) => {
     return coinsList;
   };
 
-  // TODO: load native, eth coins
   api.loadCoinsListFromFile = () => {
     try {
       if (fs.existsSync(`${api.agamaDir}/shepherd/coinslist.json`)) {
@@ -75,12 +74,22 @@ module.exports = (api) => {
             const _coin = _coinsList[key].coin.value.split('|')[0];
 
             api.addElectrumCoin(_coin);
-            api.log(`add spv coin ${_coin} from file`, 'spv.coins');
+            api.log(`add spv coin ${_coin} from file`, 'spv.fs.coins');
+          } else if (_coinsList[key].mode === 'eth') {
+            const _coin = _coinsList[key].coin.value === 'ETH' ? 'ETH' : _coinsList[key].coin.value.split('|')[1];
+
+            api.ethAddCoin(_coin);
+            api.log(`add eth coin ${_coin} from file`, 'eth.fs.coins');
+          } else if (_coinsList[key].mode === 'native') {
+            const _coin = _coinsList[key].coin.value.split('|')[0];
+
+            api.log(`add native coin ${_coin} from file`, 'native.fs.coins');
+            api.startKMDNative(_coin);
           }
         }
       }
     } catch (e) {
-      api.log(e, 'spv.coins');
+      api.log(e, 'fs.coins');
     }
   }
 
