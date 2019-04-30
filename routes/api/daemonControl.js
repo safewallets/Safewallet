@@ -237,6 +237,11 @@ module.exports = (api) => {
                 api.log(`error accessing ${_daemonLogName}, doesnt exist or another proc is already running`, 'native.process');
               }
 
+              if (api.wallet.fname) {
+                api.wallet.data.coins = api.getActiveCoins();
+                api.updateActiveWalletFSData();
+              }
+
               if (!api.appConfig.native.stopNativeDaemonsOnQuit) {
                 let spawnOut = fs.openSync(_daemonLogName, 'a');
                 let spawnErr = fs.openSync(_daemonLogName, 'a');

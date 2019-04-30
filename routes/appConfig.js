@@ -43,6 +43,7 @@ const appConfig = {
       zlistreceivedbyaddress: false,
       zgetoperationresult: false,
       zshieldcoinbase: false,
+      detectDaemons: false,
     },
     pubkey: '',
     exchanges: {
@@ -268,6 +269,12 @@ const appConfig = {
         display: true,
         displayName: 'Enable shield coinbase button',
         info: 'A handy option if you\'re mining.',
+        type: 'boolean',
+      },
+      detectDaemons: {
+        display: true,
+        displayName: 'Enable "Detect native daemons" button',
+        info: 'A handy option if want to start KMD/asset chain native with your set of params or run it in background.',
         type: 'boolean',
       },
     },

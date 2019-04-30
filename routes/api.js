@@ -18,6 +18,14 @@ api.appRuntimeLog = [];
 api.lockDownAddCoin = false;
 api._isWatchOnly = false;
 
+// pin acces v2
+api.wallet = {
+  fname: null,
+  pin: null,
+  type: null,
+  data: null,
+};
+
 // spv vars and libs
 api.electrumCoins = {
   auth: false,
@@ -27,12 +35,8 @@ api.electrumCache = {};
 
 api.electrumJSCore = require('./electrumjs/electrumjs.core.js');
 api.electrumJSNetworks = require('./electrumjs/electrumjs.networks.js');
-const {
-  electrumServers,
-  electrumServersFlag,
-} = require('./electrumjs/electrumServers.js');
-api.electrumServers = electrumServers;
-api.electrumServersFlag = electrumServersFlag;
+api.electrumServers = require('./electrumjs/electrumServers.js').electrumServers;
+api.electrumServersFlag = require('./electrumjs/electrumServers.js').electrumServersFlag;
 api.electrumServersV1_4 = {};
 
 api.CONNECTION_ERROR_OR_INCOMPLETE_DATA = 'connection error or incomplete data';
