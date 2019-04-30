@@ -234,7 +234,7 @@ if (os.platform() === 'win32') {
 }
 
 // close app
-function forseCloseApp() {
+function forceCloseApp() {
 	forceQuitApp = true;
 	app.quit();
 }
@@ -372,7 +372,6 @@ function createAppCloseWindow() {
 					startSPV: api.startSPV,
 					startKMDNative: api.startKMDNative,
 					getCoinByPub: api.getCoinByPub,
-					resetSettings: () => { api.saveLocalAppConf(__defaultAppSettings) },
 					createSeed: {
 						triggered: false,
 						firstLoginPH: null,
@@ -391,6 +390,7 @@ function createAppCloseWindow() {
 					nnVoteChain: 'VOTE2019',
 				};
 				global.app = _global;
+				mainWindow.resetSettings = () => { api.saveLocalAppConf(__defaultAppSettings) };
 			} else {
 				mainWindow = new BrowserWindow({
 					width: 500,
@@ -401,7 +401,7 @@ function createAppCloseWindow() {
 				});
 
 				mainWindow.setResizable(false);
-				mainWindow.forseCloseApp = forseCloseApp;
+				mainWindow.forceCloseApp = forceCloseApp;
 
 				willQuitApp = true;
 				server.listen(appConfig.agamaPort + 1, () => {
@@ -417,17 +417,6 @@ function createAppCloseWindow() {
 		      mainWindow.show();
 		    }, 40);
 		  });
-
-		  /*loadingWindow.on('close', (e) => {
-		  	if (!forseCloseApp) {
-			    if (willQuitApp) {
-			      loadingWindow = null;
-			    } else {
-			      closeAppAfterLoading = true;
-			      e.preventDefault();
-			    }
-			  }
-		  });*/
 
 			mainWindow.webContents.on('context-menu', (e, params) => { // context-menu returns params
 				const {
@@ -533,16 +522,6 @@ function createAppCloseWindow() {
 	}
 }
 
-app.on('window-all-closed', () => {
-	// if (os.platform() !== 'win32') { ig.kill(); }
-	// in osx apps stay active in menu bar until explictly closed or quitted by CMD Q
-	// so we do not kill the app --> for the case user clicks again on the iguana icon
-	// we open just a new window and respawn iguana proc
-	/*if (process.platform !== 'darwin' || process.platform !== 'linux' || process.platform !== 'win32') {
-		app.quit()
-	}*/
-});
-
 // Emitted before the application starts closing its windows.
 // Calling event.preventDefault() will prevent the default behaviour, which is terminating the application.
 app.on('before-quit', (event) => {
@@ -558,7 +537,6 @@ app.on('will-quit', (event) => {
 	if (!forceQuitApp) {
 		// loading window is still open
 		api.log('will-quit while loading window active', 'quit');
-		// event.preventDefault();
 	}
 });
 
@@ -567,7 +545,6 @@ app.on('will-quit', (event) => {
 app.on('quit', (event) => {
 	if (!forceQuitApp) {
 		api.log('quit while loading window active', 'quit');
-		// event.preventDefault();
 	}
 });
 
@@ -576,7 +553,7 @@ const installExtensions = async () => {
   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
   const extensions = [
 		'REACT_DEVELOPER_TOOLS',
-		'REDUX_DEVTOOLS'
+		'REDUX_DEVTOOLS',
 	];
 
   return Promise.all(
