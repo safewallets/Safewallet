@@ -191,13 +191,15 @@ module.exports = (api) => {
               datadir: '-datadir=',
               rescan: '-rescan',
               gen: '-gen',
+              regtest: '-regtest',
             };
             let _customParam = '';
 
             if (data.ac_custom_param === 'silent' ||
                 data.ac_custom_param === 'reindex' ||
                 data.ac_custom_param === 'rescan' ||
-                data.ac_custom_param === 'gen') {
+                data.ac_custom_param === 'gen' ||
+                data.ac_custom_param === 'regtest') {
               _customParam = ` ${_customParamDict[data.ac_custom_param]}`;
             } else if (
               data.ac_custom_param === 'change' &&
@@ -233,6 +235,11 @@ module.exports = (api) => {
                 fs.unlinkSync(_daemonLogName);
               } catch (e) {
                 api.log(`error accessing ${_daemonLogName}, doesnt exist or another proc is already running`, 'native.process');
+              }
+
+              if (api.wallet.fname) {
+                api.wallet.data.coins = api.getActiveCoins();
+                api.updateActiveWalletFSData();
               }
 
               if (!api.appConfig.native.stopNativeDaemonsOnQuit) {

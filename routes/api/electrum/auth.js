@@ -50,7 +50,7 @@ module.exports = (api) => {
         let isWif = false;
 
         if (_seed.match('^[a-zA-Z0-9]{34}$') &&
-            api.appConfig.experimentalFeatures) {
+            api.appConfig.userAgreement) {
           api.log('watchonly pub addr');
           api.electrumKeys[key] = {
             priv: _seed,
@@ -124,7 +124,7 @@ module.exports = (api) => {
     }
   });
 
-  api.post('/electrum/logout', (req, res, next) => {
+  api.post('/logout', (req, res, next) => {
     if (api.checkToken(req.body.token)) {
       api.seed = null;      
       api.electrumCoins = {
@@ -134,6 +134,13 @@ module.exports = (api) => {
       api.eth.coins = {};
       api.eth.connect = {};
       api.eth.wallet = {};
+      
+      api.wallet = {
+        fname: null,
+        pin: null,
+        type: null,
+        data: null,
+      };
 
       const retObj = {
         msg: 'success',
