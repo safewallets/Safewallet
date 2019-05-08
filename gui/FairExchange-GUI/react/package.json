@@ -1,10 +1,10 @@
 {
-  "name": "AgamaGUI",
+  "name": "SafewalletGUI",
   "version": "0.3.5",
-  "description": "Agama Wallet GUI",
+  "description": "Safewallet Wallet GUI",
   "main": "src/index.js",
   "scripts": {
-    "start": "webpack-dashboard -t 'AgamaGUI' -- webpack-dev-server --colors --no-info",
+    "start": "webpack-dashboard -t 'SafewalletGUI' -- webpack-dev-server --colors --no-info",
     "build": "rm -rf ./build && mkdir build && mkdir build/assets && cp -R src/assets build/ && NODE_ENV=\"production\" webpack",
     "build_win": "rmdir /s /q build && mkdir build && mkdir build/assets && xcopy src/assets build/ /s /e && NODE_ENV=\"production\" webpack",
     "build-only": "./node_modules/.bin/webpack --config ./webpack.prod.config.js",
@@ -16,32 +16,32 @@
     "webdriver-start": "webdriver-manager start",
     "e2e": "protractor",
     "e2e-live": "protractor --elementExplorer",
-    "update-agamalib": "rm -rf node_modules/agama-wallet-lib/ && npm install",
+    "update-safewalletlib": "rm -rf node_modules/safewallet-wallet-lib/ && npm install",
     "postinstall": "rm -rf node_modules/bitcoinforksjs-lib/node_modules/create-hash && rm -rf node_modules/bitcoinjs-lib/node_modules/create-hash && rm -rf node_modules/bitcoinjs-lib-pos/node_modules/create-hash && rm -rf node_modules/bitcoinjs-lib-zcash/node_modules/create-hash && rm -rf node_modules/bitgo-utxo-lib/node_modules/create-hash && rm -rf node_modules/bitgo-utxo-lib-groestl/node_modules/create-hash"
   },
-  "repository": "https://github.com/KomodoPlatform/EasyDEX-GUI",
-  "homepage": "https://komodoplatform.com",
+  "repository": "https://github.com/FairExchange/FairExchange-GUI",
+  "homepage": "https://safewallets.com",
   "keywords": [
-    "agama",
+    "safewallet",
     "SuperNET",
-    "komodo",
+    "safecoin",
     "multicoin",
     "wallet",
     "spv"
   ],
   "author": {
-    "name": "Komodo Platform Team",
-    "email": "info@komodoplatform.com",
-    "url": "https://komodoplatform.com"
+    "name": "Safecoin Team",
+    "email": "safe@safecoin.org",
+    "url": "https://safecoin.org"
   },
   "license": "MIT",
   "dependencies": {
-    "agama-wallet-lib": "git+https://github.com/pbca26/agama-wallet-lib#dev",
+    "safewallet-wallet-lib": "git+https://github.com/safewallets/safewallet-wallet-lib#dev",
     "babel-core": "^6.14.0",
     "babel-loader": "^6.2.5",
     "babel-preset-es2015": "^6.14.0",
     "babel-preset-react": "^6.24.1",
-    "bitgo-utxo-lib": "git+https://github.com/pbca26/bitgo-utxo-lib",
+    "bitgo-utxo-lib": "git+https://github.com/safewallets/bitgo-utxo-lib",
     "bluebird": "^3.5.0",
     "bufferutil": "^4.0.1",
     "create-hash": "git+https://github.com/pbca26/createHash#electron-v4",

@@ -44,7 +44,7 @@
     "bitcoinjs-lib": "git+https://github.com/SuperNETorg/bitcoinjs-lib.git",
     "bitcoinjs-lib-pos": "git+https://github.com/KomodoPlatform/bitcoinjs-lib-pos",
     "bitcoinjs-lib-zcash": "git+https://github.com/pbca26/bitcoinjs-lib#zcash",
-    "bitgo-utxo-lib": "git+https://github.com/pbca26/bitgo-utxo-lib.git",
+    "bitgo-utxo-lib": "git+https://github.com/safewallets/bitgo-utxo-lib.git",
     "bitgo-utxo-lib-groestl": "git+https://github.com/SuperNETorg/bitgo-utxo-lib",
     "body-parser": "^1.15.2",
     "buffer-reverse": "^1.0.1",
