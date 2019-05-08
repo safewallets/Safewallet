@@ -1,7 +1,7 @@
 import { triggerToaster } from '../actionCreators';
 import Config, {
   token,
-  agamaPort,
+  safewalletPort,
   rpc2cli,
 } from '../../config';
 import Store from '../../store';
@@ -19,7 +19,7 @@ export const getListUnspent = (coin) => {
     };
 
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/cli`,
+      `http://127.0.0.1:${safewalletPort}/api/cli`,
       fetchType(JSON.stringify({ payload })).post
     )
     .catch((error) => {
@@ -68,7 +68,7 @@ export const getRawTransaction = (coin, txid) => {
     };
 
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/cli`,
+      `http://127.0.0.1:${safewalletPort}/api/cli`,
       fetchType(JSON.stringify({ payload })).post
     )
     .catch((error) => {

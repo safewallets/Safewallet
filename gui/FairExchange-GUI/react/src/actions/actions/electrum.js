@@ -6,7 +6,7 @@ import {
 import translate from '../../translate/translate';
 import Config, {
   token,
-  agamaPort,
+  safewalletPort,
 } from '../../config';
 import {
   triggerToaster,
@@ -62,7 +62,7 @@ export const apiGetLocalBTCFees = () => {
       token,
     };
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/btcfees${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/btcfees${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -92,7 +92,7 @@ export const apiElectrumSetServer = (coin, address, port, proto) => {
       proto,
     };
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/coins/server/set${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/coins/server/set${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -121,7 +121,7 @@ export const apiElectrumCheckServerConnection = (address, port, proto) => {
       proto,
     };
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/servers/test${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/servers/test${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -144,7 +144,7 @@ export const apiElectrumCheckServerConnection = (address, port, proto) => {
 export const apiElectrumKeys = (seed) => {
   return new Promise((resolve, reject) => {
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/keys`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/keys`,
       fetchType(
         JSON.stringify({
           seed,
@@ -185,7 +185,7 @@ export const apiElectrumBalance = (coin, address) => {
       coin,
     };
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/getbalance${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/getbalance${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -241,7 +241,7 @@ export const apiElectrumTransactions = (coin, address) => {
       maxlength: 20,
     };
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/listtransactions${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/listtransactions${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -275,7 +275,7 @@ export const apiElectrumTransaction = (coin, address, txid) => {
     };
 
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/listtransactions${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/listtransactions${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -307,7 +307,7 @@ export const apiElectrumKVTransactionsPromise = (coin, address) => {
     };
 
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/listtransactions${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/listtransactions${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -358,7 +358,7 @@ export const apiElectrumCoins = () => {
       token,
     };
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/coins${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/coins${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -415,7 +415,7 @@ export const apiElectrumSend = (coin, value, sendToAddress, changeAddress, btcFe
     };
 
     return fetch(
-      isKv ? `http://127.0.0.1:${agamaPort}/api/electrum/createrawtx` : `http://127.0.0.1:${agamaPort}/api/electrum/createrawtx${urlParams(_urlParams)}${btcFee ? '&btcfee=' + btcFee : ''}`,
+      isKv ? `http://127.0.0.1:${safewalletPort}/api/electrum/createrawtx` : `http://127.0.0.1:${safewalletPort}/api/electrum/createrawtx${urlParams(_urlParams)}${btcFee ? '&btcfee=' + btcFee : ''}`,
       isKv ? fetchType(JSON.stringify(payload)).post : fetchType.get
     )
     .catch((error) => {
@@ -444,7 +444,7 @@ export const apiElectrumSend = (coin, value, sendToAddress, changeAddress, btcFe
   }
 }
 
-// kmd interest claiming
+// safe interest claiming
 export const apiElectrumSendPromise = (coin, value, sendToAddress, changeAddress, btcFee) => {
   value = Math.floor(value);
 
@@ -460,7 +460,7 @@ export const apiElectrumSendPromise = (coin, value, sendToAddress, changeAddress
       push: true,
     };
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/createrawtx${urlParams(_urlParams)}${btcFee ? '&btcfee=' + btcFee : ''}`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/createrawtx${urlParams(_urlParams)}${btcFee ? '&btcfee=' + btcFee : ''}`,
       fetchType.get
     )
     .catch((error) => {
@@ -521,7 +521,7 @@ export const apiElectrumSendPreflight = (coin, value, sendToAddress, changeAddre
     }
 
     fetch(
-      isKv ? `http://127.0.0.1:${agamaPort}/api/electrum/createrawtx` : `http://127.0.0.1:${agamaPort}/api/electrum/createrawtx${urlParams(_urlParams)}${btcFee ? '&btcfee=' + btcFee : ''}`,
+      isKv ? `http://127.0.0.1:${safewalletPort}/api/electrum/createrawtx` : `http://127.0.0.1:${safewalletPort}/api/electrum/createrawtx${urlParams(_urlParams)}${btcFee ? '&btcfee=' + btcFee : ''}`,
       isKv ? fetchType(JSON.stringify(payload)).post : fetchType.get
     )
     .catch((error) => {
@@ -551,7 +551,7 @@ export const apiElectrumListunspent = (coin, address) => {
       full: true,
     };
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/listunspent${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/listunspent${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -574,7 +574,7 @@ export const apiElectrumListunspent = (coin, address) => {
 export const apiElectrumBip39Keys = (seed, match, addressdepth, accounts) => {
   return new Promise((resolve, reject) => {
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/seed/bip39/match`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/seed/bip39/match`,
       fetchType(
         JSON.stringify({
           seed,
@@ -608,7 +608,7 @@ export const apiElectrumSplitUtxoPromise = (payload) => {
 
   return new Promise((resolve, reject) => {
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/createrawtx-split`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/createrawtx-split`,
       fetchType(
         JSON.stringify({
           payload,
@@ -642,7 +642,7 @@ export const apiElectrumKvServersList = () => {
       save: true,
     };
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/kv/servers${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/kv/servers${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -690,7 +690,7 @@ export const apiElectrumSweep = (coin, value, sendToAddress, changeAddress, push
     };
 
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/createrawtx${urlParams(_urlParams)}${btcFee ? '&btcfee=' + btcFee : ''}`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/createrawtx${urlParams(_urlParams)}${btcFee ? '&btcfee=' + btcFee : ''}`,
       fetchType(JSON.stringify(payload)).post,
     )
     .catch((error) => {
@@ -722,7 +722,7 @@ export const apiElectrumSweep = (coin, value, sendToAddress, changeAddress, push
 export const apiElectrumPushTx = (coin, rawtx) => {
   return new Promise((resolve, reject) => {
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/pushtx`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/pushtx`,
       fetchType(
         JSON.stringify({
           network: coin,
@@ -757,7 +757,7 @@ export const apiElectrumBalancePromise = (coin, address) => {
       coin,
     };
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/getbalance${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/getbalance${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {

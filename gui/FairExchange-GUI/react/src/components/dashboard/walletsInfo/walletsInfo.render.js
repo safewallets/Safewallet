@@ -1,12 +1,12 @@
 import React from 'react';
 import translate from '../../../translate/translate';
-import { secondsToString } from 'agama-wallet-lib/src/time';
+import { secondsToString } from 'safewallet-wallet-lib/src/time';
 import {
   formatBytes,
   fromSats,
-} from 'agama-wallet-lib/src/utils';
-import fees from 'agama-wallet-lib/src/fees';
-import erc20ContractId from 'agama-wallet-lib/src/eth-erc20-contract-id';
+} from 'safewallet-wallet-lib/src/utils';
+import fees from 'safewallet-wallet-lib/src/fees';
+import erc20ContractId from 'safewallet-wallet-lib/src/eth-erc20-contract-id';
 
 const WalletsInfoRender = function() {
   const _coin = this.props.ActiveCoin.coin;
@@ -243,7 +243,7 @@ const WalletsInfoRender = function() {
           <div className="panel">
             <div className="panel-heading">
               <h3 className="panel-title">
-                { _coin === 'KMD' ? 'Komodo' : _coin }&nbsp;
+                { _coin === 'SAFE' ? 'Safecoin' : _coin }&nbsp;
                 { translate('INDEX.INFO') }
               </h3>
             </div>
@@ -253,7 +253,7 @@ const WalletsInfoRender = function() {
                   <tr>
                     <td>{ translate('INDEX.VERSION') }</td>
                     <td>
-                      { _progress.KMDversion }
+                      { _progress.SAFEversion }
                     </td>
                   </tr>
                   <tr>

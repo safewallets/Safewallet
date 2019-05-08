@@ -2,7 +2,7 @@ import React from 'react';
 import translate from '../../../translate/translate';
 import ReactTooltip from 'react-tooltip';
 import mainWindow, { staticVar } from '../../../util/mainWindow';
-import erc20ContractId from 'agama-wallet-lib/src/eth-erc20-contract-id';
+import erc20ContractId from 'safewallet-wallet-lib/src/eth-erc20-contract-id';
 
 const testChains = [
   'BEER',

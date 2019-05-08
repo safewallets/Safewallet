@@ -9,7 +9,7 @@ import {
 } from '../actionCreators';
 import Config, {
   token,
-  agamaPort,
+  safewalletPort,
   rpc2cli,
 } from '../../config';
 import Store from '../../store';
@@ -62,7 +62,7 @@ export const sendNativeTx = (coin, _payload) => {
     };
 
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/cli`,
+      `http://127.0.0.1:${safewalletPort}/api/cli`,
       fetchType(JSON.stringify({ payload })).post
     )
     .catch((error) => {
@@ -122,7 +122,7 @@ export const sendNativeTx = (coin, _payload) => {
   }
 }
 
-export function getKMDOPIDState(json) {
+export function getSAFEOPIDState(json) {
   return {
     type: DASHBOARD_ACTIVE_COIN_NATIVE_OPIDS,
     opids: json,
@@ -130,7 +130,7 @@ export function getKMDOPIDState(json) {
 }
 
 // remove?
-export const getKMDOPID = (opid, coin) => {
+export const getSAFEOPID = (opid, coin) => {
   return dispatch => {
     const payload = {
       mode: null,
@@ -141,14 +141,14 @@ export const getKMDOPID = (opid, coin) => {
     };
 
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/cli`,
+      `http://127.0.0.1:${safewalletPort}/api/cli`,
       fetchType(JSON.stringify({ payload })).post
     )
     .catch((error) => {
       console.log(error);
       dispatch(
         triggerToaster(
-          translate('API.txDataFail') + ' (code: getKMDOPID)',
+          translate('API.txDataFail') + ' (code: getSAFEOPID)',
           translate('TOASTR.ERROR'),
           'error'
         )
@@ -157,7 +157,7 @@ export const getKMDOPID = (opid, coin) => {
     .then(response => response.json())
     .then(json => {
       json = json.result;
-      dispatch(getKMDOPIDState(json));
+      dispatch(getSAFEOPIDState(json));
     });
   };
 }
@@ -173,14 +173,14 @@ export const sendToAddressPromise = (coin, address, amount) => {
       params: [
         address,
         amount,
-        'KMD interest claim request',
-        'KMD interest claim request',
+        'SAFE interest claim request',
+        'SAFE interest claim request',
         true,
       ],
     };
 
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/cli`,
+      `http://127.0.0.1:${safewalletPort}/api/cli`,
       fetchType(JSON.stringify({ payload })).post
     )
     .catch((error) => {
@@ -227,7 +227,7 @@ export const validateAddressPromise = (coin, address) => {
     };
 
     fetch(
-      `http://127.0.0.1:${Config.agamaPort}/api/cli`,
+      `http://127.0.0.1:${Config.safewalletPort}/api/cli`,
       fetchType(JSON.stringify({ payload })).post
     )
     .catch((error) => {
@@ -258,7 +258,7 @@ export const clearOPIDs = (coin) => {
     };
 
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/cli`,
+      `http://127.0.0.1:${safewalletPort}/api/cli`,
       fetchType(JSON.stringify({ payload })).post
     )
     .catch((error) => {
@@ -308,7 +308,7 @@ export const zmergeToAddressPromise = (coin, src, dest, fee = 0.0001, transparen
     };
 
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/cli`,
+      `http://127.0.0.1:${safewalletPort}/api/cli`,
       fetchType(JSON.stringify({ payload })).post
     )
     .catch((error) => {
@@ -346,7 +346,7 @@ export const shieldCoinbase = (coin, src, dest, fee = 0.0001, limit = 50) => {
     };
 
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/cli`,
+      `http://127.0.0.1:${safewalletPort}/api/cli`,
       fetchType(JSON.stringify({ payload })).post
     )
     .catch((error) => {

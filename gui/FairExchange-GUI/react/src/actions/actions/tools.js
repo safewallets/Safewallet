@@ -1,7 +1,7 @@
 import translate from '../../translate/translate';
 import Config, {
   token,
-  agamaPort,
+  safewalletPort,
   rpc2cli,
 } from '../../config';
 import { triggerToaster } from '../actionCreators';
@@ -12,7 +12,7 @@ import fetchType from '../../util/fetchType';
 export const apiToolsSeedKeys = (seed) => {
   return new Promise((resolve, reject) => {
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/keys`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/keys`,
       fetchType(
         JSON.stringify({
           seed,
@@ -47,7 +47,7 @@ export const apiToolsBalance = (coin, address) => {
       address,
     };
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/getbalance${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/getbalance${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -77,7 +77,7 @@ export const apiToolsTransactions = (coin, address) => {
       maxlength: 20,
     };
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/listtransactions${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/listtransactions${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -112,7 +112,7 @@ export const apiToolsBuildUnsigned = (coin, value, sendToAddress, changeAddress)
       offline: true,
     };
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/createrawtx${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/createrawtx${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -141,7 +141,7 @@ export const apiToolsListunspent = (coin, address) => {
       full: true,
     };
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/listunspent${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/listunspent${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -164,7 +164,7 @@ export const apiToolsListunspent = (coin, address) => {
 export const apiToolsPushTx = (network, rawtx) => {
   return new Promise((resolve, reject) => {
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/pushtx`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/pushtx`,
       fetchType(
         JSON.stringify({
           network,
@@ -198,7 +198,7 @@ export const apiToolsWifToKP = (coin, wif) => {
       wif,
     };
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/wiftopub${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/wiftopub${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -221,7 +221,7 @@ export const apiToolsWifToKP = (coin, wif) => {
 export const apiToolsSeedToWif = (seed, network, iguana) => {
   return new Promise((resolve, reject) => {
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/seedtowif`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/seedtowif`,
       fetchType(
         JSON.stringify({
           seed,
@@ -252,7 +252,7 @@ export const apiToolsSeedToWif = (seed, network, iguana) => {
 export const apiToolsMultiAddressBalance = (addressList, fallback, explorerEndPoint) => {
   return new Promise((resolve, reject) => {
     fetch(
-      explorerEndPoint ? explorerEndPoint + '/insight-api-komodo/addrs/utxo' : fallback ? 'https://kmdexplorer.io/insight-api-komodo/addrs/utxo' : 'https://www.kmdexplorer.ru/insight-api-komodo/addrs/utxo',
+      explorerEndPoint ? explorerEndPoint + '/api/addrs/utxo' : fallback ? 'https://explorer.safecoin.org/api/addrs/utxo' : 'https://explorer.safecoin.org/api/addrs/utxo',
       fetchType(
         JSON.stringify({
           addrs: addressList,

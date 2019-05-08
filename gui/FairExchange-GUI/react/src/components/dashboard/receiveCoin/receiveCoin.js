@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
   copyCoinAddress,
-  getNewKMDAddresses,
+  getNewSAFEAddresses,
   dumpPrivKey,
   copyString,
   triggerToaster,
@@ -182,7 +182,7 @@ class ReceiveCoin extends React.Component {
   }
 
   getNewAddress(type) {
-    Store.dispatch(getNewKMDAddresses(this.props.coin, type, this.props.mode));
+    Store.dispatch(getNewSAFEAddresses(this.props.coin, type, this.props.mode));
   }
 
   toggleVisibleAddress() {
@@ -233,9 +233,9 @@ class ReceiveCoin extends React.Component {
             items.pop();
           }
         } else {
-          if ((type === 'private' && this.props.coin !== 'KMD') ||
+          if ((type === 'private' && this.props.coin !== 'SAFE') ||
               (type === 'public' &&
-               (this.props.coin === 'KMD' ||
+               (this.props.coin === 'SAFE' ||
                (staticVar.chainParams &&
                  staticVar.chainParams[this.props.coin] &&
                  !staticVar.chainParams[this.props.coin].ac_private)))) {

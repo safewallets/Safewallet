@@ -9,7 +9,7 @@ import {
 import Store from '../../../store';
 import ExchangesOrderInfoModalRender from './exchangesOrderInfoModal.render';
 import Config from '../../../config';
-import { explorerList } from 'agama-wallet-lib/src/coin-helpers';
+import { explorerList } from 'safewallet-wallet-lib/src/coin-helpers';
 
 const { shell } = window.require('electron');
 

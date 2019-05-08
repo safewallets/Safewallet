@@ -2,7 +2,7 @@ import React from 'react';
 import translate from '../../../translate/translate';
 import Spinner from '../spinner/spinner';
 import ReactTooltip from 'react-tooltip';
-const { secondsElapsedToString } = require('agama-wallet-lib/src/time');
+const { secondsElapsedToString } = require('safewallet-wallet-lib/src/time');
 
 export const _ClaimInterestTableRender = function() {
   const _transactionsList = this.state.transactionsList;
@@ -70,7 +70,7 @@ export const _ClaimInterestTableRender = function() {
     <span>
       <div>
         <p>
-          <strong>{ translate('CLAIM_INTEREST.REQ_P1') }:</strong> { translate('CLAIM_INTEREST.REQ_P2') } <strong>10 KMD</strong>
+          <strong>{ translate('CLAIM_INTEREST.REQ_P1') }:</strong> { translate('CLAIM_INTEREST.REQ_P2') } <strong>10 SAFE</strong>
         </p>
         <p>
           <strong>{ translate('CLAIM_INTEREST.TIP') } #1:</strong> { translate('CLAIM_INTEREST.TIP_DESC') }
@@ -85,7 +85,7 @@ export const _ClaimInterestTableRender = function() {
           </p>
         }
         <p>
-          <strong>{ translate('CLAIM_INTEREST.CLAIM_INTEREST_FEE') }:</strong> { this.props.ActiveCoin.mode === 'native' ? '0.0001' : '0.0002' } KMD ({ this.props.ActiveCoin.mode === 'native' ? '10000' : '20000' } sats).
+          <strong>{ translate('CLAIM_INTEREST.CLAIM_INTEREST_FEE') }:</strong> { this.props.ActiveCoin.mode === 'native' ? '0.0001' : '0.0002' } SAFE ({ this.props.ActiveCoin.mode === 'native' ? '10000' : '20000' } sats).
         </p>
       </div>
       { this.state.totalInterest > 0 &&
@@ -118,7 +118,7 @@ export const _ClaimInterestTableRender = function() {
                 <i className="icon fa-dollar margin-right-5"></i>
               }
               { !this.state.spvPreflightSendInProgress &&
-                <span>{ translate('CLAIM_INTEREST.CLAIM_INTEREST', `${Number((this.state.totalInterest).toFixed(8))} KMD `) }</span>
+                <span>{ translate('CLAIM_INTEREST.CLAIM_INTEREST', `${Number((this.state.totalInterest).toFixed(8))} SAFE `) }</span>
               }
               { this.state.spvPreflightSendInProgress &&
                 <span>{ translate('SEND.SPV_VERIFYING') }...</span>

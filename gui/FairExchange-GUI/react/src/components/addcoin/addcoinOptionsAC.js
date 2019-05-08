@@ -1,8 +1,8 @@
 import translate from '../../translate/translate';
 import mainWindow, { staticVar } from '../../util/mainWindow';
 import config from '../../config';
-import { kmdAssetChains } from 'agama-wallet-lib/src/coin-helpers';
-import { sortObject } from 'agama-wallet-lib/src/utils';
+import { safeAssetChains } from 'safewallet-wallet-lib/src/coin-helpers';
+import { sortObject } from 'safewallet-wallet-lib/src/utils';
 
 // TODO: detect if ac has electrums or not
 
@@ -29,8 +29,8 @@ const _disabledAC = {
 let coinsList = [];
 let _coins = {};
 
-for (let i = 0; i < kmdAssetChains.length; i++) {
-  _coins[translate('ASSETCHAINS.' + kmdAssetChains[i].toUpperCase())] = kmdAssetChains[i];
+for (let i = 0; i < safeAssetChains.length; i++) {
+  _coins[translate('ASSETCHAINS.' + safeAssetChains[i].toUpperCase())] = safeAssetChains[i];
 }
 
 _coins = sortObject(_coins);

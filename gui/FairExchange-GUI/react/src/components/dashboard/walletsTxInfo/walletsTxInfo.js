@@ -7,9 +7,9 @@ import {
 } from '../../../actions/actionCreators';
 import Store from '../../../store';
 import WalletsTxInfoRender from './walletsTxInfo.render';
-import { explorerList } from 'agama-wallet-lib/src/coin-helpers';
+import { explorerList } from 'safewallet-wallet-lib/src/coin-helpers';
 import Config from '../../../config';
-import erc20ContractId from 'agama-wallet-lib/src/eth-erc20-contract-id';
+import erc20ContractId from 'safewallet-wallet-lib/src/eth-erc20-contract-id';
 
 const { shell } = window.require('electron');
 

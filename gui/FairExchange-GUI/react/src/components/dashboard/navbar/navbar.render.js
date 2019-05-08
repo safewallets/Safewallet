@@ -13,14 +13,14 @@ const NavbarRender = function() {
         <div className="navbar-brand navbar-brand-center site-gridmenu-toggle">
           <img
             className="navbar-brand-logo hidden-xs"
-            src="assets/images/agama-logo-side.svg"
+            src="assets/images/safewallet-logo-side.svg"
             height="100"
             width="100"
-            title={ translate('ABOUT.AGAMA_WALLET') } />
+            title={ translate('ABOUT.SAFEWALLET_WALLET') } />
           <img
             className="navbar-brand-logo hidden-lg"
-            src="assets/images/agama-icon.svg"
-            title={ translate('ABOUT.AGAMA_WALLET') } />
+            src="assets/images/safewallet-icon.svg"
+            title={ translate('ABOUT.SAFEWALLET_WALLET') } />
           <span className="navbar-brand-text hidden-xs"></span>
         </div>
       </div>
@@ -116,7 +116,7 @@ const NavbarRender = function() {
               <ul className="dropdown-menu">
                 { this.props.Main.newUpdateAvailable.result === 'update' &&
                   <li className="new-update-icon-link">
-                    <a onClick={ this.openKomodoPlatformLink }>
+                    <a onClick={ this.openFairExchangeLink }>
                       <i className="icon fa-level-up"></i> { translate('INDEX.NEW_VERSION') }
                     </a>
                   </li>
@@ -131,7 +131,7 @@ const NavbarRender = function() {
                 { !this.isSectionActive('about') &&
                   <li>
                     <a onClick={ () => this.dashboardChangeSection('about') }>
-                      <i className="icon fa-users"></i> { translate('ABOUT.ABOUT_AGAMA') }
+                      <i className="icon fa-users"></i> { translate('ABOUT.ABOUT_SAFEWALLET') }
                     </a>
                   </li>
                 }

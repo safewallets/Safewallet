@@ -132,7 +132,7 @@ export function iguanaActiveHandle(getMainAddress) {
     }
 
     return fetch(
-      Config.iguanaLessMode ? `http://127.0.0.1:${Config.agamaPort}/api/SuperNET/activehandle` : `http://127.0.0.1:${Config.iguanaCorePort}`,
+      Config.iguanaLessMode ? `http://127.0.0.1:${Config.safewalletPort}/api/SuperNET/activehandle` : `http://127.0.0.1:${Config.iguanaCorePort}`,
       _fetchConfig
     )
     .catch((error) => {

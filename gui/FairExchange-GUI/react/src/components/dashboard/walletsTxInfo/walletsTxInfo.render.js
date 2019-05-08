@@ -1,9 +1,9 @@
 import React from 'react';
 import translate from '../../../translate/translate';
 import Config from '../../../config';
-import { secondsToString } from 'agama-wallet-lib/src/time';
-import { explorerList } from 'agama-wallet-lib/src/coin-helpers';
-import erc20ContractId from 'agama-wallet-lib/src/eth-erc20-contract-id';
+import { secondsToString } from 'safewallet-wallet-lib/src/time';
+import { explorerList } from 'safewallet-wallet-lib/src/coin-helpers';
+import erc20ContractId from 'safewallet-wallet-lib/src/eth-erc20-contract-id';
 
 const renderKvContent = (content) => {
   return content
@@ -24,7 +24,7 @@ const WalletsTxInfoRender = function(txInfo) {
     <div onKeyDown={ (event) => this.handleKeydown(event) }>
       <div
         className={ `modal modal-3d-sign tx-details-modal ${this.state.className}` }
-        id="kmd_txid_info_mdl">
+        id="safe_txid_info_mdl">
         <div
           onClick={ this.toggleTxInfoModal }
           className="modal-close-overlay"></div>

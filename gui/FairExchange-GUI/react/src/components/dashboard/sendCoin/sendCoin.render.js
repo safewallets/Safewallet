@@ -7,16 +7,16 @@ import {
   isPositiveNumber,
   fromSats,
   toSats,
-} from 'agama-wallet-lib/src/utils';
+} from 'safewallet-wallet-lib/src/utils';
 import {
   explorerList,
-  isKomodoCoin,
-} from 'agama-wallet-lib/src/coin-helpers';
+  isSafecoinCoin,
+} from 'safewallet-wallet-lib/src/coin-helpers';
 import Config from '../../../config';
 import mainWindow, { staticVar } from '../../../util/mainWindow';
 import { formatEther } from 'ethers/utils/units';
-import coinFees from 'agama-wallet-lib/src/fees';
-import erc20ContractId from 'agama-wallet-lib/src/eth-erc20-contract-id';
+import coinFees from 'safewallet-wallet-lib/src/fees';
+import erc20ContractId from 'safewallet-wallet-lib/src/eth-erc20-contract-id';
 
 const _feeLookup = {
   eth: [
@@ -46,7 +46,7 @@ export const AddressListRender = function() {
   const _notAcPrivate = staticVar.chainParams && staticVar.chainParams[_coin] && !staticVar.chainParams[_coin].ac_private;
 
   return (
-    <div className={ `btn-group bootstrap-select form-control form-material showkmdwalletaddrs show-tick ${(this.state.addressSelectorOpen ? 'open' : '')}` }>
+    <div className={ `btn-group bootstrap-select form-control form-material showsafewalletaddrs show-tick ${(this.state.addressSelectorOpen ? 'open' : '')}` }>
       <button
         type="button"
         className={ 'btn dropdown-toggle btn-info' + (_mode === 'spv' || _mode === 'eth' ? ' disabled' : '') }
@@ -60,7 +60,7 @@ export const AddressListRender = function() {
         <ul className="dropdown-menu inner">
           { (_mode === 'spv' ||
              _mode === 'eth' ||
-            (_mode === 'native' && _coin !== 'KMD' && _notAcPrivate)) &&
+            (_mode === 'native' && _coin !== 'SAFE' && _notAcPrivate)) &&
             (!this.state.sendTo || (this.state.sendTo && this.state.sendTo.substring(0, 2) !== 'zc' && this.state.sendTo.substring(0, 2) !== 'zs' && this.state.sendTo.length !== 95)) &&
             <li
               className="selected"
@@ -85,10 +85,10 @@ export const AddressListRender = function() {
           }
           { (_mode === 'spv' ||
              _mode === 'eth' ||
-             ((_mode === 'native' && _coin === 'KMD') || (_mode === 'native' && _coin !== 'KMD' && _notAcPrivate))) &&
+             ((_mode === 'native' && _coin === 'SAFE') || (_mode === 'native' && _coin !== 'SAFE' && _notAcPrivate))) &&
             this.renderAddressByType('public')
           }
-          { _coin !== 'KMD' && this.renderAddressByType('private') }
+          { _coin !== 'SAFE' && this.renderAddressByType('private') }
         </ul>
       </div>
     </div>
@@ -97,7 +97,7 @@ export const AddressListRender = function() {
 
 export const AddressListRenderShieldCoinbase = function() {
   return (
-    <div className={ `btn-group bootstrap-select form-control form-material showkmdwalletaddrs show-tick ${(this.state.addressSelectorOpen ? 'open' : '')}` }>
+    <div className={ `btn-group bootstrap-select form-control form-material showsafewalletaddrs show-tick ${(this.state.addressSelectorOpen ? 'open' : '')}` }>
       <button
         type="button"
         className="btn dropdown-toggle btn-info"
@@ -124,7 +124,7 @@ export const _SendFormRender = function() {
   return (
     <div className="extcoin-send-form">
       { (this.state.renderAddressDropdown ||
-        (_mode === 'native' && _coin !== 'KMD' && _isAcPrivate)) &&
+        (_mode === 'native' && _coin !== 'SAFE' && _isAcPrivate)) &&
         !this.state.zshieldcoinbaseToggled &&
         <div className="row">
           <div className="col-xlg-12 form-group form-material">
@@ -152,7 +152,7 @@ export const _SendFormRender = function() {
             { this.props.AddressBook &&
               this.props.AddressBook.arr &&
               typeof this.props.AddressBook.arr === 'object' &&
-              this.props.AddressBook.arr[isKomodoCoin(_coin) ? 'KMD' : _coin] &&
+              this.props.AddressBook.arr[isSafecoinCoin(_coin) ? 'SAFE' : _coin] &&
               this.renderAddressBookDropdown(true) > 0 &&
               <button
                 type="button"
@@ -170,18 +170,18 @@ export const _SendFormRender = function() {
             }
             <label
               className="control-label"
-              htmlFor="kmdWalletSendTo">
+              htmlFor="safeWalletSendTo">
               { translate('INDEX.SEND_TO') }
             </label>
             <input
               type="text"
-              className={ 'form-control' + (this.props.AddressBook && this.props.AddressBook.arr && typeof this.props.AddressBook.arr === 'object' && this.props.AddressBook.arr[isKomodoCoin(_coin) ? 'KMD' : _coin] ? ' send-to-padding-right' : '') }
+              className={ 'form-control' + (this.props.AddressBook && this.props.AddressBook.arr && typeof this.props.AddressBook.arr === 'object' && this.props.AddressBook.arr[isSafecoinCoin(_coin) ? 'SAFE' : _coin] ? ' send-to-padding-right' : '') }
               name="sendTo"
               onChange={ this.updateInput }
               value={ this.state.sendTo }
               disabled={ this.props.initState }
-              id="kmdWalletSendTo"
-              placeholder={ translate('SEND.' + (_mode === 'spv' || _mode === 'eth' || (_mode === 'native' && _coin === 'KMD') ? 'ENTER_ADDRESS' : (_mode === 'native' && _coin !== 'KMD' && _isAcPrivate) ? 'ENTER_Z_ADDR' : 'ENTER_T_OR_Z_ADDR')) }
+              id="safeWalletSendTo"
+              placeholder={ translate('SEND.' + (_mode === 'spv' || _mode === 'eth' || (_mode === 'native' && _coin === 'SAFE') ? 'ENTER_ADDRESS' : (_mode === 'native' && _coin !== 'SAFE' && _isAcPrivate) ? 'ENTER_Z_ADDR' : 'ENTER_T_OR_Z_ADDR')) }
               autoComplete="off"
               required />
           </div>
@@ -196,7 +196,7 @@ export const _SendFormRender = function() {
             }
             <label
               className="control-label"
-              htmlFor="kmdWalletAmount">
+              htmlFor="safeWalletAmount">
               { translate('INDEX.AMOUNT') }
             </label>
             <input
@@ -206,7 +206,7 @@ export const _SendFormRender = function() {
               value={ this.state.amount !== 0 ? this.state.amount : '' }
               onChange={ this.updateInput }
               disabled={ this.props.initState }
-              id="kmdWalletAmount"
+              id="safeWalletAmount"
               placeholder="0.000"
               autoComplete="off" />
           </div>
@@ -240,7 +240,7 @@ export const _SendFormRender = function() {
             <div className="col-lg-12 form-group form-material">
               <label
                 className="control-label"
-                htmlFor="kmdWalletFee">
+                htmlFor="safeWalletFee">
                 { translate('INDEX.FEE_PER_TX') }
               </label>
               <input
@@ -248,7 +248,7 @@ export const _SendFormRender = function() {
                 className="form-control"
                 name="fee"
                 onChange={ this.updateInput }
-                id="kmdWalletFee"
+                id="safeWalletFee"
                 placeholder="0.0001"
                 value={ this.state.fee !== 0 ? this.state.fee : '' }
                 autoComplete="off" />
@@ -306,10 +306,10 @@ export const _SendFormRender = function() {
             </div>
           }
           { _mode === 'native' &&
-            _coin === 'KMD' &&
+            _coin === 'SAFE' &&
             <div className="col-lg-12 padding-top-20 padding-bottom-20 send-coin-sync-warning">
               <i className="icon fa-warning color-warning margin-right-5"></i>&nbsp;
-              <span className="desc">{ translate('SEND.KMD_Z_ADDRESSES_DEPRECATED') }</span>
+              <span className="desc">{ translate('SEND.SAFE_Z_ADDRESSES_DEPRECATED') }</span>
             </div>
           }
           <div className="col-lg-12">
@@ -619,13 +619,13 @@ export const SendRender = function() {
                       className="text-left" />
                     { this.state.spvPreflightRes.estimatedFee < 0 &&
                       <div className="col-lg-12 col-sm-12 col-xs-12 padding-bottom-20">
-                        <strong>{ translate('SEND.KMD_INTEREST') }</strong>&nbsp;
+                        <strong>{ translate('SEND.SAFE_INTEREST') }</strong>&nbsp;
                         { Math.abs(formatValue(fromSats(this.state.spvPreflightRes.estimatedFee))) } { translate('SEND.TO') } { this.props.Dashboard.electrumCoins[_coin].pub }
                       </div>
                     }
                     { this.state.spvPreflightRes.totalInterest > 0 &&
                       <div className="col-lg-12 col-sm-12 col-xs-12 padding-bottom-20">
-                        <strong>{ translate('SEND.KMD_INTEREST') }</strong>&nbsp;
+                        <strong>{ translate('SEND.SAFE_INTEREST') }</strong>&nbsp;
                         { Math.abs(formatValue(fromSats(this.state.spvPreflightRes.totalInterest))) } { translate('SEND.TO') } { this.props.Dashboard.electrumCoins[_coin].pub }
                       </div>
                     }

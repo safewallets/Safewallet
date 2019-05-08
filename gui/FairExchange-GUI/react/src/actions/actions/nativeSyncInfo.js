@@ -8,7 +8,7 @@ import {
 } from '../actionCreators';
 import Config, {
   token,
-  agamaPort,
+  safewalletPort,
   rpc2cli,
 } from '../../config';
 import translate from '../../translate/translate';
@@ -23,7 +23,7 @@ export const nativeGetinfoFailureState = () => {
 
 // TODO: - use blockchaininfo rpc
 //       - use electrum as a remote node
-export const getSyncInfoNativeKMD = (skipDebug, json, skipRemote) => {
+export const getSyncInfoNativeSAFE = (skipDebug, json, skipRemote) => {
   let _json = json;
 
   if (skipRemote) {
@@ -31,32 +31,32 @@ export const getSyncInfoNativeKMD = (skipDebug, json, skipRemote) => {
       dispatch(getSyncInfoNativeState(json.info));
 
       if (!skipDebug) {
-        dispatch(getDebugLog('komodo', 1));
+        dispatch(getDebugLog('safecoin', 1));
       }
     }
   } else {
-    const coin = 'KMD';
+    const coin = 'SAFE';
     return dispatch => {
       return fetch(
-        'https://kmdexplorer.io/insight-api-komodo/status?q=getInfo',
+        'https://safeexplorer.io/insight-api-safecoin/status?q=getInfo',
         fetchType.get
       )
       .catch((error) => {
         console.warn(error);
-        console.warn('remote kmd node fetch failed', true);
+        console.warn('remote safe node fetch failed', true);
         _json = _json.error;
-        _json['remoteKMDNode'] = null;
+        _json['remoteSAFENode'] = null;
         dispatch(getSyncInfoNativeState(_json));
       })
       .then(response => response.json())
       .then(json => {
         _json = _json.error;
-        _json['remoteKMDNode'] = json.info;
+        _json['remoteSAFENode'] = json.info;
         dispatch(getSyncInfoNativeState(_json));
       })
       .then(() => {
         if (!skipDebug) {
-          dispatch(getDebugLog('komodo', 1));
+          dispatch(getDebugLog('safecoin', 1));
         }
       });
     }
@@ -64,21 +64,21 @@ export const getSyncInfoNativeKMD = (skipDebug, json, skipRemote) => {
 }
 
 const getSyncInfoNativeState = (json, coin, skipDebug, skipRemote) => {
-  /*if (!json.remoteKMDNode) {
+  /*if (!json.remoteSAFENode) {
     json = { error: { code: -28, message: 'Activating best chain...' } };
   }*/
 
-  if (json.remoteKMDNode) {
+  if (json.remoteSAFENode) {
     return {
       type: SYNCING_NATIVE_MODE,
       progress: json,
     }
   } else {
-    if (coin === 'KMD' &&
+    if (coin === 'SAFE' &&
         json &&
         json.error &&
         json.error.message.indexOf('Activating best') > -1) {
-      return getSyncInfoNativeKMD(skipDebug, json, skipRemote);
+      return getSyncInfoNativeSAFE(skipDebug, json, skipRemote);
     } else {
       if (json &&
           json.error) {
@@ -107,7 +107,7 @@ export const getSyncInfoNative = (coin, skipDebug, skipRemote, suppressErrors) =
     };
 
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/cli`,
+      `http://127.0.0.1:${safewalletPort}/api/cli`,
       fetchType(JSON.stringify({ payload })).post
     )
     .catch((error) => {
@@ -129,10 +129,10 @@ export const getSyncInfoNative = (coin, skipDebug, skipRemote, suppressErrors) =
     .then(json => {
       if (mainWindow.activeCoin === coin) {
         if (json === 'Work queue depth exceeded') {
-          if (coin === 'KMD') {
-            dispatch(getDebugLog('komodo', 100));
+          if (coin === 'SAFE') {
+            dispatch(getDebugLog('safecoin', 100));
           } else {
-            dispatch(getDebugLog('komodo', 100, coin));
+            dispatch(getDebugLog('safecoin', 100, coin));
           }
           dispatch(
             getSyncInfoNativeState(
@@ -149,12 +149,12 @@ export const getSyncInfoNative = (coin, skipDebug, skipRemote, suppressErrors) =
         } else {
           if (!json ||
               json.indexOf('"code":-777') > -1) {
-            const _kmdMainPassiveMode = mainWindow.kmdMainPassiveMode;
+            const _safeMainPassiveMode = mainWindow.safeMainPassiveMode;
 
-            if (_kmdMainPassiveMode) {
+            if (_safeMainPassiveMode) {
               dispatch(
                 triggerToaster(
-                  translate('API.KMD_PASSIVE_ERROR'),
+                  translate('API.SAFE_PASSIVE_ERROR'),
                   translate('API.CONN_ERROR'),
                   'warning',
                   false
@@ -162,10 +162,10 @@ export const getSyncInfoNative = (coin, skipDebug, skipRemote, suppressErrors) =
               );
             }
 
-            if (coin === 'KMD') {
-              dispatch(getDebugLog('komodo', 50));
+            if (coin === 'SAFE') {
+              dispatch(getDebugLog('safecoin', 50));
             } else {
-              dispatch(getDebugLog('komodo', 50, coin));
+              dispatch(getDebugLog('safecoin', 50, coin));
             }
           } else {
             json = JSON.parse(json);
@@ -173,10 +173,10 @@ export const getSyncInfoNative = (coin, skipDebug, skipRemote, suppressErrors) =
 
           if (json.error &&
               json.error.message.indexOf('Activating best') === -1) {
-            if (coin === 'KMD') {
-              dispatch(getDebugLog('komodo', 1));
+            if (coin === 'SAFE') {
+              dispatch(getDebugLog('safecoin', 1));
             } else {
-              dispatch(getDebugLog('komodo', 1, coin));
+              dispatch(getDebugLog('safecoin', 1, coin));
             }
           }
 
@@ -214,7 +214,7 @@ export const getBlockTemplate = (_json, coin) => {
 
   return dispatch => {
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/cli`,
+      `http://127.0.0.1:${safewalletPort}/api/cli`,
       fetchType(JSON.stringify({ payload })).post
     )
     .catch((error) => {
@@ -272,7 +272,7 @@ export const getDebugLogProgress = (_json, coin) => {
 
   return dispatch => {
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/cli`,
+      `http://127.0.0.1:${safewalletPort}/api/cli`,
       fetchType(JSON.stringify({ payload })).post
     )
     .catch((error) => {

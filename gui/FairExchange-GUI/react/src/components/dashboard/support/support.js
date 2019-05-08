@@ -22,18 +22,18 @@ class Support extends React.Component {
               <div className="support-box-wrapper">
                 <div
                   className="support-box"
-                  onClick={ () => this.openExternalWindow('http://support.supernet.org') }>
+                  onClick={ () => this.openExternalWindow('https://safecoin.org/community/') }>
                   <img
                     src="assets/images/cryptologo/supernet.png"
                     alt={ translate('SETTINGS.SUPPORT_TICKETS') } />
                   <div className="support-box-title">{ translate('SETTINGS.SUPPORT_TICKETS') }</div>
-                  <div className="support-box-link">support.komodoplatform.com</div>
+                  <div className="support-box-link">support.safewallets.com</div>
                 </div>
               </div>
               <div className="support-box-wrapper">
                 <div
                   className="support-box"
-                  onClick={ () => this.openExternalWindow('https://discordapp.com/channels/412898016371015680/453204571393622027') }>
+                  onClick={ () => this.openExternalWindow('https://discord.gg/vQgYGJz') }>
                   <img
                     src="assets/images/support/discord-icon.png"
                     alt="Discord" />
@@ -44,23 +44,23 @@ class Support extends React.Component {
               <div className="support-box-wrapper">
                 <div
                   className="support-box"
-                  onClick={ () => this.openExternalWindow('https://komodoplatform.com/discord') }>
+                  onClick={ () => this.openExternalWindow('https://discord.gg/vQgYGJz') }>
                   <img
                     src="assets/images/support/discord-invite-icon.png"
                     alt={ translate('SETTINGS.GET_DISCORD_INVITE') } />
                   <div className="support-box-title">{ translate('SETTINGS.GET_DISCORD_INVITE') }</div>
-                  <div className="support-box-link">komodoplatform.com/discord</div>
+                  <div className="support-box-link">safewallets.com/discord</div>
                 </div>
               </div>
               <div className="support-box-wrapper">
                 <div
                   className="support-box"
-                  onClick={ () => this.openExternalWindow('https://github.com/KomodoPlatform/Agama') }>
+                  onClick={ () => this.openExternalWindow('https://github.com/FairExchange/Safewallet') }>
                   <img
                     src="assets/images/support/github-icon.png"
                     alt="Github" />
                   <div className="support-box-title">Github</div>
-                  <div className="support-box-link">github.com/KomodoPlatform/Agama</div>
+                  <div className="support-box-link">github.com/FairExchange/Safewallet</div>
                 </div>
               </div>
             </div>
@@ -68,10 +68,10 @@ class Support extends React.Component {
           <div className="row margin-top-30">
             <div className="col-sm-12">
               <p>
-                { translate('SUPPORT.FOR_GUIDES') } <a className="pointer" onClick={ () => this.openExternalWindow('https://support.komodoplatform.com/support/home') }>https://support.komodoplatform.com/support/home</a>
+                { translate('SUPPORT.FOR_GUIDES') } <a className="pointer" onClick={ () => this.openExternalWindow('https://safecoin.org') }>https://safecoin.org</a>
               </p>
               <p>
-              { translate('SUPPORT.TO_SEND_FEEDBACK_P1') } <a className="pointer" onClick={ () => this.openExternalWindow('https://support.komodoplatform.com/support/tickets/new') }>https://support.komodoplatform.com/support/tickets/new</a> { translate('SUPPORT.TO_SEND_FEEDBACK_P2') }
+              { translate('SUPPORT.TO_SEND_FEEDBACK_P1') } <a className="pointer" onClick={ () => this.openExternalWindow('https://safecoin.org') }>https://safecoin.org</a> { translate('SUPPORT.TO_SEND_FEEDBACK_P2') }
               </p>
             </div>
           </div>

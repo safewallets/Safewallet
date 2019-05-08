@@ -4,7 +4,7 @@ import translate from '../../../translate/translate';
 import Spinner from '../spinner/spinner';
 import Config from '../../../config';
 import mainWindow, { staticVar } from '../../../util/mainWindow';
-import { isKomodoCoin } from 'agama-wallet-lib/src/coin-helpers';
+import { isSafecoinCoin } from 'safewallet-wallet-lib/src/coin-helpers';
 
 const WalletsBalanceRender = function() {
   const _mode = this.props.ActiveCoin.mode;
@@ -22,10 +22,10 @@ const WalletsBalanceRender = function() {
           { (_mode === 'spv' ||
              _mode === 'eth' ||
              (_mode === 'native' && _notAcPrivate) ||
-              (_mode === 'native' && _coin === 'KMD')) &&
+              (_mode === 'native' && _coin === 'SAFE')) &&
             <div className={
               _coin === 'CHIPS' ||
-              (_mode === 'spv' && _coin !== 'KMD') ||
+              (_mode === 'spv' && _coin !== 'SAFE') ||
               this.renderBalance('total') === this.renderBalance('transparent') ||
               this.renderBalance('total') === 0 ? 'col-lg-12 col-xs-12 balance-placeholder--bold' : (_mode || Number(this.renderBalance('private')) === 0 ? 'col-lg-4 col-xs-12' : 'col-lg-3 col-xs-12')
             }>
@@ -44,7 +44,7 @@ const WalletsBalanceRender = function() {
                   <div className="padding-20 padding-top-10">
                     <div className="clearfix cursor-default">
                       <div className="pull-left padding-vertical-10">
-                        { ((isKomodoCoin(_coin) && _mode === 'native') || _coin === 'KMD') &&
+                        { ((isSafecoinCoin(_coin) && _mode === 'native') || _coin === 'SAFE') &&
                           <i className="icon fa-eye font-size-24 vertical-align-bottom margin-right-10"></i>
                         }
                         { translate('INDEX.' + (_coin === 'CHIPS' || _mode === 'spv' || _mode === 'eth' ? 'BALANCE' : 'TRANSPARENT_BALANCE')) }
@@ -93,7 +93,7 @@ const WalletsBalanceRender = function() {
             </div>
           </div>
 
-          { _coin === 'KMD' &&
+          { _coin === 'SAFE' &&
             Number(this.renderBalance('interest')) > 0 &&
             <div className={ _mode === 'spv' || Number(this.renderBalance('private')) === 0 ? 'col-lg-4 col-xs-12' : 'col-lg-3 col-xs-12' }>
               <div className="widget widget-shadow">
@@ -121,9 +121,9 @@ const WalletsBalanceRender = function() {
             </div>
           }
 
-          { ((_mode === 'spv' && _coin === 'KMD') ||
+          { ((_mode === 'spv' && _coin === 'SAFE') ||
              (_mode === 'native' && _notAcPrivate) ||
-              (_mode === 'native' && _coin === 'KMD')) &&
+              (_mode === 'native' && _coin === 'SAFE')) &&
             this.renderBalance('total') !== this.renderBalance('transparent') &&
             Number(this.renderBalance('total')) !== 0 &&
             <div className={ _mode === 'spv' || Number(this.renderBalance('private')) === 0 ? 'col-lg-4 col-xs-12' : 'col-lg-3 col-xs-12' }>

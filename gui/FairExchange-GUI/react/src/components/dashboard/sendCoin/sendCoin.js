@@ -5,7 +5,7 @@ import translate from '../../../translate/translate';
 import {
   triggerToaster,
   sendNativeTx,
-  getKMDOPID,
+  getSAFEOPID,
   clearLastSendToResponseState,
   apiElectrumSend,
   apiElectrumSendPreflight,
@@ -37,24 +37,24 @@ import ReactTooltip from 'react-tooltip';
 import {
   secondsToString,
   checkTimestamp,
-} from 'agama-wallet-lib/src/time';
+} from 'safewallet-wallet-lib/src/time';
 import {
   explorerList,
-  isKomodoCoin,
-} from 'agama-wallet-lib/src/coin-helpers';
+  isSafecoinCoin,
+} from 'safewallet-wallet-lib/src/coin-helpers';
 import {
   isPositiveNumber,
   fromSats,
   toSats,
   parseBitcoinURL,
-} from 'agama-wallet-lib/src/utils';
+} from 'safewallet-wallet-lib/src/utils';
 import { formatEther } from 'ethers/utils/units';
 import { getAddress } from 'ethers/utils/address';
-import coinFees from 'agama-wallet-lib/src/fees';
-import erc20ContractId from 'agama-wallet-lib/src/eth-erc20-contract-id';
-import { addressVersionCheck } from 'agama-wallet-lib/src/keys';
-import networks from 'agama-wallet-lib/src/bitcoinjs-networks';
-import kv from 'agama-wallet-lib/src/kv';
+import coinFees from 'safewallet-wallet-lib/src/fees';
+import erc20ContractId from 'safewallet-wallet-lib/src/eth-erc20-contract-id';
+import { addressVersionCheck } from 'safewallet-wallet-lib/src/keys';
+import networks from 'safewallet-wallet-lib/src/bitcoinjs-networks';
+import kv from 'safewallet-wallet-lib/src/kv';
 
 const { shell } = window.require('electron');
 const SPV_MAX_LOCAL_TIMESTAMP_DEVIATION = 300; // 5 min
@@ -426,7 +426,7 @@ class SendCoin extends React.Component {
       this.fetchETHFees();
 
       if (_mode === 'spv' &&
-          _coin === 'KMD') {
+          _coin === 'SAFE') {
         this._checkCurrentTimestamp();
       }
     }
@@ -483,7 +483,7 @@ class SendCoin extends React.Component {
       this.setState(_newState);
     }
 
-    document.getElementById('kmdWalletSendTo').focus();
+    document.getElementById('safeWalletSendTo').focus();
   }
 
   handleClickOutside(e) {
@@ -496,7 +496,7 @@ class SendCoin extends React.Component {
         typeof _srcElement.className === 'string' &&
         _srcElement.className !== 'btn dropdown-toggle btn-info' &&
         (_srcElement.offsetParent && _srcElement.offsetParent.className !== 'btn dropdown-toggle btn-info') &&
-        (e.path && e.path[4] && e.path[4].className.indexOf('showkmdwalletaddrs') === -1)) {
+        (e.path && e.path[4] && e.path[4].className.indexOf('showsafewalletaddrs') === -1)) {
       _state.addressSelectorOpen = false;
     }
 
@@ -641,7 +641,7 @@ class SendCoin extends React.Component {
       if (_mode === 'spv' ||
           _mode === 'eth' ||
           _addrType === 'private' ||
-          (_addrType === 'public' && _coin !== 'KMD' && _notAcPrivate)) {
+          (_addrType === 'public' && _coin !== 'SAFE' && _notAcPrivate)) {
         if (_mode === 'spv') {
           return (
             <span>
@@ -700,7 +700,7 @@ class SendCoin extends React.Component {
     return (
       <span className={ `label label-${_satatusDef[opid.status].icon}` }>
         <i className="icon fa-eye"></i>&nbsp;
-        <span>{ translate(`KMD_NATIVE.${_satatusDef[opid.status].label}`) }</span>
+        <span>{ translate(`SAFE_NATIVE.${_satatusDef[opid.status].label}`) }</span>
       </span>
     );
   }
@@ -724,16 +724,16 @@ class SendCoin extends React.Component {
         <span className="selectable">
           <strong>{ translate('SEND.ERROR_CODE') }:</strong> <span>{ opid.error.code }</span>
           <br />
-          <strong>{ translate('KMD_NATIVE.MESSAGE') }:</strong> <span>{ opid.error.message }</span>
+          <strong>{ translate('SAFE_NATIVE.MESSAGE') }:</strong> <span>{ opid.error.message }</span>
         </span>
       );
     } else if (opid.status === 'success') {
       isWaitingStatus = false;
       return (
         <span className="selectable">
-          <strong>{ translate('KMD_NATIVE.TXID') }:</strong> <span>{ opid.result.txid }</span>
+          <strong>{ translate('SAFE_NATIVE.TXID') }:</strong> <span>{ opid.result.txid }</span>
           <br />
-          <strong>{ translate('KMD_NATIVE.EXECUTION_SECONDS') }:</strong> <span>{ opid.execution_secs }</span>
+          <strong>{ translate('SAFE_NATIVE.EXECUTION_SECONDS') }:</strong> <span>{ opid.execution_secs }</span>
         </span>
       );
     }
@@ -859,7 +859,7 @@ class SendCoin extends React.Component {
     const _coin = this.props.ActiveCoin.coin;
 
     if (_mode === 'spv' &&
-        _coin === 'KMD') {
+        _coin === 'SAFE') {
       this._checkCurrentTimestamp();
     }
 
@@ -1051,7 +1051,7 @@ class SendCoin extends React.Component {
       if (this.state.addressType === 'private') {
         setTimeout(() => {
           Store.dispatch(
-            getKMDOPID(
+            getSAFEOPID(
               null,
               _coin
             )
@@ -1112,17 +1112,17 @@ class SendCoin extends React.Component {
   validateSendFormData() {
     const _coin = this.props.ActiveCoin.coin;
     const _mode = this.props.ActiveCoin.mode;
-    const isAcPrivate = _mode === 'native' && _coin !== 'KMD' && staticVar.chainParams && staticVar.chainParams[_coin] && staticVar.chainParams[_coin].ac_private ? true : false;
+    const isAcPrivate = _mode === 'native' && _coin !== 'SAFE' && staticVar.chainParams && staticVar.chainParams[_coin] && staticVar.chainParams[_coin].ac_private ? true : false;
     let valid = true;
 
     // temp
     if (_mode === 'native') {
-      if (_coin === 'KMD') { // reject t -> z
+      if (_coin === 'SAFE') { // reject t -> z
         if ((this.state.sendFrom && ((this.state.sendFrom.substring(0, 2) === 'zc' && this.state.sendFrom.length === 95) || (this.state.sendFrom.substring(0, 2) === 'zs' && this.state.sendFrom.length === 78))) ||
             (this.state.sendTo && ((this.state.sendTo.substring(0, 2) === 'zc' && this.state.sendTo.length === 95) || (this.state.sendTo.substring(0, 2) === 'zs' && this.state.sendTo.length === 78)))) {
           Store.dispatch(
             triggerToaster(
-              translate('SEND.KMD_Z_ADDRESSES_DEPRECATED_NOTICE'),
+              translate('SEND.SAFE_Z_ADDRESSES_DEPRECATED_NOTICE'),
               translate('TOASTR.WALLET_NOTIFICATION'),
               'warning toastr-wide',
               false
@@ -1248,7 +1248,7 @@ class SendCoin extends React.Component {
           _validateAddress = 'Invalid pub address';
         }
       } else {
-        _validateAddress = addressVersionCheck(networks[_coin.toLowerCase()] || networks.kmd, this.state.sendTo);
+        _validateAddress = addressVersionCheck(networks[_coin.toLowerCase()] || networks.safe, this.state.sendTo);
       }
 
       if (_validateAddress === 'Invalid pub address') {
@@ -1538,7 +1538,7 @@ class SendCoin extends React.Component {
   renderAddressBookDropdown(countAddressesSpv) {
     const _mode = this.props.ActiveCoin.mode;
     const _coin = this.props.ActiveCoin.coin;
-    const __coin = isKomodoCoin(_coin) ? 'KMD' : _coin;
+    const __coin = isSafecoinCoin(_coin) ? 'SAFE' : _coin;
     const _addressBook = this.props.AddressBook && this.props.AddressBook.arr && typeof this.props.AddressBook.arr === 'object' ? this.props.AddressBook.arr[__coin] : [];
     let _items = [];
 
@@ -1553,8 +1553,8 @@ class SendCoin extends React.Component {
     if (_addressBook &&
         _addressBook.length) {
       for (let i = 0; i < _addressBook.length; i++) {
-        if ((_mode === 'native' && _coin !== 'KMD') ||
-            ((_mode === 'spv' || (_mode === 'native' && _coin === 'KMD')) && _addressBook[i].pub && _addressBook[i].pub.substring(0, 2) !== 'zc' && _addressBook[i].pub.substring(0, 2) !== 'zs' && _addressBook[i].pub.length === 64)) {
+        if ((_mode === 'native' && _coin !== 'SAFE') ||
+            ((_mode === 'spv' || (_mode === 'native' && _coin === 'SAFE')) && _addressBook[i].pub && _addressBook[i].pub.substring(0, 2) !== 'zc' && _addressBook[i].pub.substring(0, 2) !== 'zs' && _addressBook[i].pub.length === 64)) {
           _items.push(
             <li
               key={ `send-address-book-item-${i}` }

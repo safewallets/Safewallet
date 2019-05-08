@@ -1,7 +1,7 @@
 import translate from '../../translate/translate';
 import Config, {
   token,
-  agamaPort,
+  safewalletPort,
 } from '../../config';
 import { triggerToaster } from '../actionCreators';
 import Store from '../../store';
@@ -16,7 +16,7 @@ export const apiElectionsBalance = (coin, address) => {
       address,
     };
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/getbalance${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/getbalance${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -47,7 +47,7 @@ export const apiElectionsTransactions = (coin, address, type) => {
       maxlength: 20,
     };
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/elections/listtransactions${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/elections/listtransactions${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -70,7 +70,7 @@ export const apiElectionsTransactions = (coin, address, type) => {
 export const apiElectionsStatus = () => {
   return new Promise((resolve, reject) => {
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/elections/status`,
+      `http://127.0.0.1:${safewalletPort}/api/elections/status`,
       fetchType(
         JSON.stringify({
           token,
@@ -97,7 +97,7 @@ export const apiElectionsStatus = () => {
 export const apiElectionsLogin = (seed, network) => {
   return new Promise((resolve, reject) => {
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/elections/login`,
+      `http://127.0.0.1:${safewalletPort}/api/elections/login`,
       fetchType(
         JSON.stringify({
           seed,
@@ -127,7 +127,7 @@ export const apiElectionsLogin = (seed, network) => {
 export const apiElectionsLogout = () => {
   return new Promise((resolve, reject) => {
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/elections/logout`,
+      `http://127.0.0.1:${safewalletPort}/api/elections/logout`,
       fetchType(
         JSON.stringify({
           token,
@@ -167,7 +167,7 @@ export const apiElectionsSend = (coin, value, sendToAddress, changeAddress, opre
       verify: false
     };
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/createrawtx${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/createrawtx${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -191,7 +191,7 @@ export const apiElectionsSend = (coin, value, sendToAddress, changeAddress, opre
 export const apiElectionsSendMany = (coin, targets, change, opreturn) => {
   return new Promise((resolve, reject) => {
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/createrawtx-multiout`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/createrawtx-multiout`,
       fetchType(
         JSON.stringify({
           token,

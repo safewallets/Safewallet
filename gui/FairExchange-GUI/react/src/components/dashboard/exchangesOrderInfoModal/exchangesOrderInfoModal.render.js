@@ -1,10 +1,10 @@
 import React from 'react';
 import translate from '../../../translate/translate';
 import Config from '../../../config';
-import { secondsToString } from 'agama-wallet-lib/src/time';
+import { secondsToString } from 'safewallet-wallet-lib/src/time';
 import {
   formatValue,
-} from 'agama-wallet-lib/src/utils';
+} from 'safewallet-wallet-lib/src/utils';
 
 const statusLookup = {
   coinswitch: {
@@ -28,7 +28,7 @@ const ExchangesOrderInfoModalRender = function() {
       <div onKeyDown={ (event) => this.handleKeydown(event) }>
         <div
           className={ `modal modal-3d-sign tx-details-modal ${this.state.className}` }
-          id="kmd_txid_info_mdl">
+          id="safe_txid_info_mdl">
           <div
             onClick={ this._toggleExchangesOrderInfoModal }
             className="modal-close-overlay"></div>

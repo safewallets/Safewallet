@@ -1,7 +1,7 @@
 import React from 'react';
 import translate from '../../../translate/translate';
 import mainWindow, { staticVar } from '../../../util/mainWindow';
-import { getAddressVersion } from 'agama-wallet-lib/src/keys';
+import { getAddressVersion } from 'safewallet-wallet-lib/src/keys';
 
 class ToolsPubCheck extends React.Component {
   constructor() {
@@ -48,7 +48,7 @@ class ToolsPubCheck extends React.Component {
         <div className="col-sm-12 form-group form-material no-padding-left padding-top-10 padding-bottom-20">
           <label
             className="control-label col-sm-1 no-padding-left"
-            htmlFor="kmdWalletSendTo">
+            htmlFor="safeWalletSendTo">
             { translate('TOOLS.PUB_ADDR') }
           </label>
           <input

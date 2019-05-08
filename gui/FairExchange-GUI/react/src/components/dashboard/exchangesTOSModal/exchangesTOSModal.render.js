@@ -7,7 +7,7 @@ const ExchangesTOSModalRender = function() {
     <div onKeyDown={ (event) => this.handleKeydown(event) }>
       <div
         className={ `modal modal-3d-sign exchanges-tos-modal ${this.state.className}` }
-        id="kmd_txid_info_mdl">
+        id="safe_txid_info_mdl">
         <div
           onClick={ this.close }
           className="modal-close-overlay"></div>

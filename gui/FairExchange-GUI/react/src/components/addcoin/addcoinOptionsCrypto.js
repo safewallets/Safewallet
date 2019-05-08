@@ -2,15 +2,15 @@ import translate from '../../translate/translate';
 import mainWindow, { staticVar } from '../../util/mainWindow';
 import config from '../../config';
 import { cryptoCoins } from '../../util/coinHelper';
-import { sortObject } from 'agama-wallet-lib/src/utils';
-import erc20ContractId from 'agama-wallet-lib/src/eth-erc20-contract-id';
+import { sortObject } from 'safewallet-wallet-lib/src/utils';
+import erc20ContractId from 'safewallet-wallet-lib/src/eth-erc20-contract-id';
 
 let _prepCoinsList;
 let coins = cryptoCoins;
 let _activeCoins;
 let _disableETH;
 
-// disable non kmd coins
+// disable non safe coins
 // TODO: move eth to a separate render
 if (!config.experimentalFeatures) {
   coins = coins.slice(0, 2);
@@ -28,7 +28,7 @@ _coins = sortObject(_coins);
 
 for (let key in _coins) {
   if (config.experimentalFeatures ||
-      (!config.experimentalFeatures && (_coins[key] === 'KMD' || _coins[key] === 'CHIPS'))) {
+      (!config.experimentalFeatures && (_coins[key] === 'SAFE' || _coins[key] === 'CHIPS'))) {
     coinsList.push(_coins[key]);
   }
 }
@@ -36,7 +36,7 @@ for (let key in _coins) {
 coins = coinsList;
 
 const prepCoinsList = (options) => {
-  const availableKMDModes = staticVar.arch === 'x64' ? 'spv|native' : 'spv';
+  const availableSAFEModes = staticVar.arch === 'x64' ? 'spv|native' : 'spv';
   let _items = [];
   
   if (options.filterNonActive) {
@@ -92,7 +92,7 @@ const prepCoinsList = (options) => {
           _items.push({
             label: `${translate('CRYPTO.' + coins[i])} (${coins[i]})`,
             icon: `btc/${coins[i]}`,
-            value: `${coins[i]}|${coins[i] === 'KMD' ? availableKMDModes : 'spv'}`,
+            value: `${coins[i]}|${coins[i] === 'SAFE' ? availableSAFEModes : 'spv'}`,
           });
         }
       } catch (e) {

@@ -107,7 +107,7 @@ class InvoiceModal extends React.Component {
       for (let i = 0; i < _addresses[type].length; i++) {
         let address = _addresses[type][i];
 
-        if ((type === 'private' && _coin !== 'KMD') ||
+        if ((type === 'private' && _coin !== 'SAFE') ||
             (type === 'public' &&
             (staticVar.chainParams &&
               staticVar.chainParams[_coin] &&

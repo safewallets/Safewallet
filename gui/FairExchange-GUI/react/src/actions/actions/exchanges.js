@@ -5,7 +5,7 @@ import {
 } from '../storeType';
 import Config, {
   token,
-  agamaPort,
+  safewalletPort,
 } from '../../config';
 import Store from '../../store';
 import fetchType from '../../util/fetchType';
@@ -19,7 +19,7 @@ export const getExchangesCache = (provider) => {
       provider,
     };
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/exchanges/cache${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/exchanges/cache${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -53,7 +53,7 @@ export const exchangesGetCoins = (provider) => {
       token,
     };
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/exchanges/${provider}/coins${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/exchanges/${provider}/coins${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -80,7 +80,7 @@ export const exchangesGetRate = (provider, src, dest) => {
       dest,
     };
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/exchanges/${provider}/rate${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/exchanges/${provider}/rate${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -110,7 +110,7 @@ export const exchangesPlaceOrder = (provider, src, dest, srcAmount, destAmount, 
       refundPub,
     };
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/exchanges/${provider}/order/place${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/exchanges/${provider}/order/place${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -138,7 +138,7 @@ export const updateExchangesCacheDeposit = (provider, coin, txid, orderId) => {
       orderId,
     };
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/exchanges/deposit/update${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/exchanges/deposit/update${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -166,7 +166,7 @@ export const exchangesHistorySync = (provider) => {
       save: true,
     };
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/exchanges/${provider}/history/sync${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/exchanges/${provider}/history/sync${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {

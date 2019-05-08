@@ -4,7 +4,7 @@ import {
 } from '../actionCreators';
 import Config, {
   token,
-  agamaPort,
+  safewalletPort,
 } from '../../config';
 import urlParams from '../../util/url';
 import fetchType from '../../util/fetchType';
@@ -17,7 +17,7 @@ export const getDexCoins = () => {
       token,
     };
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/InstantDEX/allcoins${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/InstantDEX/allcoins${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {

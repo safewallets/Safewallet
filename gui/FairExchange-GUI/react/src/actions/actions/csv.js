@@ -1,7 +1,7 @@
 import translate from '../../translate/translate';
 import Config, {
   token,
-  agamaPort,
+  safewalletPort,
   rpc2cli,
 } from '../../config';
 import { triggerToaster } from '../actionCreators';
@@ -17,7 +17,7 @@ export const apiElectrumTransactionsCSV = (coin, address) => {
       coin,
     };
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/listtransactions/csv${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/listtransactions/csv${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -45,7 +45,7 @@ export const apiNativeTransactionsCSV = (coin) => {
       rpc2cli,
     };
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/native/listtransactions/csv${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/native/listtransactions/csv${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {

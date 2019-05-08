@@ -9,7 +9,7 @@ import {
 } from '../../../actions/actionCreators';
 import Store from '../../../store';
 import mainWindow, { staticVar } from '../../../util/mainWindow';
-import { secondsToString } from 'agama-wallet-lib/src/time';
+import { secondsToString } from 'safewallet-wallet-lib/src/time';
 
 // TODO: figure out a way to show app debug, url?
 
@@ -42,7 +42,7 @@ class DebugLogPanel extends React.Component {
     .then((res) => {
       const a = document.getElementById('debugLogDumpLink');
       
-      a.download = 'agama-debug.log';
+      a.download = 'safewallet-debug.log';
       a.href = 'data:text/plain;charset=UTF-8,' + res;
 
       this.setState({
@@ -54,7 +54,7 @@ class DebugLogPanel extends React.Component {
   readDebugLog() {
     let _target = this.state.debugTarget;
 
-    if (_target === 'Komodo') {
+    if (_target === 'Safecoin') {
       _target = null;
     }
 
@@ -64,7 +64,7 @@ class DebugLogPanel extends React.Component {
 
     Store.dispatch(
       getDebugLog(
-        'komodo',
+        'safecoin',
         this.state.debugLinesCount,
         _target
       )
@@ -161,8 +161,8 @@ class DebugLogPanel extends React.Component {
     );
 
     for (let i = 0; i < _nativeCoins.length; i++) {
-      if (_nativeCoins[i] === 'KMD') {
-        _nativeCoins[i] = 'Komodo';
+      if (_nativeCoins[i] === 'SAFE') {
+        _nativeCoins[i] = 'Safecoin';
       }
 
       _items.push(

@@ -25,7 +25,7 @@ const LoginModalRender = function() {
                     <div className="brand">
                       <img
                         className="brand-img"
-                        src="assets/images/easydex-logo-big.png"
+                        src="assets/images/fairexchange-logo-big.png"
                         alt="SuperNET Iguana" />
                     </div>
                     <div

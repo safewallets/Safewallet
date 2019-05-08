@@ -6,7 +6,7 @@ import translate from '../../translate/translate';
 import { triggerToaster } from '../actionCreators';
 import Config, {
   token,
-  agamaPort,
+  safewalletPort,
   rpc2cli,
 } from '../../config';
 import fetchType from '../../util/fetchType';
@@ -22,7 +22,7 @@ export const getNativePeers = (coin) => {
     };
 
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/cli`,
+      `http://127.0.0.1:${safewalletPort}/api/cli`,
       fetchType(JSON.stringify({ payload })).post
     )
     .catch((error) => {
@@ -54,7 +54,7 @@ export const getNativeNettotals = (coin) => {
     };
 
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/cli`,
+      `http://127.0.0.1:${safewalletPort}/api/cli`,
       fetchType(JSON.stringify({ payload })).post
     )
     .catch((error) => {

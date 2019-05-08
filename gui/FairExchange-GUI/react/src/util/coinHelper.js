@@ -1,4 +1,4 @@
-import { kmdAssetChains } from 'agama-wallet-lib/src/coin-helpers'
+import { safeAssetChains } from 'safewallet-wallet-lib/src/coin-helpers'
 
 export const getCoinTitle = (coin) => {
   let coinlogo;
@@ -8,12 +8,12 @@ export const getCoinTitle = (coin) => {
   let hideTitle = false;
 
   switch (coin) {
-    case 'KMD':
+    case 'SAFE':
       hideTitle = true;
       titleBG = true;
       transparentBG = true;
-      coinlogo = 'kmd';
-      coinname = 'Komodo';
+      coinlogo = 'safe';
+      coinname = 'Safecoin';
       break;
     case 'WLC':
       titleBG = true;
@@ -283,22 +283,22 @@ export const getModeInfo = (mode) => {
 
 export const coindList = () => {
   const _coins = [
-    'KMD',
+    'SAFE',
     'CHIPS',
   ]
-  .concat(kmdAssetChains);
+  .concat(safeAssetChains);
 
   return _coins;
 }
 
-export const isKomodoCoin = (coin) => {
-  return (kmdAssetChains.find((element) => {
+export const isSafecoinCoin = (coin) => {
+  return (safeAssetChains.find((element) => {
     return element === coin.toUpperCase();
   }));
 }
 
 export const cryptoCoins = [
-  'KMD',
+  'SAFE',
   'CHIPS',
   'STRAT',
   'TOA',

@@ -18,24 +18,24 @@ import {
 import Store from '../../../store';
 import QRCode from 'qrcode.react';
 import QRModal from '../qrModal/qrModal';
-import coinFees from 'agama-wallet-lib/src/fees';
+import coinFees from 'safewallet-wallet-lib/src/fees';
 import {
   secondsToString,
   checkTimestamp,
-} from 'agama-wallet-lib/src/time';
+} from 'safewallet-wallet-lib/src/time';
 import {
   explorerList,
-  isKomodoCoin,
-} from 'agama-wallet-lib/src/coin-helpers';
+  isSafecoinCoin,
+} from 'safewallet-wallet-lib/src/coin-helpers';
 import {
   isPositiveNumber,
   fromSats,
   toSats,
   parseBitcoinURL,
-} from 'agama-wallet-lib/src/utils';
+} from 'safewallet-wallet-lib/src/utils';
 import mainWindow, { staticVar } from '../../../util/mainWindow';
-import { addressVersionCheck } from 'agama-wallet-lib/src/keys';
-import networks from 'agama-wallet-lib/src/bitcoinjs-networks';
+import { addressVersionCheck } from 'safewallet-wallet-lib/src/keys';
+import networks from 'safewallet-wallet-lib/src/bitcoinjs-networks';
 
 // TODO: btc handling
 
@@ -116,7 +116,7 @@ class ToolsOfflineSigCreate extends React.Component {
       let _validateAddress;
       let _msg;
   
-      _validateAddress = addressVersionCheck(networks[_coin.toLowerCase()] || networks.kmd, this.state[type]);
+      _validateAddress = addressVersionCheck(networks[_coin.toLowerCase()] || networks.safe, this.state[type]);
   
       if (_validateAddress === 'Invalid pub address' ||
           !_validateAddress) {
@@ -270,7 +270,7 @@ class ToolsOfflineSigCreate extends React.Component {
         <div className="col-xlg-12 form-group form-material no-padding-left padding-top-20 padding-bottom-70">
           <label
             className="control-label col-sm-1 no-padding-left"
-            htmlFor="kmdWalletSendTo">
+            htmlFor="safeWalletSendTo">
             { translate('TOOLS.COIN') }
           </label>
           <Select
@@ -288,7 +288,7 @@ class ToolsOfflineSigCreate extends React.Component {
         <div className="col-sm-12 form-group form-material no-padding-left">
           <label
             className="control-label col-sm-1 no-padding-left"
-            htmlFor="kmdWalletSendTo">
+            htmlFor="safeWalletSendTo">
             { translate('INDEX.SEND_FROM') }
           </label>
           <input
@@ -297,7 +297,7 @@ class ToolsOfflineSigCreate extends React.Component {
             name="sendFrom"
             onChange={ this.updateInput }
             value={ this.state.sendFrom }
-            id="kmdWalletSendTo"
+            id="safeWalletSendTo"
             placeholder={ translate('SEND.ENTER_ADDRESS') }
             autoComplete="off"
             required />
@@ -319,7 +319,7 @@ class ToolsOfflineSigCreate extends React.Component {
         <div className="col-sm-12 form-group form-material no-padding-left">
           <label
             className="control-label col-sm-1 no-padding-left"
-            htmlFor="kmdWalletSendTo">
+            htmlFor="safeWalletSendTo">
             { translate('INDEX.SEND_TO') }
           </label>
           <input
@@ -328,7 +328,7 @@ class ToolsOfflineSigCreate extends React.Component {
             name="sendTo"
             onChange={ this.updateInput }
             value={ this.state.sendTo }
-            id="kmdWalletSendTo"
+            id="safeWalletSendTo"
             placeholder={ translate('SEND.ENTER_ADDRESS') }
             autoComplete="off"
             required />
@@ -336,7 +336,7 @@ class ToolsOfflineSigCreate extends React.Component {
         <div className="col-sm-12 form-group form-material no-padding-left">
           <label
             className="control-label col-sm-1 no-padding-left"
-            htmlFor="kmdWalletAmount">
+            htmlFor="safeWalletAmount">
             { translate('INDEX.AMOUNT') }
           </label>
           <input
@@ -345,7 +345,7 @@ class ToolsOfflineSigCreate extends React.Component {
             name="amount"
             value={ this.state.amount }
             onChange={ this.updateInput }
-            id="kmdWalletAmount"
+            id="safeWalletAmount"
             placeholder="0.000"
             autoComplete="off" />
           { this.state.balance &&

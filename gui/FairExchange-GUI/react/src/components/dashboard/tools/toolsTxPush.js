@@ -18,7 +18,7 @@ import {
 import Store from '../../../store';
 import QRCode from 'qrcode.react';
 import QRModal from '../qrModal/qrModal';
-import { explorerList } from 'agama-wallet-lib/src/coin-helpers';
+import { explorerList } from 'safewallet-wallet-lib/src/coin-helpers';
 import devlog from '../../../util/devlog';
 
 const { shell } = window.require('electron');
@@ -102,7 +102,7 @@ class ToolsTxPush extends React.Component {
         <div className="col-xlg-12 form-group form-material no-padding-left padding-top-20 padding-bottom-50">
           <label
             className="control-label col-sm-1 no-padding-left"
-            htmlFor="kmdWalletSendTo">
+            htmlFor="safeWalletSendTo">
             { translate('TOOLS.COIN') }
           </label>
           <Select
@@ -143,7 +143,7 @@ class ToolsTxPush extends React.Component {
                   { this.state.selectedCoin.split('|')[0].toUpperCase() } { translate('TOOLS.TX_PUSHED') }!
                 </div>
                 <div>
-                  { translate('KMD_NATIVE.TXID') }:
+                  { translate('SAFE_NATIVE.TXID') }:
                   <div className="blur selectable word-break--all margin-left-5">
                     { this.state.txPushResult }
                     <button

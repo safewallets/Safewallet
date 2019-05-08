@@ -10,7 +10,7 @@ export const AddressActionsNonBasiliskModeRender = function(address, type) {
     <td>
       <span className={ 'label label-' + (type === 'public' ? 'default' : 'dark') }>
         <i className={ 'icon fa-eye' + (type === 'public' ? '' : '-slash') }></i>&nbsp;
-        { type === 'public' ? translate('IAPI.PUBLIC_SM') : translate('KMD_NATIVE.PRIVATE') }
+        { type === 'public' ? translate('IAPI.PUBLIC_SM') : translate('SAFE_NATIVE.PRIVATE') }
       </span>
       <button
         onClick={ () => this.toggleAddressMenu(address) }
@@ -221,7 +221,7 @@ export const ReceiveCoinRender = function() {
                             <span className="caret"></span>
                           </a>
                           <ul className="dropdown-menu dropdown-menu-right">
-                           { (this.props.coin === 'KMD' ||
+                           { (this.props.coin === 'SAFE' ||
                               (staticVar.chainParams &&
                                 staticVar.chainParams[this.props.coin] &&
                                !staticVar.chainParams[this.props.coin].ac_private)) &&
@@ -232,7 +232,7 @@ export const ReceiveCoinRender = function() {
                               </li>
                             }
                             { this.props.coin !== 'CHIPS' &&
-                              this.props.coin !== 'KMD' &&
+                              this.props.coin !== 'SAFE' &&
                               <li>
                                 <a onClick={ () => this.getNewAddress('private') }>
                                   <i className="icon fa-eye-slash"></i> { translate('INDEX.PRIVATE_Z_ADDRESS') }

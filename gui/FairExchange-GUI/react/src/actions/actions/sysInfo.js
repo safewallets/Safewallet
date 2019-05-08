@@ -1,7 +1,7 @@
 import { triggerToaster } from '../actionCreators';
 import Config, {
   token,
-  agamaPort,
+  safewalletPort,
   rpc2cli,
 } from '../../config';
 import urlParams from '../../util/url';
@@ -14,7 +14,7 @@ export const apiGetSysInfo = () => {
       token,
     };
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/sysinfo${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/sysinfo${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {

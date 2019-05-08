@@ -6,14 +6,14 @@ import {
   apiToolsMultiAddressBalance,
 } from '../../../actions/actionCreators';
 import Store from '../../../store';
-import kmdexplorer from './kmdexplorer';
+import safeexplorer from './safeexplorer';
 
 class ToolsGetBalanceMulti extends React.Component {
   constructor() {
     super();
     this.state = {
       balanceAddr: '',
-      balanceCoin: 'KMD',
+      balanceCoin: 'SAFE',
       balanceResult: null,
     };
     this.updateInput = this.updateInput.bind(this);
@@ -25,7 +25,7 @@ class ToolsGetBalanceMulti extends React.Component {
     // const _coin = this.state.balanceCoin.split('|');
     const _addr = this.state.balanceAddr.split('\n');
 
-    if (this.state.balanceCoin === 'KMD') {
+    if (this.state.balanceCoin === 'SAFE') {
       if (_addr &&
           _addr.length) {
         apiToolsMultiAddressBalance(_addr.join(','))
@@ -77,7 +77,7 @@ class ToolsGetBalanceMulti extends React.Component {
     } else {
       if (_addr &&
         _addr.length) {
-          apiToolsMultiAddressBalance(_addr.join(','), null, kmdexplorer[this.state.balanceCoin])
+          apiToolsMultiAddressBalance(_addr.join(','), null, safeexplorer[this.state.balanceCoin])
           .then((res) => {
             if (res.msg === 'success') {
               if (!res.result.length) {
@@ -191,12 +191,12 @@ class ToolsGetBalanceMulti extends React.Component {
 
   getOptions() {
     let _items = [{
-      label: 'Komodo (KMD)',
-      icon: 'btc/KMD',
-      value: 'KMD',
+      label: 'Safecoin (SAFE)',
+      icon: 'btc/SAFE',
+      value: 'SAFE',
     }];
 
-    for (let key in kmdexplorer) {
+    for (let key in safeexplorer) {
       _items.push({
         label: `${translate('ASSETCHAINS.' + key)} (${key})`,
         icon: `btc/${key}`,
@@ -212,15 +212,15 @@ class ToolsGetBalanceMulti extends React.Component {
       <div className="row margin-left-10">
         <div className="col-xlg-12 form-group form-material no-padding-left padding-bottom-10">
           <h4>{ translate('TOOLS.GET_BALANCE') } { translate('TOOLS.MULTI') }</h4>
-          { this.state.balanceCoin === 'KMD' &&
-            <div className="margin-top-20">{ translate('TOOLS.GET_BALANCE_MULTI_KMD') }</div>
+          { this.state.balanceCoin === 'SAFE' &&
+            <div className="margin-top-20">{ translate('TOOLS.GET_BALANCE_MULTI_SAFE') }</div>
           }
           <div className="margin-top-15">{ translate('TOOLS.REMOTE_CALL_EXPLORER_ACKNOWLEDGEMENT') }</div>
         </div>
         <div className="col-xlg-12 form-group form-material no-padding-left padding-top-20 padding-bottom-70">
           <label
             className="control-label col-sm-1 no-padding-left"
-            htmlFor="kmdWalletSendTo">
+            htmlFor="safeWalletSendTo">
             { translate('TOOLS.COIN') }
           </label>
           <Select
@@ -235,7 +235,7 @@ class ToolsGetBalanceMulti extends React.Component {
         <div className="col-sm-12 form-group form-material no-padding-left">
           <label
             className="control-label col-sm-3 no-padding-left padding-bottom-10"
-            htmlFor="kmdWalletSendTo">
+            htmlFor="safeWalletSendTo">
             { translate('TOOLS.ADDR') }
           </label>
         </div>

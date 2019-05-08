@@ -6,8 +6,8 @@ import Config from '../../../config';
 import {
   formatValue,
   sort,
-} from 'agama-wallet-lib/src/utils';
-import { secondsToString } from 'agama-wallet-lib/src/time';
+} from 'safewallet-wallet-lib/src/utils';
+import { secondsToString } from 'safewallet-wallet-lib/src/time';
 import ExchangesOrderInfoModal from '../exchangesOrderInfoModal/exchangesOrderInfoModal';
 import Select from 'react-select';
 import addCoinOptionsCrypto from '../../addcoin/addcoinOptionsCrypto';
@@ -141,7 +141,7 @@ export const RenderNewOrderForm = function() {
                         }
                         <label
                           className="control-label"
-                          htmlFor="kmdWalletAmount">
+                          htmlFor="safeWalletAmount">
                           <span>{ translate('INDEX.AMOUNT') }{ this.state.newExchangeOrderDetails.coinSrc && this.state.newExchangeOrderDetails.coinDest ? ` ${translate('EXCHANGES.IN_SM')} ${(this.state.buyFixedDestCoin ? this.state.newExchangeOrderDetails.coinSrc.split('|')[0] : this.state.newExchangeOrderDetails.coinDest.split('|')[0])}` : '' }</span>
                           { this.state.newExchangeOrderDetails.currentBalance !== 'none' &&
                             this.state.newExchangeOrderDetails.currentBalance !== 'loading' &&
@@ -168,7 +168,7 @@ export const RenderNewOrderForm = function() {
                           }
                           value={ this.state.newExchangeOrderDetails.amount !== 0 ? this.state.newExchangeOrderDetails.amount : '' }
                           onChange={ this.updateInput }
-                          id="kmdWalletAmount"
+                          id="safeWalletAmount"
                           placeholder="0.000"
                           autoComplete="off" />
                       </div>
@@ -438,7 +438,7 @@ export const RenderExchangeHistory = function() {
           <td>
             <button
               type="button"
-              className="btn btn-xs white btn-info waves-effect waves-light btn-kmdtxid"
+              className="btn btn-xs white btn-info waves-effect waves-light btn-safetxid"
               disabled={ this.state.syncHistoryProgressing }
               onClick={ () => this._toggleExchangesOrderInfoModal(_cacheFlat[i].orderId) }>
               <i className="icon fa-search"></i>

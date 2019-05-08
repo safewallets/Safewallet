@@ -48,7 +48,7 @@
     .navbar-collapse {
       padding-left: 0;
     }
-    .header-easydex {
+    .header-fairexchange {
       padding: 20px 10px;
       text-align: center;
     }
@@ -172,7 +172,7 @@
   .modal-body {
     padding: 10px;
   }
-  #kmd_txid_info_mdl {
+  #safe_txid_info_mdl {
     .panel-body {
       padding: 0;
       overflow: hidden;
@@ -189,14 +189,14 @@
       }
     }
   }
-  .header-easydex-section {
-    .easydex-section-image {
+  .header-fairexchange-section {
+    .fairexchange-section-image {
       display: none;
     }
-    .coin-icon.kmd {
+    .coin-icon.safe {
       display: none;
     }
-    .kmd-mobile-icon {
+    .safe-mobile-icon {
       display: inline-block;
     }
     img {

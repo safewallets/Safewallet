@@ -129,7 +129,7 @@ class SeedEncryptPanel extends React.Component {
                 Store.dispatch(
                   triggerToaster(
                     translate('INDEX.PASSPHRASE_SUCCESSFULLY_CHANGED_PIN', this.props.Login.pinList[id]),
-                    translate('KMD_NATIVE.SUCCESS'),
+                    translate('SAFE_NATIVE.SUCCESS'),
                     'success'
                   )
                 );
@@ -309,9 +309,9 @@ class SeedEncryptPanel extends React.Component {
             <td className="selectable">{ _pins[i] }</td>
             { this.props.Settings.appInfo &&
               this.props.Settings.appInfo.dirs &&
-              this.props.Settings.appInfo.dirs.agamaDir &&
+              this.props.Settings.appInfo.dirs.safewalletDir &&
               <td className="selectable">
-              { this.props.Settings.appInfo.dirs.agamaDir }/shepherd/pin/{ _pins[i] }.pin
+              { this.props.Settings.appInfo.dirs.safewalletDir }/shepherd/pin/{ _pins[i] }.pin
               </td>
             }
           </tr>

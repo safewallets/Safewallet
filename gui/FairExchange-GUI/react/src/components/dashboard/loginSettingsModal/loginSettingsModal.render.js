@@ -26,7 +26,7 @@ export const LoginSettingsModalRender = function() {
                 <span>×</span>
               </button>
               <h4 className="modal-title white">
-                { this.props.section === 'about' && translate('ABOUT.ABOUT_AGAMA') }
+                { this.props.section === 'about' && translate('ABOUT.ABOUT_SAFEWALLET') }
                 { this.props.section === 'changelog' && translate('INDEX.CHANGE_LOG') }
                 { this.props.section === 'settings' && translate('INDEX.SETTINGS') }
                 { this.props.section === 'tools' && translate('TOOLS.TOOLS') }

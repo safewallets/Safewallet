@@ -2,7 +2,7 @@ import { ACTIVE_HANDLE } from '../storeType';
 import translate from '../../translate/translate';
 import Config, {
   token,
-  agamaPort,
+  safewalletPort,
 } from '../../config';
 import urlParams from '../../util/url';
 import fetchType from '../../util/fetchType';
@@ -36,7 +36,7 @@ export const activeHandle = () => {
       token,
     };
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/auth/status${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/auth/status${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -61,7 +61,7 @@ export const activeHandle = () => {
 export const apiElectrumAuth = (seed) => {
   return dispatch => {
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/login`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/login`,
       fetchType(
         JSON.stringify({
           seed,
@@ -105,7 +105,7 @@ export const apiElectrumAddCoin = (coin) => {
       token,
     };
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/coins/add${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/coins/add${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -143,7 +143,7 @@ export const addCoinEth = (coin, network) => {
       token,
     };
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/eth/coins/add${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/eth/coins/add${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -234,9 +234,9 @@ export const apiHerd = (coin, mode, path, startupParams, genproclimit, pubkey) =
     };
   }
 
-  if (coin === 'KMD') {
+  if (coin === 'SAFE') {
     herdData = {
-      ac_name: 'komodod',
+      ac_name: 'safecoind',
       ac_options: [
         '-daemon=0',
         '-addnode=78.47.196.146',
@@ -257,7 +257,7 @@ export const apiHerd = (coin, mode, path, startupParams, genproclimit, pubkey) =
   }
 
   // TODO: switch statement
-  if (coin === 'KMD') {
+  if (coin === 'SAFE') {
     acData = startCrypto(
       path.result,
       coin,
@@ -284,11 +284,11 @@ export const apiHerd = (coin, mode, path, startupParams, genproclimit, pubkey) =
       _herd = 'chipsd';
       herdData = {};
     } else {
-      _herd = coin !== 'ZEC' ? 'komodod' : 'zcashd';
+      _herd = coin !== 'ZEC' ? 'safecoind' : 'zcashd';
     }
 
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/herd`,
+      `http://127.0.0.1:${safewalletPort}/api/herd`,
       fetchType(
         JSON.stringify({
           herd: _herd,
@@ -422,10 +422,10 @@ export const addCoinResult = (coin, mode) => {
 export const _apiGetConfig = (coin, mode, startupParams) => {
   return dispatch => {
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/getconf`,
+      `http://127.0.0.1:${safewalletPort}/api/getconf`,
       fetchType(
         JSON.stringify({
-          chain: 'komodod',
+          chain: 'safecoind',
           token,
         })
       ).post
@@ -455,14 +455,14 @@ export const _apiGetConfig = (coin, mode, startupParams) => {
 }
 
 export const apiGetConfig = (coin, mode, startupParams, genproclimit, pubkey) => {
-  if (coin === 'KMD' &&
+  if (coin === 'SAFE' &&
       mode === '-1') {
     return dispatch => {
       return fetch(
-        `http://127.0.0.1:${agamaPort}/api/getconf`,
+        `http://127.0.0.1:${safewalletPort}/api/getconf`,
         fetchType(
           JSON.stringify({
-            chain: 'komodod',
+            chain: 'safecoind',
             token,
           })
         ).post
@@ -493,7 +493,7 @@ export const apiGetConfig = (coin, mode, startupParams, genproclimit, pubkey) =>
   } else {
     return dispatch => {
       return fetch(
-        `http://127.0.0.1:${agamaPort}/api/getconf`,
+        `http://127.0.0.1:${safewalletPort}/api/getconf`,
         fetchType(
           JSON.stringify({
             chain: coin,

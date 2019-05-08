@@ -69,7 +69,7 @@ export const SettingsRender = function() {
               _coins.native &&
               Object.keys(_coins.native).length > 0 &&
               <PanelSection
-                title="Komodod stdout"
+                title="Safecoind stdout"
                 icon="icon fa-bug">
                 <DaemonStdoutPanel />
               </PanelSection>

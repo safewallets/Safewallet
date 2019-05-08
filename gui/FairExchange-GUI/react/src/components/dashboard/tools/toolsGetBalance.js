@@ -88,7 +88,7 @@ class ToolsGetBalance extends React.Component {
         <div className="col-xlg-12 form-group form-material no-padding-left padding-top-20 padding-bottom-70">
           <label
             className="control-label col-sm-1 no-padding-left"
-            htmlFor="kmdWalletSendTo">
+            htmlFor="safeWalletSendTo">
             { translate('TOOLS.COIN') }
           </label>
           <Select
@@ -106,7 +106,7 @@ class ToolsGetBalance extends React.Component {
         <div className="col-sm-12 form-group form-material no-padding-left">
           <label
             className="control-label col-sm-1 no-padding-left"
-            htmlFor="kmdWalletSendTo">
+            htmlFor="safeWalletSendTo">
             { translate('TOOLS.ADDR') }
           </label>
           <input

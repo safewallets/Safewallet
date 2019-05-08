@@ -18,11 +18,11 @@ import {
 import Store from '../../../store';
 import QRCode from 'qrcode.react';
 import QRModal from '../qrModal/qrModal';
-import { transaction } from 'agama-wallet-lib/src/transaction-builder';
-import networks from 'agama-wallet-lib/src/bitcoinjs-networks';
-import { isKomodoCoin } from 'agama-wallet-lib/src/coin-helpers';
-import { stringToWif } from 'agama-wallet-lib/src/keys';
-import { fromSats } from 'agama-wallet-lib/src/utils';
+import { transaction } from 'safewallet-wallet-lib/src/transaction-builder';
+import networks from 'safewallet-wallet-lib/src/bitcoinjs-networks';
+import { isSafecoinCoin } from 'safewallet-wallet-lib/src/coin-helpers';
+import { stringToWif } from 'safewallet-wallet-lib/src/keys';
+import { fromSats } from 'safewallet-wallet-lib/src/utils';
 
 class ToolsOfflineSig extends React.Component {
   constructor() {
@@ -47,7 +47,7 @@ class ToolsOfflineSig extends React.Component {
 
   signTx(sign) {
     const _coin = this.state.selectedCoin.split('|')[0].toLowerCase();
-    const _network = networks[_coin] || networks[isKomodoCoin(_coin) ? 'kmd' : _coin];
+    const _network = networks[_coin] || networks[isSafecoinCoin(_coin) ? 'safe' : _coin];
     let _data = JSON.parse(this.state.rawData);
     _data.from = stringToWif(this.state.seed, _network, true).pub;
 
@@ -113,7 +113,7 @@ class ToolsOfflineSig extends React.Component {
         <div className="col-xlg-12 form-group form-material no-padding-left padding-top-20 padding-bottom-50">
           <label
             className="control-label col-sm-1 no-padding-left"
-            htmlFor="kmdWalletSendTo">
+            htmlFor="safeWalletSendTo">
             { translate('TOOLS.COIN') }
           </label>
           <Select
@@ -131,7 +131,7 @@ class ToolsOfflineSig extends React.Component {
         <div className="col-sm-12 form-group form-material no-padding-left">
           <label
             className="control-label col-sm-1 no-padding-left"
-            htmlFor="kmdWalletSendTo">
+            htmlFor="safeWalletSendTo">
             { translate('TOOLS.SEED') } / WIF
           </label>
           <input

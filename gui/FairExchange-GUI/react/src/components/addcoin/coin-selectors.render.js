@@ -7,8 +7,8 @@ import mainWindow, { staticVar } from '../../util/mainWindow';
 import Select from 'react-select';
 import ReactTooltip from 'react-tooltip';
 import config from '../../config';
-import { pubkeyToAddress } from 'agama-wallet-lib/src/keys';
-import bitcoinjsNetworks from 'agama-wallet-lib/src/bitcoinjs-networks';
+import { pubkeyToAddress } from 'safewallet-wallet-lib/src/keys';
+import bitcoinjsNetworks from 'safewallet-wallet-lib/src/bitcoinjs-networks';
 
 const CoinSelectorsRender = function(item, coin, i) {
   const _modesEnum = [
@@ -39,7 +39,7 @@ const CoinSelectorsRender = function(item, coin, i) {
 
   let pubkeyAddress;
   if (config.pubkey) {
-    pubkeyAddress = pubkeyToAddress(config.pubkey, bitcoinjsNetworks.kmd);
+    pubkeyAddress = pubkeyToAddress(config.pubkey, bitcoinjsNetworks.safe);
 
     if (!pubkeyAddress) {
       pubkeyAddress = translate('TOASTR.INVALID_PUBKEY');

@@ -15,8 +15,8 @@ import {
 } from '../../../actions/actionCreators';
 import Store from '../../../store';
 import mainWindow, { staticVar } from '../../../util/mainWindow';
-import { pubkeyToAddress } from 'agama-wallet-lib/src/keys';
-import bitcoinjsNetworks from 'agama-wallet-lib/src/bitcoinjs-networks';
+import { pubkeyToAddress } from 'safewallet-wallet-lib/src/keys';
+import bitcoinjsNetworks from 'safewallet-wallet-lib/src/bitcoinjs-networks';
 
 class AppSettingsPanel extends React.Component {
   constructor() {
@@ -34,7 +34,7 @@ class AppSettingsPanel extends React.Component {
   }
 
   validatePubkey(pubkey) {
-    const address = pubkeyToAddress(pubkey, bitcoinjsNetworks.kmd);
+    const address = pubkeyToAddress(pubkey, bitcoinjsNetworks.safe);
 
     if (address) {
       Store.dispatch(
@@ -120,7 +120,7 @@ class AppSettingsPanel extends React.Component {
               isError = true;
               Store.dispatch(
                 triggerToaster(
-                  this.renderLB('TOASTR.KOMODO_DATADIR_INVALID'),
+                  this.renderLB('TOASTR.SAFECOIN_DATADIR_INVALID'),
                   translate('INDEX.SETTINGS'),
                   'error',
                   false
@@ -130,7 +130,7 @@ class AppSettingsPanel extends React.Component {
               isError = true;
               Store.dispatch(
                 triggerToaster(
-                  this.renderLB('TOASTR.KOMODO_DATADIR_NOT_DIR'),
+                  this.renderLB('TOASTR.SAFECOIN_DATADIR_NOT_DIR'),
                   translate('INDEX.SETTINGS'),
                   'error',
                   false
@@ -156,7 +156,7 @@ class AppSettingsPanel extends React.Component {
                 isError = true;
                 Store.dispatch(
                   triggerToaster(
-                    this.renderLB('TOASTR.KOMODO_DATADIR_INVALID'),
+                    this.renderLB('TOASTR.SAFECOIN_DATADIR_INVALID'),
                     translate('INDEX.SETTINGS'),
                     'error',
                     false
@@ -166,7 +166,7 @@ class AppSettingsPanel extends React.Component {
                 isError = true;
                 Store.dispatch(
                   triggerToaster(
-                    this.renderLB('TOASTR.KOMODO_DATADIR_NOT_DIR'),
+                    this.renderLB('TOASTR.SAFECOIN_DATADIR_NOT_DIR'),
                     translate('INDEX.SETTINGS'),
                     'error',
                     false
@@ -432,9 +432,9 @@ class AppSettingsPanel extends React.Component {
     }
 
     items.push(
-      <tr key="kmd-main-sync-only">
+      <tr key="safe-main-sync-only">
         <td className="padding-15">
-          { translate('SETTINGS.KMD_MAIN_SYNC_ONLY') }
+          { translate('SETTINGS.SAFE_MAIN_SYNC_ONLY') }
           <i
             className="icon fa-question-circle settings-help"
             data-tip={ translate('SETTINGS.RPC_FETCH_ONLY_DESC') }
@@ -450,7 +450,7 @@ class AppSettingsPanel extends React.Component {
             <label className="switch">
               <input
                 type="checkbox"
-                name="kmd-main-sync-only"
+                name="safe-main-sync-only"
                 value={ this.props.Dashboard.skipFullDashboardUpdate }
                 checked={ this.props.Dashboard.skipFullDashboardUpdate }
                 readOnly />

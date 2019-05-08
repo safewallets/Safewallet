@@ -7,12 +7,12 @@ import WalletsData from '../walletsData/walletsData';
 import ReceiveCoin from '../receiveCoin/receiveCoin';
 import {
   getCoinTitle,
-  isKomodoCoin,
+  isSafecoinCoin,
 } from '../../../util/coinHelper';
 import translate from '../../../translate/translate';
 
 const _skipCoins = [
-  'KMD',
+  'SAFE',
   'JUMBLR',
   'MESH',
   'MVP',
@@ -25,24 +25,24 @@ const WalletsMainRender = function() {
     <div className="page margin-left-0">
       <div className="padding-top-0">
         <div
-          id="easydex-header-div"
+          id="fairexchange-header-div"
           className="background-color-white"
           style={ this.getCoinStyle('transparent') }>
           <ol className={ 'coin-logo breadcrumb' + (_skipCoins.indexOf(_coin) > -1 ? ' coin-logo-wide' : '') + ' native-coin-logo' }>
-            <li className="header-easydex-section">
+            <li className="header-fairexchange-section">
               { this.getCoinStyle('title') &&
                 <img
-                  className={ 'coin-icon' + (_coin === 'KMD' ? ' kmd' : '') }
+                  className={ 'coin-icon' + (_coin === 'SAFE' ? ' safe' : '') }
                   src={ this.getCoinStyle('title') } />
               }
-              { _coin === 'KMD' &&
+              { _coin === 'SAFE' &&
                 <img
-                  className="kmd-mobile-icon"
+                  className="safe-mobile-icon"
                   src={ `assets/images/cryptologo/btc/${_coin.toLowerCase()}.png` } />
               }
               { _skipCoins.indexOf(_coin) === -1 &&
-                <span className="margin-left-20 easydex-section-image">
-                  { translate(((this.props.ActiveCoin.mode === 'spv' || this.props.ActiveCoin.mode === 'native') && isKomodoCoin(_coin) ? 'ASSETCHAINS.' : 'CRYPTO.') + _coin.toUpperCase()) }
+                <span className="margin-left-20 fairexchange-section-image">
+                  { translate(((this.props.ActiveCoin.mode === 'spv' || this.props.ActiveCoin.mode === 'native') && isSafecoinCoin(_coin) ? 'ASSETCHAINS.' : 'CRYPTO.') + _coin.toUpperCase()) }
                 </span>
               }
             </li>

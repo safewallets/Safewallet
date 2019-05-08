@@ -6,11 +6,11 @@ import {
   apiToolsMultiAddressBalanceCoins,
 } from '../../../actions/actionCreators';
 import Store from '../../../store';
-import { explorerList } from 'agama-wallet-lib/src/coin-helpers';
+import { explorerList } from 'safewallet-wallet-lib/src/coin-helpers';
 import mainWindow, { staticVar } from '../../../util/mainWindow';
-import kmdexplorer from './kmdexplorer';
-import { addressVersionCheck } from 'agama-wallet-lib/src/keys';
-import networks from 'agama-wallet-lib/src/bitcoinjs-networks';
+import safeexplorer from './safeexplorer';
+import { addressVersionCheck } from 'safewallet-wallet-lib/src/keys';
+import networks from 'safewallet-wallet-lib/src/bitcoinjs-networks';
 
 const { shell } = window.require('electron');
 
@@ -28,18 +28,18 @@ class ToolsGetBalanceMultiCoins extends React.Component {
   }
 
   openExplorerWindow(coin) {
-    const url = `${kmdexplorer[coin]}/address/${this.state.address}`;
+    const url = `${safeexplorer[coin]}/address/${this.state.address}`;
     return shell.openExternal(url);
   }
 
   getBalance() {
-    const _validateAddress = addressVersionCheck(networks.kmd, this.state.address);
+    const _validateAddress = addressVersionCheck(networks.safe, this.state.address);
     let _msg;
 
     if (_validateAddress === 'Invalid pub address') {
       _msg = _validateAddress;
     } else if (!_validateAddress) {
-      _msg = `${this.state.address} ${translate('SEND.VALIDATION_IS_NOT_VALID_ADDR_P1')} KMD ${translate('SEND.VALIDATION_IS_NOT_VALID_ADDR_P2')}`;
+      _msg = `${this.state.address} ${translate('SEND.VALIDATION_IS_NOT_VALID_ADDR_P1')} SAFE ${translate('SEND.VALIDATION_IS_NOT_VALID_ADDR_P2')}`;
     }
 
     if (_msg) {
@@ -150,12 +150,12 @@ class ToolsGetBalanceMultiCoins extends React.Component {
 
   getOptions() {
     let _items = [{
-      label: 'Komodo (KMD)',
-      icon: 'btc/KMD',
-      value: 'KMD',
+      label: 'Safecoin (SAFE)',
+      icon: 'btc/SAFE',
+      value: 'SAFE',
     }];
 
-    for (let key in kmdexplorer) {
+    for (let key in safeexplorer) {
       _items.push({
         label: `${translate('ASSETCHAINS.' + key)} (${key})`,
         icon: `btc/${key}`,
@@ -177,7 +177,7 @@ class ToolsGetBalanceMultiCoins extends React.Component {
         <div className="col-sm-12 form-group form-material no-padding-left">
           <label
             className="control-label col-sm-1 no-padding-left"
-            htmlFor="kmdWalletSendTo">
+            htmlFor="safeWalletSendTo">
             { translate('WALLETS_INFO.ADDRESS') }
           </label>
           <input

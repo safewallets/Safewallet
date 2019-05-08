@@ -1,7 +1,7 @@
 import { triggerToaster } from '../actionCreators';
 import Config, {
   token,
-  agamaPort,
+  safewalletPort,
   rpc2cli,
 } from '../../config';
 import Store from '../../store';
@@ -16,7 +16,7 @@ export const newUpdateAvailable = () => {
       token,
     };
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/update/patch/check${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/update/patch/check${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -42,7 +42,7 @@ export const checkForUpdateUIPromise = () => {
       token,
     };
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/update/patch/check${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/update/patch/check${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -66,7 +66,7 @@ export const updateUIPromise = () => {
       token,
     };
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/update/patch${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/update/patch${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -91,7 +91,7 @@ export const downloadZCashParamsPromise = (dloption) => {
       dloption,
     };
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/zcparamsdl${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/zcparamsdl${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {

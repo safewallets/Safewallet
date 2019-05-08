@@ -9,7 +9,7 @@ import translate from '../../translate/translate';
 import { triggerToaster } from '../actionCreators';
 import Config, {
   token,
-  agamaPort,
+  safewalletPort,
   rpc2cli,
 } from '../../config';
 import Store from '../../store';
@@ -29,7 +29,7 @@ export const getAppInfo = () => {
       token,
     };
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/appinfo${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/appinfo${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -115,7 +115,7 @@ export const getDebugLog = (target, linesCount, acName) => {
 
   return dispatch => {
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/debuglog`,
+      `http://127.0.0.1:${safewalletPort}/api/debuglog`,
       fetchType(JSON.stringify(payload)).post
     )
     .catch((error) => {
@@ -136,7 +136,7 @@ export const getDebugLog = (target, linesCount, acName) => {
 export const saveAppConfig = (_payload) => {
   return dispatch => {
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/appconf`,
+      `http://127.0.0.1:${safewalletPort}/api/appconf`,
       fetchType(
         JSON.stringify({
           payload: _payload,
@@ -181,7 +181,7 @@ export function getAppConfig() {
       token,
     };
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/appconf${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/appconf${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -202,7 +202,7 @@ export function getAppConfig() {
 export const resetAppConfig = () => {
   return dispatch => {
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/appconf/reset`,
+      `http://127.0.0.1:${safewalletPort}/api/appconf/reset`,
       fetchType(JSON.stringify({ token })).post
     )
     .catch((error) => {
@@ -230,7 +230,7 @@ export const resetAppConfig = () => {
 }
 
 export const coindGetStdout = (chain) => {
-  const _chain = chain === 'KMD' ? 'komodod' : chain;
+  const _chain = chain === 'SAFE' ? 'safecoind' : chain;
 
   return new Promise((resolve, reject) => {
     const _urlParams = {
@@ -238,7 +238,7 @@ export const coindGetStdout = (chain) => {
       chain,
     };
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/coind/stdout${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/coind/stdout${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -259,7 +259,7 @@ export const coindGetStdout = (chain) => {
 }
 
 export const getWalletDatKeys = (chain, keyMatchPattern) => {
-  const _chain = chain === 'KMD' ? null : chain;
+  const _chain = chain === 'SAFE' ? null : chain;
 
   return new Promise((resolve, reject) => {
     const _urlParams1 = {
@@ -272,7 +272,7 @@ export const getWalletDatKeys = (chain, keyMatchPattern) => {
       chain,
     };
     fetch(
-      keyMatchPattern ? `http://127.0.0.1:${agamaPort}/api/coindwalletkeys${urlParams(_urlParams1)}` : `http://127.0.0.1:${agamaPort}/api/coindwalletkeys${urlParams(_urlParams2)}`,
+      keyMatchPattern ? `http://127.0.0.1:${safewalletPort}/api/coindwalletkeys${urlParams(_urlParams1)}` : `http://127.0.0.1:${safewalletPort}/api/coindwalletkeys${urlParams(_urlParams2)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -304,7 +304,7 @@ export const dumpPrivKey = (coin, address, isZaddr) => {
     };
 
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/cli`,
+      `http://127.0.0.1:${safewalletPort}/api/cli`,
       fetchType(JSON.stringify({ payload })).post
     )
     .catch(function(error) {
@@ -336,7 +336,7 @@ export const validateAddress = (coin, address, isZaddr) => {
     };
 
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/cli`,
+      `http://127.0.0.1:${safewalletPort}/api/cli`,
       fetchType(JSON.stringify({ payload })).post
     )
     .catch(function(error) {
@@ -359,7 +359,7 @@ export const validateAddress = (coin, address, isZaddr) => {
 export const resetSPVCache = () => {
   return dispatch => {
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/cache/delete`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/cache/delete`,
       fetchType(JSON.stringify({ token })).post
     )
     .catch((error) => {
@@ -393,7 +393,7 @@ export const getRuntimeLog = () => {
       stringify: true,
     };
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/log/runtime/dump${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/log/runtime/dump${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {

@@ -31,7 +31,7 @@ class WalletsProgress extends React.Component {
     const _isWindows = mainWindow.isWindows;
 
     if (_isWindows) {
-      _mainWindow.getMaxconKMDConf()
+      _mainWindow.getMaxconSAFEConf()
       .then((res) => {
         if (!res ||
             Number(res) !== 1) {
@@ -52,7 +52,7 @@ class WalletsProgress extends React.Component {
   applyWindowsSyncWorkaround() {
     const _mainWindow = mainWindow;
 
-    _mainWindow.setMaxconKMDConf(1)
+    _mainWindow.setMaxconSAFEConf(1)
     .then((res) => {
       if (res) {
         this.setState({
@@ -110,7 +110,7 @@ class WalletsProgress extends React.Component {
         !this.isWinSyncPercBelowThreshold()) {
       const _mainWindow = mainWindow;
 
-      _mainWindow.setMaxconKMDConf()
+      _mainWindow.setMaxconSAFEConf()
       .then((res) => {
         if (res) {
           this.setState({
@@ -209,9 +209,9 @@ class WalletsProgress extends React.Component {
 
       const _coinProgress = this.props.ActiveCoin.progress;
 
-      if (_coinProgress.remoteKMDNode &&
-        _coinProgress.remoteKMDNode.blocks) {
-        const longestHeight = _coinProgress.remoteKMDNode.blocks;
+      if (_coinProgress.remoteSAFENode &&
+        _coinProgress.remoteSAFENode.blocks) {
+        const longestHeight = _coinProgress.remoteSAFENode.blocks;
 
         return [
           currentBestChain,
@@ -312,7 +312,7 @@ class WalletsProgress extends React.Component {
         }
 
         // fallback to local data if remote node is inaccessible
-        const _remoteNode = this.props.ActiveCoin.progress.remoteKMDNode;
+        const _remoteNode = this.props.ActiveCoin.progress.remoteSAFENode;
         if (_remoteNode &&
             !_remoteNode.blocks) {
           return (

@@ -18,10 +18,10 @@ import {
 import Store from '../../../store';
 import devlog from '../../../util/devlog';
 import {
-  isKomodoCoin,
+  isSafecoinCoin,
   explorerList,
-} from 'agama-wallet-lib/src/coin-helpers';
-import { toSats } from 'agama-wallet-lib/src/utils';
+} from 'safewallet-wallet-lib/src/coin-helpers';
+import { toSats } from 'safewallet-wallet-lib/src/utils';
 
 const { shell } = window.require('electron');
 
@@ -436,7 +436,7 @@ class ToolsSplitUTXO extends React.Component {
         <div className="col-xlg-12 form-group form-material no-padding-left padding-top-20 padding-bottom-50">
           <label
             className="control-label col-sm-1 no-padding-left"
-            htmlFor="kmdWalletSendTo">
+            htmlFor="safeWalletSendTo">
             { translate('TOOLS.COIN') }
           </label>
           <Select
@@ -472,7 +472,7 @@ class ToolsSplitUTXO extends React.Component {
         <div className="col-sm-12 form-group form-material no-padding-left">
           <label
             className="control-label col-sm-1 no-padding-left"
-            htmlFor="kmdWalletSendTo">{ translate('TOOLS.SEED') }</label>
+            htmlFor="safeWalletSendTo">{ translate('TOOLS.SEED') }</label>
           <input
             type="text"
             className="form-control col-sm-3 blur"
@@ -532,7 +532,7 @@ class ToolsSplitUTXO extends React.Component {
         <div className="col-sm-12 form-group form-material no-padding-left margin-top-20 padding-bottom-20">
           <label
             className="control-label col-sm-2 no-padding-left"
-            htmlFor="kmdWalletSendTo">
+            htmlFor="safeWalletSendTo">
             { translate('TOOLS.UTXO_SIZES') }
           </label>
           <input
@@ -548,7 +548,7 @@ class ToolsSplitUTXO extends React.Component {
         <div className="col-sm-12 form-group form-material no-padding-left padding-top-20 padding-bottom-20">
           <label
             className="control-label col-sm-2 no-padding-left"
-            htmlFor="kmdWalletSendTo">
+            htmlFor="safeWalletSendTo">
             { translate('TOOLS.NUMBER_OF_PAIRS') }
           </label>
           <input
@@ -588,8 +588,8 @@ class ToolsSplitUTXO extends React.Component {
         }
         { this.state.utxoSplitPushResult &&
           <div className="col-sm-12 form-group form-material no-padding-left margin-top-10">
-            { translate('KMD_NATIVE.TXID') }: <div className="blur selectable word-break--all">{ this.state.utxoSplitPushResult }</div>
-            { isKomodoCoin(this.state.utxoSplitCoin.split('|')[0]) &&
+            { translate('SAFE_NATIVE.TXID') }: <div className="blur selectable word-break--all">{ this.state.utxoSplitPushResult }</div>
+            { isSafecoinCoin(this.state.utxoSplitCoin.split('|')[0]) &&
               <div className="margin-top-10">
                 <button
                   type="button"

@@ -9,8 +9,8 @@ import {
 import mainWindow from '../../../util/mainWindow';
 import Config from '../../../config';
 import ReactTooltip from 'react-tooltip';
-import { secondsToString } from 'agama-wallet-lib/src/time';
-import { formatValue } from 'agama-wallet-lib/src/utils';
+import { secondsToString } from 'safewallet-wallet-lib/src/time';
+import { formatValue } from 'safewallet-wallet-lib/src/utils';
 import Store from '../../../store';
 import FiatSymbol from '../fiat/fiatSymbol';
 
@@ -104,7 +104,7 @@ class WalletsBalance extends React.Component {
         _mode === 'spv' &&
         _propsBalance
       ) {
-        if (this.props.ActiveCoin.coin === 'KMD') {
+        if (this.props.ActiveCoin.coin === 'SAFE') {
           if (type === 'total' &&
               _propsBalance &&
               _propsBalance.total) {

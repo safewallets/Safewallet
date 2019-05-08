@@ -3,12 +3,12 @@ import ReactTooltip from 'react-tooltip';
 import translate from '../../../translate/translate';
 import ReactTable from 'react-table';
 import TablePaginationRenderer from '../pagination/pagination';
-import { formatValue } from 'agama-wallet-lib/src/utils';
+import { formatValue } from 'safewallet-wallet-lib/src/utils';
 import Config from '../../../config';
 import Spinner from '../spinner/spinner';
 import mainWindow, { staticVar } from '../../../util/mainWindow';
 import { tableSorting } from '../pagination/utils';
-import dpowCoins from 'agama-wallet-lib/src/electrum-servers-dpow';
+import dpowCoins from 'safewallet-wallet-lib/src/electrum-servers-dpow';
 
 const kvCoins = {
   'KV': true,
@@ -94,7 +94,7 @@ export const TransactionDetailRender = function(transactionIndex) {
   return (
     <button
       type="button"
-      className="btn btn-xs white btn-info waves-effect waves-light btn-kmdtxid"
+      className="btn btn-xs white btn-info waves-effect waves-light btn-safetxid"
       onClick={ () => this.toggleTxInfoModal(!this.props.ActiveCoin.showTransactionInfo, transactionIndex) }>
       <i className="icon fa-search"></i>
     </button>
@@ -155,11 +155,11 @@ export const AddressListRender = function() {
   if (isMultiPublicAddress ||
       isMultiPrivateAddress) {
     return (
-      <div className={ `btn-group bootstrap-select form-control form-material showkmdwalletaddrs show-tick margin-bottom-10${(this.state.addressSelectorOpen ? ' open ' : '')}` }>
+      <div className={ `btn-group bootstrap-select form-control form-material showsafewalletaddrs show-tick margin-bottom-10${(this.state.addressSelectorOpen ? ' open ' : '')}` }>
         <button
           type="button"
           className="btn dropdown-toggle btn-info"
-          data-tip={ translate('KMD_NATIVE.SELECT_ADDRESS') }
+          data-tip={ translate('SAFE_NATIVE.SELECT_ADDRESS') }
           data-for="txHistory2"
           onClick={ this.openDropMenu }>
           <span className="filter-option pull-left">{ this.renderSelectorCurrentLabel() } </span>&nbsp;
@@ -174,7 +174,7 @@ export const AddressListRender = function() {
         <div className="dropdown-menu open">
           <ul className="dropdown-menu inner">
             <li className="no--hover">
-              <a><span className="text">{ translate('KMD_NATIVE.SELECT_ADDRESS') }</span></a>
+              <a><span className="text">{ translate('SAFE_NATIVE.SELECT_ADDRESS') }</span></a>
             </li>
             <li className={ !this.state.currentAddress ? 'selected' : '' }>
               <a onClick={ () => this.updateAddressSelection('') }>
@@ -359,7 +359,7 @@ export const WalletsDataRender = function() {
                   <div className="panel no-margin padding-top-10 padding-bottom-10 center">
                     { this.displayClaimInterestUI() === 777 &&
                       <div>
-                        { translate('DASHBOARD.CLAIM_INTEREST_HELPER_BAR_P1') } <strong>{ _balance.interest }</strong> KMD { translate('DASHBOARD.CLAIM_INTEREST_HELPER_BAR_P2') }.
+                        { translate('DASHBOARD.CLAIM_INTEREST_HELPER_BAR_P1') } <strong>{ _balance.interest }</strong> SAFE { translate('DASHBOARD.CLAIM_INTEREST_HELPER_BAR_P2') }.
                         <button
                           type="button"
                           className="btn btn-success waves-effect waves-light dashboard-claim-interest-btn"
@@ -370,7 +370,7 @@ export const WalletsDataRender = function() {
                           _balance &&
                           _balance.utxoIssues &&
                           <i
-                            data-tip={ translate('DASHBOARD.KMD_UTXO_ISSUES') }
+                            data-tip={ translate('DASHBOARD.SAFE_UTXO_ISSUES') }
                             data-html={ true }
                             data-for="txHistory8"
                             className="fa-exclamation-circle red dashboard-utxo-issues-icon"></i>

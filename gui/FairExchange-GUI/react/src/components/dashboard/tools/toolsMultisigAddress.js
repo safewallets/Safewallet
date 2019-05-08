@@ -18,8 +18,8 @@ import {
 import Store from '../../../store';
 import mainWindow, { staticVar } from '../../../util/mainWindow';
 
-import { multisig } from 'agama-wallet-lib/src/keys';
-import networks from 'agama-wallet-lib/src/bitcoinjs-networks';
+import { multisig } from 'safewallet-wallet-lib/src/keys';
+import networks from 'safewallet-wallet-lib/src/bitcoinjs-networks';
 
 class ToolsMultisigAddress extends React.Component {
   constructor() {
@@ -40,7 +40,7 @@ class ToolsMultisigAddress extends React.Component {
       'redeemScript': translate('TOOLS.REDEEM_SCRIPT'),
       'scriptPubKey': translate('TOOLS.SCRIPT_PUBKEY'),
       'address': translate('WALLETS_INFO.ADDRESS'),
-      'agama': translate('TOOLS.AGAMA_MULTISIG_DATA'),
+      'safewallet': translate('TOOLS.SAFEWALLET_MULTISIG_DATA'),
     };
     Store.dispatch(copyString(this.state.msigData[type], _msg[type] + ' is copied'));
   }
@@ -63,12 +63,12 @@ class ToolsMultisigAddress extends React.Component {
         let _msigAddress = multisig.generate(
           Number(_requiredSigs[0]),
           _pubKeys,
-          networks[_coin[0].toLowerCase()] || networks.kmd
+          networks[_coin[0].toLowerCase()] || networks.safe
         );
 
         const _messageSecret = mainWindow.sha256(_pubKeys.join('-') + _msigAddress.redeemScript).toString('hex');
         const _messageCID = _messageSecret.substring(_messageSecret.length / 2, Math.floor(_messageSecret.length / 4)) + _messageSecret.substring(0, Math.floor(_messageSecret.length / 4));
-        const _agama = {
+        const _safewallet = {
           redeemScript: _msigAddress.redeemScript,
           scriptPubKey: _msigAddress.scriptPubKey,
           nOfN: this.state.nOfN,
@@ -76,7 +76,7 @@ class ToolsMultisigAddress extends React.Component {
           messageCID: _messageCID,
           pubKeys: _pubKeys,
         };
-        _msigAddress.agama = JSON.stringify(_agama);
+        _msigAddress.safewallet = JSON.stringify(_safewallet);
 
         this.setState({
           msigData: _msigAddress,
@@ -132,7 +132,7 @@ class ToolsMultisigAddress extends React.Component {
         <div className="col-xlg-12 form-group form-material no-padding-left padding-top-20 padding-bottom-70">
           <label
             className="control-label col-sm-2 no-padding-left"
-            htmlFor="kmdWalletSendTo">
+            htmlFor="safeWalletSendTo">
             { translate('TOOLS.NUM_OF_SIGS') }
           </label>
           <select
@@ -149,7 +149,7 @@ class ToolsMultisigAddress extends React.Component {
         <div className="col-xlg-12 form-group form-material no-padding-left padding-top-20 padding-bottom-70">
           <label
             className="control-label col-sm-2 no-padding-left"
-            htmlFor="kmdWalletSendTo">
+            htmlFor="safeWalletSendTo">
             { translate('TOOLS.COIN') }
           </label>
           <Select
@@ -167,7 +167,7 @@ class ToolsMultisigAddress extends React.Component {
         <div className="col-sm-12 form-group form-material no-padding-left">
           <label
             className="control-label col-sm-2 no-padding-left"
-            htmlFor="kmdWalletSendTo">
+            htmlFor="safeWalletSendTo">
             { translate('TOOLS.PUB_KEYS') }
           </label>
           <textarea
@@ -226,11 +226,11 @@ class ToolsMultisigAddress extends React.Component {
             <div className="margin-top-25">
               <strong>{ translate('TOOLS.USE_THE_FOLLOWING_INFO_TO_CREATE_MULTISIG_TX') }:</strong>
               <div className="blur selectable word-break--all">
-                { this.state.msigData.agama }
+                { this.state.msigData.safewallet }
                 <button
                   className="btn btn-default btn-xs clipboard-edexaddr margin-left-10"
                   title={ translate('INDEX.COPY_TO_CLIPBOARD') }
-                  onClick={ () => this._copyString('agama') }>
+                  onClick={ () => this._copyString('safewallet') }>
                   <i className="icon wb-copy"></i> { translate('INDEX.COPY') }
                 </button>
               </div>

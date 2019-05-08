@@ -12,7 +12,7 @@ import Store from '../../../store';
 import mainWindow, { staticVar } from '../../../util/mainWindow';
 import io from 'socket.io-client';
 
-const socket = io.connect(`http://127.0.0.1:${Config.agamaPort}`);
+const socket = io.connect(`http://127.0.0.1:${Config.safewalletPort}`);
 const NEW_UPDATE_CHECK_INTERVAL = 14400 * 1000; // every 4h
 
 class WalletsMain extends React.Component {
@@ -84,13 +84,13 @@ class WalletsMain extends React.Component {
 
   updateSocketsData(data) {
     if (data &&
-        data.komodod &&
-        data.komodod.error) {
-      switch (data.komodod.error) {
+        data.safecoind &&
+        data.safecoind.error) {
+      switch (data.safecoind.error) {
         case 'run -reindex':
           Store.dispatch(
             triggerToaster(
-              translate('TOASTR.RESTART_AGAMA_WITH_REINDEX_PARAM'),
+              translate('TOASTR.RESTART_SAFEWALLET_WITH_REINDEX_PARAM'),
               translate('TOASTR.WALLET_NOTIFICATION'),
               'info',
               false

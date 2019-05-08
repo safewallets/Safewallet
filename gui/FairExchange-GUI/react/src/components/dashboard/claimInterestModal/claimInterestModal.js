@@ -23,7 +23,7 @@ import {
 import {
   secondsToString,
   checkTimestamp,
-} from 'agama-wallet-lib/src/time';
+} from 'safewallet-wallet-lib/src/time';
 
 const SPV_MAX_LOCAL_TIMESTAMP_DEVIATION = 300; // 5 min
 
@@ -271,7 +271,7 @@ class ClaimInterestModal extends React.Component {
     const _coin = this.props.ActiveCoin.coin;
     const _balance = this.props.ActiveCoin.balance;
 
-    if (_coin === 'KMD') {
+    if (_coin === 'SAFE') {
       if (this.props.ActiveCoin.mode === 'spv') {
         const _pub = this.props.Dashboard.electrumCoins[_coin].pub;
         
@@ -424,7 +424,7 @@ class ClaimInterestModal extends React.Component {
     }
 
     return (
-      <div className={ `btn-group bootstrap-select form-control form-material showkmdwalletaddrs show-tick ${(this.state.addressSelectorOpen ? 'open' : '')}` }>
+      <div className={ `btn-group bootstrap-select form-control form-material showsafewalletaddrs show-tick ${(this.state.addressSelectorOpen ? 'open' : '')}` }>
         <button
           type="button"
           className={ 'btn dropdown-toggle btn-info' + (this.props.ActiveCoin.mode === 'spv' ? ' disabled' : '') }
@@ -497,7 +497,7 @@ class ClaimInterestModal extends React.Component {
   render() {
     if (this.props.ActiveCoin &&
         this.props.ActiveCoin.coin &&
-        this.props.ActiveCoin.coin === 'KMD') {
+        this.props.ActiveCoin.coin === 'SAFE') {
       return ClaimInterestModalRender.call(this);
     } else {
       return null;

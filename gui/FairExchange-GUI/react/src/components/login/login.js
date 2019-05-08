@@ -31,10 +31,10 @@ import SwallModalRender from './swall-modal.render';
 import LoginRender from './login.render';
 import translate from '../../translate/translate';
 import mainWindow, { staticVar } from '../../util/mainWindow';
-import passphraseGenerator from 'agama-wallet-lib/src/crypto/passphrasegenerator';
-import md5 from 'agama-wallet-lib/src/crypto/md5';
-import { msigPubAddress } from 'agama-wallet-lib/src/keys';
-import networks from 'agama-wallet-lib/src/bitcoinjs-networks';
+import passphraseGenerator from 'safewallet-wallet-lib/src/crypto/passphrasegenerator';
+import md5 from 'safewallet-wallet-lib/src/crypto/md5';
+import { msigPubAddress } from 'safewallet-wallet-lib/src/keys';
+import networks from 'safewallet-wallet-lib/src/bitcoinjs-networks';
 import nnConfig from '../nnConfig';
 
 const SEED_TRIM_TIMEOUT = 5000;
@@ -474,13 +474,13 @@ class Login extends React.Component {
                 let _addressSet = false;
                 mainWindow.multisig.addresses = {};
 
-                if (_coins.indexOf('KMD') > -1) {
-                  res.result = msigPubAddress(mainWindow.multisig.scriptPubKey, networks.kmd);
+                if (_coins.indexOf('SAFE') > -1) {
+                  res.result = msigPubAddress(mainWindow.multisig.scriptPubKey, networks.safe);
                   _addressSet = true;
                 }
 
                 for (let i = 0; i < _coins.length; i++) {
-                  mainWindow.multisig.addresses[_coins[i]] = msigPubAddress(mainWindow.multisig.scriptPubKey, networks[_coins[i].toLowerCase()] || networks.kmd);
+                  mainWindow.multisig.addresses[_coins[i]] = msigPubAddress(mainWindow.multisig.scriptPubKey, networks[_coins[i].toLowerCase()] || networks.safe);
                   
                   if (!_addressSet &&
                       i === 0) {
@@ -489,7 +489,7 @@ class Login extends React.Component {
                   }
                 }
 
-                res.result = msigPubAddress(mainWindow.multisig.scriptPubKey, networks.kmd);
+                res.result = msigPubAddress(mainWindow.multisig.scriptPubKey, networks.safe);
               }
             } catch (e) {
               console.warn('unable to parse multisig data from pin');
@@ -775,18 +775,18 @@ class Login extends React.Component {
             Store.dispatch(
               triggerToaster(
                 _errors,
-                'Komodod',
+                'Safecoind',
                 'error',
                 false
               )
             );
             Store.dispatch(toggleZcparamsFetchModal(true));
           } else {
-            mainWindow.startKMDNative(e.value.toUpperCase());
+            mainWindow.startSAFENative(e.value.toUpperCase());
           }
         });
       } else {
-        mainWindow.startKMDNative(e.value.toUpperCase());
+        mainWindow.startSAFENative(e.value.toUpperCase());
         this.setState({
           selectedShortcutNative: '',
         });

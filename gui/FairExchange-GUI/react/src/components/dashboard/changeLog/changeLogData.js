@@ -18,7 +18,7 @@ const changeLogData = [{
 }, {
   version: '0.3.3',
   changes: [
-    'Latest Komodo binary 0.3.3b from beta branch',
+    'Latest Safecoin binary 0.3.3b from beta branch',
     'Display dPoW Confirmations in Lite Mode',
     'Display rawconfirmations when hovering on confirmations numbers for Native and Lite mode',
     'Display dPoW Confirmation badge for Native and Lite mode',
@@ -34,13 +34,13 @@ const changeLogData = [{
 }, {
   version: '0.3.2',
   changes: [
-    'Latest Komodo binary with z_mergetoaddress fix',
-    'Other minor Agama improvements',
+    'Latest Safecoin binary with z_mergetoaddress fix',
+    'Other minor Safewallet improvements',
   ],
 }, {
   version: '0.3.1',
   changes: [
-    'Latest Komodo binary 0.3.1',
+    'Latest Safecoin binary 0.3.1',
     'Offline Signing improvements',
     'Various bug fixes and imporovements',
     'ZILLA parameters updated to not to activate Sapling',
@@ -48,7 +48,7 @@ const changeLogData = [{
 }, {
   version: '0.3.0',
   changes: [
-    'Latest Komodo binary',
+    'Latest Safecoin binary',
     'Sapling ready',
     'Offline Signing',
     'CLI display bug fixed',
@@ -60,22 +60,22 @@ const changeLogData = [{
 }, {
   version: '0.2.43',
   changes: [
-    'Updated komodo binary',
-    'Various fixes (SPV mode, KMD rewards)',
-    'Added KMDice asset chain',
+    'Updated safecoin binary',
+    'Various fixes (SPV mode, SAFE rewards)',
+    'Added SAFEice asset chain',
     'Added Dionpay asset chain',
   ],
 }, {
   version: '0.2.42',
   changes: [
-    'Updated komodo binary',
+    'Updated safecoin binary',
     'Various fixes',
     'Added PIRATE asset chain',
   ],
 }, {
   version: '0.2.41d',
   changes: [
-    'Updated komodo binary',
+    'Updated safecoin binary',
     'Updated Electron version',
     'Security related updates',
   ],
@@ -98,7 +98,7 @@ const changeLogData = [{
     'KV Electrum servers list',
     'KV empty history display fix',
     'KV history refresh fix',
-    'SPV watchonly hide KMD claim button',
+    'SPV watchonly hide SAFE claim button',
     'Updated support page',
     'SPV balance subtract unconfirmed balance, display info icon',
     'Transaction history CSV export',
@@ -143,7 +143,7 @@ const changeLogData = [{
     'SPV watchonly address mode UI flag',
     'Interest calc edge case fix',
     'Improved seed encrypt, thanks to luke',
-    'Tools get multiple kmd balances option',
+    'Tools get multiple safe balances option',
     'experimental support for custom asset chains, staking and mining',
   ],
 }, {
@@ -168,7 +168,7 @@ const changeLogData = [{
   version: '0.2.33',
   changes: [
     'Seed storage related bug fixes',
-    'Komodod update',
+    'Safecoind update',
   ],
 }, {
   version: '0.2.32',
@@ -215,14 +215,14 @@ const changeLogData = [{
   version: '0.2.29c',
   changes: [
     'Removed fiat asset chains',
-    'Interest claim modal KMD fee info',
+    'Interest claim modal SAFE fee info',
     'SPV empty login fix',
   ],
 }, {
   version: '0.2.29b',
   changes: [
     'Seed trim login fix',
-    'SPV send form will feature fees/totals for all coins and KMD interest to be claimed if applicable',
+    'SPV send form will feature fees/totals for all coins and SAFE interest to be claimed if applicable',
   ],
 }, {
   version: '0.2.29a',
@@ -281,7 +281,7 @@ const changeLogData = [{
 }, {
   version: '0.2.26c-d',
   changes: [
-    'New SPV KMD assets BTCH, MGW',
+    'New SPV SAFE assets BTCH, MGW',
     'Better tooltips',
     'SPV broadcast error info',
     'Send value fix',
@@ -294,7 +294,7 @@ const changeLogData = [{
 }, {
   version: '0.2.26b',
   changes: [
-    'KMD logo update',
+    'SAFE logo update',
     'Coin tile badge pos change',
     'Coin tile stop action render fix',
     'Zcash parameters download modal broken styling fix',
@@ -338,7 +338,7 @@ const changeLogData = [{
     'Settings bip39 key search, target audience ledger wallet users',
     '32 bit os detect, fallback to SPV mode only',
     'SPV is enabled by default',
-    'KMD passive is hidden under experimental option',
+    'SAFE passive is hidden under experimental option',
     'Connection error icon is suppressed during wallet rescan',
     'Native subtract fee error toaster fix',
     'Enable SUPERENT, DEX, BOTS, CRYPTO, HODL, PANGEA, BET, MSHARK are unlocked',
@@ -349,7 +349,7 @@ const changeLogData = [{
     'Settings debug.log reader asset chain support',
     'Send native hide ismine:false addresses',
     'Claim interest added native change description',
-    'KMD asset SHARK to MSHARK change',
+    'SAFE asset SHARK to MSHARK change',
     'Dump z address key fix',
     'Hide address export in SPV',
   ],
@@ -379,21 +379,21 @@ const changeLogData = [{
 }, {
   version: '0.2.24d',
   changes: [
-    'Agama modes explained on startup window',
+    'Safewallet modes explained on startup window',
     'Receive ismine:false toggle',
     'Send / claim interest balance calc fix, discard any ismine:false utxo',
     'Display max available balance on send validation err',
     'Clean gen* files',
-    'Settings clear komodo/chain data folder',
-    'Catch komodod exit/crash',
+    'Settings clear safecoin/chain data folder',
+    'Catch safecoind exit/crash',
   ],
 }, {
   version: '0.2.24c',
   changes: [
     'SPV random server select on add coin',
     'SPV listtransactions zero conf timestamp fix',
-    'Improved komodod down modal, less intrusive',
-    'Komodod prints piped out into log files',
+    'Improved safecoind down modal, less intrusive',
+    'Safecoind prints piped out into log files',
     'Settings native wallet.dat fetch keys',
     'Receive coin WIF key copy button',
     'Disable missing Zcash parameters check for SPV coins',
@@ -401,25 +401,25 @@ const changeLogData = [{
 }, {
   version: '0.2.24a/b',
   changes: [
-    'MNZ, KMD SPV mode related fixes',
+    'MNZ, SAFE SPV mode related fixes',
     'SPV WIF login fix',
     'SPV seed login fix, affected seeds containing non-latin chars',
     'SPV lock',
     'SPV logout',
     'Remove coin',
-    'Komodod detached mode',
-    'Komodod down modal configurable threshold, workaround for false positives',
+    'Safecoind detached mode',
+    'Safecoind down modal configurable threshold, workaround for false positives',
   ],
 }, {
   version: '0.2.0.22-23a',
   changes: [
     'Fixed activating best chain progress update',
-    'Prevent running several Agama instances',
+    'Prevent running several Safewallet instances',
     'CLI passphru fix',
     'Fixed logout bug',
     'Minor placeholders fixes',
     'Hide address dropdown if wallet has only one address',
-    'Komodod crash report modal',
+    'Safecoind crash report modal',
     'Values clipping',
     'Add coin multi UI reflow fix',
     'Reset app setting to default',
@@ -435,15 +435,15 @@ const changeLogData = [{
     'Claim interest modal',
     'Claim interest button on dashboard',
     'Renewed transactions history look',
-    'Prevent app from closing while komodod is still loading/processing data',
+    'Prevent app from closing while safecoind is still loading/processing data',
     'Send form validation',
     'Coin daemon port check on add coin',
     'Updated application settings',
-    'Komodo datadir',
+    'Safecoin datadir',
     'Windows bins path fix',
     'Slow windows sync workaround',
     'Transactions details sorting fix',
-    'Configurable komodod graceful quit timeout parameter',
+    'Configurable safecoind graceful quit timeout parameter',
     'Zcash parameters fetch modal',
     'MNZ asset chain',
     'Deprecated full and basilisk modes',

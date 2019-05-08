@@ -16,29 +16,29 @@ import {
   apiElectrumSplitUtxoPromise,
 } from '../../../actions/actionCreators';
 import Store from '../../../store';
-import coinFees from 'agama-wallet-lib/src/fees';
+import coinFees from 'safewallet-wallet-lib/src/fees';
 import {
   secondsToString,
   checkTimestamp,
-} from 'agama-wallet-lib/src/time';
+} from 'safewallet-wallet-lib/src/time';
 import {
   explorerList,
-  isKomodoCoin,
-} from 'agama-wallet-lib/src/coin-helpers';
+  isSafecoinCoin,
+} from 'safewallet-wallet-lib/src/coin-helpers';
 import {
   isPositiveNumber,
   fromSats,
   toSats,
   parseBitcoinURL,
-} from 'agama-wallet-lib/src/utils';
-import transactionBuilder from 'agama-wallet-lib/src/transaction-builder';
+} from 'safewallet-wallet-lib/src/utils';
+import transactionBuilder from 'safewallet-wallet-lib/src/transaction-builder';
 import mainWindow, { staticVar } from '../../../util/mainWindow';
-import networks from 'agama-wallet-lib/src/bitcoinjs-networks';
+import networks from 'safewallet-wallet-lib/src/bitcoinjs-networks';
 import {
   stringToWif,
   multisig,
   addressVersionCheck,
-} from 'agama-wallet-lib/src/keys';
+} from 'safewallet-wallet-lib/src/keys';
 import devlog from '../../../util/devlog';
 
 const { shell } = window.require('electron');
@@ -56,11 +56,11 @@ class ToolsMultisigTx extends React.Component {
       balance: null,
       utxo: null,
       txPushResult: null,
-      agamaGeneratedAddress: false,
-      agamaMultisigData: null,
-      agamaMultisigIncompleteTx: null,
-      agamaMultisigIncompleteTxParsed: null,
-      agamaMultisigTxOut: null,
+      safewalletGeneratedAddress: false,
+      safewalletMultisigData: null,
+      safewalletMultisigIncompleteTx: null,
+      safewalletMultisigIncompleteTxParsed: null,
+      safewalletMultisigTxOut: null,
       creator: true,
       seed: '',
     };
@@ -73,7 +73,7 @@ class ToolsMultisigTx extends React.Component {
     this.copyTx = this.copyTx.bind(this);
     this.copyTxData = this.copyTxData.bind(this);
     this.validateSendFormData = this.validateSendFormData.bind(this);
-    this.toggleAgamaGen = this.toggleAgamaGen.bind(this);
+    this.toggleSafewalletGen = this.toggleSafewalletGen.bind(this);
     this.toggleCreator = this.toggleCreator.bind(this);
     this.verifyTx = this.verifyTx.bind(this);
     this.pushTx = this.pushTx.bind(this);
@@ -88,15 +88,15 @@ class ToolsMultisigTx extends React.Component {
   pushTx() {
     apiToolsPushTx(
       this.state.selectedCoin.split('|')[0].toLowerCase(),
-      this.state.agamaMultisigTxOut.rawtx
+      this.state.safewalletMultisigTxOut.rawtx
     )
     .then((res) => {
       devlog(res);
 
       this.setState({
-        agamaMultisigIncompleteTx: null,
-        agamaMultisigIncompleteTxParsed: null,
-        agamaMultisigTxOut: null,
+        safewalletMultisigIncompleteTx: null,
+        safewalletMultisigIncompleteTxParsed: null,
+        safewalletMultisigTxOut: null,
         txPushResult: res.result,
       });
     });
@@ -104,9 +104,9 @@ class ToolsMultisigTx extends React.Component {
 
   verifyTx() {
     if (this.state.seed ||
-        (this.state.agamaMultisigData && JSON.parse(this.state.agamaMultisigData).signKey)) {
-      const _parsedIncompleteTxData = JSON.parse(this.state.agamaMultisigIncompleteTx);
-      const _seed = this.state.agamaMultisigData && JSON.parse(this.state.agamaMultisigData).signKey ? JSON.parse(this.state.agamaMultisigData).signKey : this.state.seed;
+        (this.state.safewalletMultisigData && JSON.parse(this.state.safewalletMultisigData).signKey)) {
+      const _parsedIncompleteTxData = JSON.parse(this.state.safewalletMultisigIncompleteTx);
+      const _seed = this.state.safewalletMultisigData && JSON.parse(this.state.safewalletMultisigData).signKey ? JSON.parse(this.state.safewalletMultisigData).signKey : this.state.seed;
       const _kp = stringToWif(_seed, _parsedIncompleteTxData.inputData.network, true);
 
       if (_parsedIncompleteTxData.sigs.indexOf(_kp.pubHex) > -1) {
@@ -119,7 +119,7 @@ class ToolsMultisigTx extends React.Component {
         );
       } else {
         this.setState({
-          agamaMultisigIncompleteTxParsed: _parsedIncompleteTxData,
+          safewalletMultisigIncompleteTxParsed: _parsedIncompleteTxData,
           seed: _seed, 
           selectedCoin: `${_parsedIncompleteTxData.inputData.coin.toUpperCase()}|spv`,
         });
@@ -142,19 +142,19 @@ class ToolsMultisigTx extends React.Component {
     setTimeout(() => {
       if (mainWindow.multisig) {
         this.setState({
-          agamaMultisigData: JSON.stringify(mainWindow.multisig),
+          safewalletMultisigData: JSON.stringify(mainWindow.multisig),
         });
       }
     }, 100);
   }
 
   copyTxData() {
-    Store.dispatch(copyString(JSON.stringify(this.state.agamaMultisigTxOut), translate('TOOLS.TX_DATA_COPIED')));
+    Store.dispatch(copyString(JSON.stringify(this.state.safewalletMultisigTxOut), translate('TOOLS.TX_DATA_COPIED')));
   }
 
-  toggleAgamaGen() {
+  toggleSafewalletGen() {
     this.setState({
-      agamaGeneratedAddress: !this.state.agamaGeneratedAddress,
+      safewalletGeneratedAddress: !this.state.safewalletGeneratedAddress,
     });
   }
 
@@ -218,7 +218,7 @@ class ToolsMultisigTx extends React.Component {
       let _validateAddress;
       let _msg;
   
-      _validateAddress = addressVersionCheck(networks[_coin.toLowerCase()] || networks.kmd, this.state[type]);
+      _validateAddress = addressVersionCheck(networks[_coin.toLowerCase()] || networks.safe, this.state[type]);
   
       if (_validateAddress === 'Invalid pub address' ||
           !_validateAddress) {
@@ -276,9 +276,9 @@ class ToolsMultisigTx extends React.Component {
     const _coin = this.state.selectedCoin.split('|')[0];
     let _sendFrom = this.state.sendFrom;
 
-    if (!this.state.agamaGeneratedAddress) {
+    if (!this.state.safewalletGeneratedAddress) {
       try {
-        const _multisigData = JSON.parse(this.state.agamaMultisigData);
+        const _multisigData = JSON.parse(this.state.safewalletMultisigData);
 
         if (!_multisigData.hasOwnProperty('redeemScript') ||
             !_multisigData.hasOwnProperty('scriptPubKey') ||
@@ -295,7 +295,7 @@ class ToolsMultisigTx extends React.Component {
 
           _sendFrom = multisig.redeemScriptToPubAddress(
             _multisigData.scriptPubKey,
-            networks[_coin.toLowerCase()] || networks.kmd
+            networks[_coin.toLowerCase()] || networks.safe
           );
           this.setState({
             sendFrom: _sendFrom,
@@ -344,7 +344,7 @@ class ToolsMultisigTx extends React.Component {
 
         if (this.state.creator) {
           _data = transactionBuilder.data(
-            networks[_coin[0].toLowerCase()] || networks.kmd,
+            networks[_coin[0].toLowerCase()] || networks.safe,
             toSats(this.state.amount),
             staticVar.spvFees[_coin[0].toUpperCase()],
             this.state.sendTo,
@@ -352,10 +352,10 @@ class ToolsMultisigTx extends React.Component {
             utxos.result
           );
         } else {
-          _data = this.state.agamaMultisigIncompleteTxParsed.inputData;
+          _data = this.state.safewalletMultisigIncompleteTxParsed.inputData;
         }
 
-        const _multisigData = JSON.parse(this.state.agamaMultisigData);
+        const _multisigData = JSON.parse(this.state.safewalletMultisigData);
         const _kp = stringToWif(this.state.seed, _data.network, true);
         let _multisigOptions;
         let _sigs = [];
@@ -371,7 +371,7 @@ class ToolsMultisigTx extends React.Component {
             _multisigOptions.incomplete = true;
           }
         } else {
-          const _incompleteTx = JSON.parse(JSON.stringify(this.state.agamaMultisigIncompleteTxParsed));
+          const _incompleteTx = JSON.parse(JSON.stringify(this.state.safewalletMultisigIncompleteTxParsed));
           _sigs = _incompleteTx.sigs;
 
           devlog(_incompleteTx);
@@ -426,7 +426,7 @@ class ToolsMultisigTx extends React.Component {
             fee: _data.fee,
             from: multisig.redeemScriptToPubAddress(
               _multisigData.scriptPubKey,
-              networks[_coin[0].toLowerCase()] || networks.kmd
+              networks[_coin[0].toLowerCase()] || networks.safe
             ),
             coin: _coin[0].toLowerCase(),
           },
@@ -435,7 +435,7 @@ class ToolsMultisigTx extends React.Component {
         devlog(_multisigOut);
 
         this.setState({
-          agamaMultisigTxOut: _multisigOut,
+          safewalletMultisigTxOut: _multisigOut,
         });
       };
 
@@ -493,7 +493,7 @@ class ToolsMultisigTx extends React.Component {
   }
 
   renderSignatures() {
-    const _sigs = this.state.agamaMultisigIncompleteTxParsed.sigs;
+    const _sigs = this.state.safewalletMultisigIncompleteTxParsed.sigs;
     let _items = [];
 
     for (let i = 0; i < _sigs.length; i++) {
@@ -519,7 +519,7 @@ class ToolsMultisigTx extends React.Component {
           <div className="col-xlg-12 form-group form-material no-padding-left padding-bottom-70">
             <label
               className="control-label col-sm-2 no-padding-left"
-              htmlFor="kmdWalletSendTo">
+              htmlFor="safeWalletSendTo">
               { translate('TOOLS.COIN') }
             </label>
             <Select
@@ -556,30 +556,30 @@ class ToolsMultisigTx extends React.Component {
             <label className="switch">
               <input
                 type="checkbox"
-                checked={ this.state.agamaGeneratedAddress }
+                checked={ this.state.safewalletGeneratedAddress }
                 readOnly />
               <div
                 className="slider"
-                onClick={ this.toggleAgamaGen }></div>
+                onClick={ this.toggleSafewalletGen }></div>
             </label>
             <div
               className="toggle-label margin-right-15 pointer iguana-core-toggle"
               disabled="true"
-              onClick={ this.toggleAgamaGen }>
-              I generated multisig address elsewhere (native daemon such as komodod or other wallet app)
+              onClick={ this.toggleSafewalletGen }>
+              I generated multisig address elsewhere (native daemon such as safecoind or other wallet app)
             </div>
           </div>*/
         }
-        { !this.state.agamaGeneratedAddress &&
+        { !this.state.safewalletGeneratedAddress &&
           <div className="col-sm-12 form-group form-material no-padding-left margin-top-20">
             <textarea
               rows="5"
               cols="20"
               className="col-sm-7 blur"
               onChange={ this.updateInput }
-              name="agamaMultisigData"
-              placeholder={ translate('TOOLS.PROVIDE_AGAMA_MULTISIG_DATA_HERE') }
-              value={ this.state.agamaMultisigData }></textarea>
+              name="safewalletMultisigData"
+              placeholder={ translate('TOOLS.PROVIDE_SAFEWALLET_MULTISIG_DATA_HERE') }
+              value={ this.state.safewalletMultisigData }></textarea>
           </div>
         }
         { !this.state.creator &&
@@ -589,15 +589,15 @@ class ToolsMultisigTx extends React.Component {
               cols="20"
               className="col-sm-7 blur"
               onChange={ this.updateInput }
-              name="agamaMultisigIncompleteTx"
-              placeholder={ translate('TOOLS.PROVIDE_AGAMA_GENERATED_INCOMPLETE_MULTISIG_DATA_HERE') }
-              value={ this.state.agamaMultisigIncompleteTx }></textarea>
+              name="safewalletMultisigIncompleteTx"
+              placeholder={ translate('TOOLS.PROVIDE_SAFEWALLET_GENERATED_INCOMPLETE_MULTISIG_DATA_HERE') }
+              value={ this.state.safewalletMultisigIncompleteTx }></textarea>
           </div>
         }
         <div className="col-sm-12 form-group form-material no-padding-left">
           <label
             className="control-label col-sm-2 no-padding-left"
-            htmlFor="kmdWalletSendTo">
+            htmlFor="safeWalletSendTo">
             { translate('TOOLS.SEED_OR_WIF') }
           </label>
           <input
@@ -606,7 +606,7 @@ class ToolsMultisigTx extends React.Component {
             name="seed"
             onChange={ this.updateInput }
             value={ this.state.seed }
-            id="kmdWalletSendTo"
+            id="safeWalletSendTo"
             placeholder={ `${translate('TOOLS.ENTER_A_SEED')} ${translate('TOOLS.OR_WIF')}` }
             disabled={
               mainWindow.multisig &&
@@ -620,7 +620,7 @@ class ToolsMultisigTx extends React.Component {
             <div className="col-sm-12 form-group form-material no-padding-left margin-top-20">
               <label
                 className="control-label col-sm-2 no-padding-left"
-                htmlFor="kmdWalletSendTo">
+                htmlFor="safeWalletSendTo">
                 { translate('INDEX.SEND_FROM') }
               </label>
               <input
@@ -629,10 +629,10 @@ class ToolsMultisigTx extends React.Component {
                 name="sendFrom"
                 onChange={ this.updateInput }
                 value={ this.state.sendFrom }
-                id="kmdWalletSendTo"
-                placeholder={ !this.state.agamaGeneratedAddress ? translate('TOOLS.CLICK_ON_GET_BALANCE_BUTTON_BELOW') : translate('SEND.ENTER_ADDRESS') }
+                id="safeWalletSendTo"
+                placeholder={ !this.state.safewalletGeneratedAddress ? translate('TOOLS.CLICK_ON_GET_BALANCE_BUTTON_BELOW') : translate('SEND.ENTER_ADDRESS') }
                 autoComplete="off"
-                disabled={ !this.state.agamaGeneratedAddress }
+                disabled={ !this.state.safewalletGeneratedAddress }
                 required />
             </div>
             <div className="col-sm-12 form-group form-material no-padding-left margin-top-10 padding-bottom-10">
@@ -652,7 +652,7 @@ class ToolsMultisigTx extends React.Component {
             <div className="col-sm-12 form-group form-material no-padding-left">
               <label
                 className="control-label col-sm-2 no-padding-left"
-                htmlFor="kmdWalletSendTo">
+                htmlFor="safeWalletSendTo">
                 { translate('INDEX.SEND_TO') }
               </label>
               <input
@@ -661,7 +661,7 @@ class ToolsMultisigTx extends React.Component {
                 name="sendTo"
                 onChange={ this.updateInput }
                 value={ this.state.sendTo }
-                id="kmdWalletSendTo"
+                id="safeWalletSendTo"
                 placeholder={ translate('SEND.ENTER_ADDRESS') }
                 autoComplete="off"
                 required />
@@ -669,7 +669,7 @@ class ToolsMultisigTx extends React.Component {
             <div className="col-sm-12 form-group form-material no-padding-left">
               <label
                 className="control-label col-sm-2 no-padding-left"
-                htmlFor="kmdWalletAmount">
+                htmlFor="safeWalletAmount">
                 { translate('INDEX.AMOUNT') }
               </label>
               <input
@@ -678,7 +678,7 @@ class ToolsMultisigTx extends React.Component {
                 name="amount"
                 value={ this.state.amount }
                 onChange={ this.updateInput }
-                id="kmdWalletAmount"
+                id="safeWalletAmount"
                 placeholder="0.000"
                 autoComplete="off" />
               { this.state.balance &&
@@ -694,22 +694,22 @@ class ToolsMultisigTx extends React.Component {
           </div>
         }
         { !this.state.creator &&
-          !this.state.agamaMultisigIncompleteTxParsed &&
+          !this.state.safewalletMultisigIncompleteTxParsed &&
           <div className="col-sm-12 form-group form-material no-padding-left margin-top-20">
             <button
               type="button"
               className="btn btn-primary col-sm-2"
               onClick={ this.verifyTx }
               disabled={
-                !this.state.agamaMultisigIncompleteTx
+                !this.state.safewalletMultisigIncompleteTx
               }>
               { translate('TOOLS.VERIFY_TX') }
             </button>
           </div>
         }
         { !this.state.creator &&
-          this.state.agamaMultisigIncompleteTxParsed &&
-          this.state.agamaMultisigIncompleteTxParsed.inputData &&
+          this.state.safewalletMultisigIncompleteTxParsed &&
+          this.state.safewalletMultisigIncompleteTxParsed.inputData &&
           <div className="col-sm-12 form-group form-material no-padding-left padding-top-5 no-margin-bottom">
             <h5>{ translate('INDEX.TX_DETAILS') }</h5>
             <table className="table table-hover dataTable table-striped">
@@ -719,7 +719,7 @@ class ToolsMultisigTx extends React.Component {
                     <strong>{ translate('INDEX.SEND_FROM') }</strong>
                   </td>
                   <td>
-                    { this.state.agamaMultisigIncompleteTxParsed.inputData.from }
+                    { this.state.safewalletMultisigIncompleteTxParsed.inputData.from }
                   </td>
                 </tr>
                 <tr>
@@ -727,7 +727,7 @@ class ToolsMultisigTx extends React.Component {
                     <strong>{ translate('INDEX.SEND_TO') }</strong>
                   </td>
                   <td>
-                    { this.state.agamaMultisigIncompleteTxParsed.inputData.outputAddress }
+                    { this.state.safewalletMultisigIncompleteTxParsed.inputData.outputAddress }
                   </td>
                 </tr>
                 <tr>
@@ -735,7 +735,7 @@ class ToolsMultisigTx extends React.Component {
                     <strong>{ translate('TOOLS.AMOUNT') }</strong>
                   </td>
                   <td>
-                    { fromSats(this.state.agamaMultisigIncompleteTxParsed.inputData.value) }
+                    { fromSats(this.state.safewalletMultisigIncompleteTxParsed.inputData.value) }
                   </td>
                 </tr>
                 <tr>
@@ -743,7 +743,7 @@ class ToolsMultisigTx extends React.Component {
                     <strong>{ translate('TOOLS.FEE') }</strong>
                   </td>
                   <td>
-                    { fromSats(this.state.agamaMultisigIncompleteTxParsed.inputData.fee) }
+                    { fromSats(this.state.safewalletMultisigIncompleteTxParsed.inputData.fee) }
                   </td>
                 </tr>
                 <tr>
@@ -751,7 +751,7 @@ class ToolsMultisigTx extends React.Component {
                     <strong>{ translate('TOOLS.CHANGE') }</strong>
                   </td>
                   <td>
-                    { fromSats(this.state.agamaMultisigIncompleteTxParsed.inputData.change) } { translate('TOOLS.TO_SM') } { this.state.agamaMultisigIncompleteTxParsed.inputData.changeAddress }
+                    { fromSats(this.state.safewalletMultisigIncompleteTxParsed.inputData.change) } { translate('TOOLS.TO_SM') } { this.state.safewalletMultisigIncompleteTxParsed.inputData.changeAddress }
                   </td>
                 </tr>
                 <tr>
@@ -766,7 +766,7 @@ class ToolsMultisigTx extends React.Component {
             </table>
           </div>
         }
-        { (this.state.creator || this.state.agamaMultisigIncompleteTxParsed) &&
+        { (this.state.creator || this.state.safewalletMultisigIncompleteTxParsed) &&
           <div className="col-sm-12 form-group form-material no-padding-left margin-top-20">
             <button
               type="button"
@@ -779,13 +779,13 @@ class ToolsMultisigTx extends React.Component {
                 !this.state.sendTo ||
                 !this.state.selectedCoin ||
                 !this.state.amount)) ||
-                (!this.state.creator && (!this.state.agamaMultisigData || !this.state.agamaMultisigIncompleteTx))
+                (!this.state.creator && (!this.state.safewalletMultisigData || !this.state.safewalletMultisigIncompleteTx))
               }>
               { translate('TOOLS' + (this.state.creator ? 'GENERATE_MULTISIG_TX' : 'SIGN_MULTISIG_TX')) }
             </button>
-            { this.state.agamaMultisigTxOut &&
-              this.state.agamaMultisigTxOut.sigs &&
-              this.state.agamaMultisigTxOut.sigs.length === Number(this.state.agamaMultisigTxOut.multisigData.nOfN.split('-')[0]) &&
+            { this.state.safewalletMultisigTxOut &&
+              this.state.safewalletMultisigTxOut.sigs &&
+              this.state.safewalletMultisigTxOut.sigs.length === Number(this.state.safewalletMultisigTxOut.multisigData.nOfN.split('-')[0]) &&
               <button
                 type="button"
                 className="btn btn-primary col-sm-2 margin-left-25"
@@ -795,17 +795,17 @@ class ToolsMultisigTx extends React.Component {
             }
           </div>
         }
-        { this.state.agamaMultisigTxOut &&
+        { this.state.safewalletMultisigTxOut &&
           !this.state.txPushResult &&
           <div className="col-sm-12 form-group form-material no-padding-left margin-top-20">
             <div>
               <strong>{ translate('TOOLS.MULTISIG_TX_DATA') }</strong>
             </div>
             <div className="padding-top-10 padding-bottom-10">
-              <strong>{ translate('TOOLS.SIGNATURES') }: { this.state.agamaMultisigTxOut.sigs.length } { translate('TOOLS.OF_SM') } { this.state.agamaMultisigTxOut.multisigData.nOfN.split('-')[0] } </strong>
+              <strong>{ translate('TOOLS.SIGNATURES') }: { this.state.safewalletMultisigTxOut.sigs.length } { translate('TOOLS.OF_SM') } { this.state.safewalletMultisigTxOut.multisigData.nOfN.split('-')[0] } </strong>
             </div>
             <div className="word-break--all blur selectable">
-              { JSON.stringify(this.state.agamaMultisigTxOut) }
+              { JSON.stringify(this.state.safewalletMultisigTxOut) }
               <button
                 className="btn btn-default btn-xs clipboard-edexaddr margin-left-10"
                 title={ translate('INDEX.COPY_TO_CLIPBOARD') }
@@ -823,7 +823,7 @@ class ToolsMultisigTx extends React.Component {
                   { this.state.selectedCoin.split('|')[0].toUpperCase() } { translate('TOOLS.TX_PUSHED') }!
                 </div>
                 <div>
-                { translate('KMD_NATIVE.TXID') }: <div className="blur selectable word-break--all">{ this.state.txPushResult }</div>
+                { translate('SAFE_NATIVE.TXID') }: <div className="blur selectable word-break--all">{ this.state.txPushResult }</div>
                   <div className="margin-top-10">
                     <button
                       type="button"

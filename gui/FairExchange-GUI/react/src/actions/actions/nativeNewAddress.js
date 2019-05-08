@@ -5,12 +5,12 @@ import {
 } from '../actionCreators';
 import Config, {
   token,
-  agamaPort,
+  safewalletPort,
   rpc2cli,
 } from '../../config';
 import fetchType from '../../util/fetchType';
 
-export const getNewKMDAddresses = (coin, pubpriv, mode) => {
+export const getNewSAFEAddresses = (coin, pubpriv, mode) => {
   return dispatch => {
     const payload = {
       mode: null,
@@ -21,14 +21,14 @@ export const getNewKMDAddresses = (coin, pubpriv, mode) => {
     };
 
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/cli`,
+      `http://127.0.0.1:${safewalletPort}/api/cli`,
       fetchType(JSON.stringify({ payload: payload })).post
     )
     .catch((error) => {
       console.log(error);
       dispatch(
         triggerToaster(
-          translate('API.getNewAddress') + ' (code: getNewKMDAddresses)',
+          translate('API.getNewAddress') + ' (code: getNewSAFEAddresses)',
           translate('TOASTR.ERROR'),
           'error'
         )
@@ -40,7 +40,7 @@ export const getNewKMDAddresses = (coin, pubpriv, mode) => {
       dispatch(
         triggerToaster(
           json.result ? json.result : json,
-          translate('KMD_NATIVE.NEW_ADDR_GENERATED'),
+          translate('SAFE_NATIVE.NEW_ADDR_GENERATED'),
           'info selectable',
           false
         )
@@ -52,7 +52,7 @@ export const getNewKMDAddresses = (coin, pubpriv, mode) => {
       dispatch(
         triggerToaster(
           json.result ? json.result : json,
-          translate('KMD_NATIVE.NEW_ADDR_GENERATED'),
+          translate('SAFE_NATIVE.NEW_ADDR_GENERATED'),
           'info',
           false
         )

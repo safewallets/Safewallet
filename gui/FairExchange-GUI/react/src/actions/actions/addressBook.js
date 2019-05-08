@@ -1,7 +1,7 @@
 import { ADDRESS_BOOK } from '../storeType';
 import Config, {
   token,
-  agamaPort,
+  safewalletPort,
 } from '../../config';
 import { triggerToaster } from '../actionCreators';
 import translate from '../../translate/translate';
@@ -17,7 +17,7 @@ export const modifyAddressBook = (data) => {
 
   return new Promise((resolve, reject) => {
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/addressbook`,
+      `http://127.0.0.1:${safewalletPort}/api/addressbook`,
       fetchType(JSON.stringify(payload)).post
     )
     .catch((error) => {
@@ -55,7 +55,7 @@ export const loadAddressBook = () => {
       token,
     };
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/addressbook${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/addressbook${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {

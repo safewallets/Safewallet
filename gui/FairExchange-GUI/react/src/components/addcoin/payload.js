@@ -1,11 +1,11 @@
 // TODO: merge check functions
 //			 move to nodejs
 //			 cleanup
-import { isKomodoCoin } from 'agama-wallet-lib/src/coin-helpers';
+import { isSafecoinCoin } from 'safewallet-wallet-lib/src/coin-helpers';
 import { staticVar } from '../../util/mainWindow';
 
 export const checkAC = (coinVal) => {
-	return isKomodoCoin(coinVal, true);
+	return isSafecoinCoin(coinVal, true);
 }
 
 export const startCurrencyAssetChain = (confpath, coin, mode) => {
@@ -29,6 +29,6 @@ export const startAssetChain = (confpath, coin, mode, getSuppyOnly) => {
 export const startCrypto = (confpath, coin, mode) => {
 	const assetChainPorts = staticVar.assetChainPorts;
 
-	coin = coin === 'KMD' ? 'komodod' : coin;
+	coin = coin === 'SAFE' ? 'safecoind' : coin;
 	return assetChainPorts[coin];
 }

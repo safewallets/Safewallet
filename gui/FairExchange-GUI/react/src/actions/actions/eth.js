@@ -6,7 +6,7 @@ import {
 import translate from '../../translate/translate';
 import Config, {
   token,
-  agamaPort,
+  safewalletPort,
 } from '../../config';
 import {
   triggerToaster,
@@ -17,12 +17,12 @@ import Store from '../../store';
 import urlParams from '../../util/url';
 import fetchType from '../../util/fetchType';
 import mainWindow from '../../util/mainWindow';
-import erc20ContractId from 'agama-wallet-lib/src/eth-erc20-contract-id';
+import erc20ContractId from 'safewallet-wallet-lib/src/eth-erc20-contract-id';
 
 export const apiEthereumAuth = (seed) => {
   return dispatch => {
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/eth/auth`,
+      `http://127.0.0.1:${safewalletPort}/api/eth/auth`,
       fetchType(
         JSON.stringify({
           seed,
@@ -65,7 +65,7 @@ export const apiEthereumCoins = () => {
       token,
     };
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/eth/coins${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/eth/coins${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -95,7 +95,7 @@ export const apiEthereumCoinsState = (json) => {
 export const apiEthereumKeys = (seed) => {
   return new Promise((resolve, reject) => {
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/eth/keys`,
+      `http://127.0.0.1:${safewalletPort}/api/eth/keys`,
       fetchType(
         JSON.stringify({
           seed,
@@ -147,7 +147,7 @@ export const apiEthereumBalance = (coin, address) => {
     }
 
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/eth/balance${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/eth/balance${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -203,7 +203,7 @@ export const apiEthereumTransactions = (coin, address) => {
     }
 
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/eth/transactions${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/eth/transactions${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -256,7 +256,7 @@ export const apiEthereumGasPrice = () => {
       token,
     };
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/eth/gasprice/${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/eth/gasprice/${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -301,7 +301,7 @@ export const apiEthereumSend = (coin, dest, amount, speed, push) => {
     }
 
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/eth/createtx${erc20ContractId[coin] ? '/erc20' : ''}${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/eth/createtx${erc20ContractId[coin] ? '/erc20' : ''}${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -335,7 +335,7 @@ export const apiEthereumSendERC20Preflight = (symbol, dest, amount, speed) => {
     };
 
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/eth/createtx/erc20${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/eth/createtx/erc20${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -382,7 +382,7 @@ export const apiEthereumBalancePromise = (coin, address) => {
     }
 
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/eth/balance${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/eth/balance${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {

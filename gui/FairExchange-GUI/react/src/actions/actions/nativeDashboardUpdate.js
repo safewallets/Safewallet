@@ -1,7 +1,7 @@
 import { triggerToaster } from '../actionCreators';
 import Config, {
   token,
-  agamaPort,
+  safewalletPort,
   rpc2cli,
 } from '../../config';
 import { DASHBOARD_UPDATE } from '../storeType';
@@ -12,7 +12,7 @@ import translate from '../../translate/translate';
 export const getDashboardUpdate = (coin, activeCoinProps) => {
   return dispatch => {
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/native/dashboard/update`,
+      `http://127.0.0.1:${safewalletPort}/api/native/dashboard/update`,
       fetchType(
         JSON.stringify({
           coin: coin,

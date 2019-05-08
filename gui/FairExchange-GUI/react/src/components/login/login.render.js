@@ -11,8 +11,8 @@ import nnConfig from '../nnConfig';
 const LoginRender = function() {
   let shortcuts = [
     {
-      value: 'kmd',
-      label: 'kmd',
+      value: 'safe',
+      label: 'safe',
     },
     {
       value: 'pirate',
@@ -31,8 +31,8 @@ const LoginRender = function() {
       label: 'jumblr',
     },
     {
-      value: 'kmd+revs+jumblr',
-      label: 'kmd+revs+jumblr',
+      value: 'safe+revs+jumblr',
+      label: 'safe+revs+jumblr',
     },
   ];
 
@@ -40,8 +40,8 @@ const LoginRender = function() {
       Math.floor(Date.now() / 1000) < nnConfig.deactivation) {
     shortcuts.shift();
     shortcuts.unshift({
-      value: 'kmd',
-      label: 'kmd',
+      value: 'safe',
+      label: 'safe',
     }, {
       value: 'vote2019',
       label: 'vote2019',
@@ -58,10 +58,10 @@ const LoginRender = function() {
           <div className="brand">
             <img
               className="brand-img"
-              src="assets/images/agama-login-logo.svg"
+              src="assets/images/safewallet-login-logo.svg"
               width="200"
               height="160"
-              alt="SuperNET Agama" />
+              alt="SuperNET Safewallet" />
           </div>
           <div className="login-settings-dropdown margin-bottom-30">
             <div>
@@ -82,7 +82,7 @@ const LoginRender = function() {
                   </li>
                   <li>
                     <a onClick={ () => this.toggleLoginSettingsDropdownSection('about') }>
-                      <i className="icon fa-users"></i> { translate('ABOUT.ABOUT_AGAMA') }
+                      <i className="icon fa-users"></i> { translate('ABOUT.ABOUT_SAFEWALLET') }
                     </a>
                   </li>
                   <li>
@@ -552,7 +552,7 @@ const LoginRender = function() {
                     qrSize="256"
                     modalSize="md"
                     title={ translate('LOGIN.SEED_QR_RECOVERY') }
-                    fileName="agama-seed"
+                    fileName="safewallet-seed"
                     content={ this.state.randomSeed } />
                 </div>
               </div>

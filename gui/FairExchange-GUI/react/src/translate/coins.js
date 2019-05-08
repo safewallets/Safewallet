@@ -134,7 +134,7 @@ const coins = {
     BTX: 'Bitcore',
     QTUM: 'Qtum',
     BTCZ: 'BitcoinZ',
-    KMD: 'Komodo',
+    SAFE: 'Safecoin',
     CHIPS: 'Chips',
     MZC: 'Mazacoin',
     ZET: 'Zetacoin',

@@ -1,7 +1,7 @@
 import { triggerToaster } from '../actionCreators';
 import Config, {
   token,
-  agamaPort,
+  safewalletPort,
 } from '../../config';
 import Store from '../../store';
 import translate from '../../translate/translate';
@@ -11,7 +11,7 @@ import fetchType from '../../util/fetchType';
 export const apiElectrumLock = () => {
   return new Promise((resolve, reject) => {
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/lock`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/lock`,
       fetchType(JSON.stringify({ token })).post
     )
     .catch((error) => {
@@ -32,7 +32,7 @@ export const apiElectrumLock = () => {
 export const apiElectrumLogout = () => {
   return new Promise((resolve, reject) => {
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/electrum/logout`,
+      `http://127.0.0.1:${safewalletPort}/api/electrum/logout`,
       fetchType(JSON.stringify({ token })).post
     )
     .catch((error) => {
@@ -53,8 +53,8 @@ export const apiElectrumLogout = () => {
 export const apiStopCoind = (coin) => {
   return new Promise((resolve, reject) => {
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/coind/stop`,
-      fetchType(coin === 'KMD' ? JSON.stringify({ token }) : JSON.stringify({
+      `http://127.0.0.1:${safewalletPort}/api/coind/stop`,
+      fetchType(coin === 'SAFE' ? JSON.stringify({ token }) : JSON.stringify({
         chain: coin,
         token,
       })).post
@@ -77,9 +77,9 @@ export const apiStopCoind = (coin) => {
 export const apiRemoveCoin = (coin, mode) => {
   return new Promise((resolve, reject, dispatch) => {
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/coins/remove`,
+      `http://127.0.0.1:${safewalletPort}/api/coins/remove`,
       fetchType(
-        JSON.stringify(coin === 'KMD' && mode === 'native' ? {
+        JSON.stringify(coin === 'SAFE' && mode === 'native' ? {
           mode,
           token,
         } : {
@@ -121,7 +121,7 @@ export const apiGetCoinList = () => {
       token,
     };
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/coinslist${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/coinslist${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -141,7 +141,7 @@ export const apiGetCoinList = () => {
 
 export const apiPostCoinList = (data) => {
   return new Promise((resolve, reject) => {
-    fetch(`http://127.0.0.1:${agamaPort}/api/coinslist`,
+    fetch(`http://127.0.0.1:${safewalletPort}/api/coinslist`,
       fetchType(
         JSON.stringify({
           payload: data,
@@ -176,7 +176,7 @@ export const apiClearCoindFolder = (coin, keepWalletDat) => {
       coin,
     };
     fetch(
-      keepWalletDat ? `http://127.0.0.1:${agamaPort}/api/kick${urlParams(_urlParams1)}` : `http://127.0.0.1:${Config.agamaPort}/api/kick${urlParams(_urlParams2)}`,
+      keepWalletDat ? `http://127.0.0.1:${safewalletPort}/api/kick${urlParams(_urlParams1)}` : `http://127.0.0.1:${Config.safewalletPort}/api/kick${urlParams(_urlParams2)}`,
       fetchType.get
     )
     .catch((error) => {

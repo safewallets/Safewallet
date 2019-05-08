@@ -12,8 +12,8 @@ import {
 } from '../../../actions/actionCreators';
 import translate from '../../../translate/translate';
 import ImportKeyModalRender from './importKeyModal.render';
-import { seedToWif } from 'agama-wallet-lib/src/keys';
-import btcNetworks from 'agama-wallet-lib/src/bitcoinjs-networks';
+import { seedToWif } from 'safewallet-wallet-lib/src/keys';
+import btcNetworks from 'safewallet-wallet-lib/src/bitcoinjs-networks';
 
 const SEED_TRIM_TIMEOUT = 5000;
 
@@ -134,15 +134,15 @@ class ImportKeyModal extends React.Component {
         const _keys = this.state.multipleWif.split('\n');
 
         for (let i = 0; i < _keys.length; i++) {
-          if (this.props.ActiveCoin.coin !== 'KMD' ||
-              (this.props.ActiveCoin.coin === 'KMD' && _keys[i] && _keys[i][0] !== 'S' && _keys[i][1] !== 'K' && _keys[i].indexOf('secret-extended-key-main') ==- -1)) {
+          if (this.props.ActiveCoin.coin !== 'SAFE' ||
+              (this.props.ActiveCoin.coin === 'SAFE' && _keys[i] && _keys[i][0] !== 'S' && _keys[i][1] !== 'K' && _keys[i].indexOf('secret-extended-key-main') ==- -1)) {
             setTimeout(() => {
               this.importWifAddress(_keys[i], i === _keys.length - 1 ? this.state.importWithRescan : false, true);
             }, i * 1000);
           } else {
             Store.dispatch(
               triggerToaster(
-                translate('IMPORT_KEY.KMD_Z_KEY_DEPRECATED'),
+                translate('IMPORT_KEY.SAFE_Z_KEY_DEPRECATED'),
                 translate('TOASTR.ERROR'),
                 'error'
               )
@@ -151,13 +151,13 @@ class ImportKeyModal extends React.Component {
         }
       }
     } else {
-      if (this.props.ActiveCoin.coin !== 'KMD' ||
-          (this.props.ActiveCoin.coin === 'KMD' && this.state.wif && this.state.wif[0] !== 'S' && this.state.wif[1] !== 'K' && this.state.wif.indexOf('secret-extended-key-main') ==- -1)) {
+      if (this.props.ActiveCoin.coin !== 'SAFE' ||
+          (this.props.ActiveCoin.coin === 'SAFE' && this.state.wif && this.state.wif[0] !== 'S' && this.state.wif[1] !== 'K' && this.state.wif.indexOf('secret-extended-key-main') ==- -1)) {
         this.importWifAddress(this.state.wif, this.state.importWithRescan);
       } else {
         Store.dispatch(
           triggerToaster(
-            translate('IMPORT_KEY.KMD_Z_KEY_DEPRECATED'),
+            translate('IMPORT_KEY.SAFE_Z_KEY_DEPRECATED'),
             translate('TOASTR.ERROR'),
             'error'
           )
@@ -174,10 +174,10 @@ class ImportKeyModal extends React.Component {
       setTimeout(() => {
         if (_rescanInProgress) {
           setTimeout(() => {
-            if (_coin === 'KMD') {
-              Store.dispatch(getDebugLog('komodo', 100));
+            if (_coin === 'SAFE') {
+              Store.dispatch(getDebugLog('safecoin', 100));
             } else {
-              Store.dispatch(getDebugLog('komodo', 100, _coin));
+              Store.dispatch(getDebugLog('safecoin', 100, _coin));
             }
           }, 2000);
 
@@ -253,7 +253,7 @@ class ImportKeyModal extends React.Component {
   generateKeysFromPassphrase() {
     if (this.state.wifkeysPassphrase &&
         this.state.wifkeysPassphrase.length) {
-      const _keys = seedToWif(this.state.wifkeysPassphrase, btcNetworks.kmd, true);
+      const _keys = seedToWif(this.state.wifkeysPassphrase, btcNetworks.safe, true);
 
       return {
         address: _keys.pub,

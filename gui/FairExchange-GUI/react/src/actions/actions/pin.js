@@ -1,6 +1,6 @@
 import Config, {
   token,
-  agamaPort,
+  safewalletPort,
 } from '../../config';
 import {
   getDecryptedPassphrase,
@@ -23,7 +23,7 @@ export const encryptPassphrase = (string, key, suppressToastr, customPinName) =>
 
   return new Promise((resolve, reject) => {
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/encryptkey`,
+      `http://127.0.0.1:${safewalletPort}/api/encryptkey`,
       fetchType(JSON.stringify(payload)).post
     )
     .catch((error) => {
@@ -44,7 +44,7 @@ export const encryptPassphrase = (string, key, suppressToastr, customPinName) =>
           Store.dispatch(
             triggerToaster(
               translate('INDEX.PASSPHRASE_SUCCESSFULLY_ENCRYPTED'),
-              translate('KMD_NATIVE.SUCCESS'),
+              translate('SAFE_NATIVE.SUCCESS'),
               'success'
             )
           );
@@ -72,7 +72,7 @@ export const loginWithPin = (key, pubkey) => {
 
   return new Promise((resolve, reject) => {
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/decryptkey`,
+      `http://127.0.0.1:${safewalletPort}/api/decryptkey`,
       fetchType(JSON.stringify(payload)).post
     )
     .catch((error) => {
@@ -117,7 +117,7 @@ export const modifyPin = (pubkey, remove, pubkeynew) => {
 
   return new Promise((resolve, reject) => {
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/modifypin`,
+      `http://127.0.0.1:${safewalletPort}/api/modifypin`,
       fetchType(JSON.stringify(payload)).post
     )
     .catch((error) => {
@@ -155,7 +155,7 @@ export const loadPinList = () => {
       token,
     };
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/getpinlist${urlParams(_urlParams)}`,
+      `http://127.0.0.1:${safewalletPort}/api/getpinlist${urlParams(_urlParams)}`,
       fetchType.get
     )
     .catch((error) => {
@@ -188,7 +188,7 @@ export const changePin = (oldKey, newKey, pubkey) => {
 
   return new Promise((resolve, reject) => {
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/decryptkey`,
+      `http://127.0.0.1:${safewalletPort}/api/decryptkey`,
       fetchType(JSON.stringify(payload)).post
     )
     .catch((error) => {
@@ -216,7 +216,7 @@ export const changePin = (oldKey, newKey, pubkey) => {
         };
 
         fetch(
-          `http://127.0.0.1:${agamaPort}/api/encryptkey`,
+          `http://127.0.0.1:${safewalletPort}/api/encryptkey`,
           fetchType(JSON.stringify(payload)).post
         )
         .catch((error) => {

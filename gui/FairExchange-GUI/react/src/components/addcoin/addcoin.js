@@ -14,8 +14,8 @@ import {
 import Store from '../../store';
 import zcashParamsCheckErrors from '../../util/zcashParams';
 import mainWindow, { staticVar } from '../../util/mainWindow';
-import { pubkeyToAddress } from 'agama-wallet-lib/src/keys';
-import bitcoinjsNetworks from 'agama-wallet-lib/src/bitcoinjs-networks';
+import { pubkeyToAddress } from 'safewallet-wallet-lib/src/keys';
+import bitcoinjsNetworks from 'safewallet-wallet-lib/src/bitcoinjs-networks';
 
 import CoinSelectorsRender from './coin-selectors.render';
 import AddCoinRender from './addcoin.render';
@@ -129,7 +129,7 @@ class AddCoin extends React.Component {
               Store.dispatch(
                 triggerToaster(
                   _errors,
-                  'Komodod',
+                  'Safecoind',
                   'error',
                   false
                 )
@@ -368,7 +368,7 @@ class AddCoin extends React.Component {
         if (res) {
           if (!_coin.daemonParam) {
             if (this.state.usePubkey &&
-                pubkeyToAddress(Config.pubkey, bitcoinjsNetworks.kmd)) {
+                pubkeyToAddress(Config.pubkey, bitcoinjsNetworks.safe)) {
               Store.dispatch(addCoin(
                 coin,
                 _coin.mode,
@@ -390,7 +390,7 @@ class AddCoin extends React.Component {
               _coin.daemonParam === 'gen' &&
               staticVar.chainParams[coinuc] &&
               staticVar.chainParams[coinuc].genproclimit ? Number(_coin.genProcLimit || 1) : 0,
-              this.state.usePubkey && pubkeyToAddress(Config.pubkey, bitcoinjsNetworks.kmd) ? Config.pubkey : null,
+              this.state.usePubkey && pubkeyToAddress(Config.pubkey, bitcoinjsNetworks.safe) ? Config.pubkey : null,
             ));
           }
 

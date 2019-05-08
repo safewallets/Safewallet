@@ -10,8 +10,8 @@ import Store from '../../../store';
 import mainWindow, { staticVar } from '../../../util/mainWindow';
 import { cryptoCoins } from '../../../util/coinHelper';
 import Config from '../../../config';
-import { addressVersionCheck } from 'agama-wallet-lib/src/keys';
-import networks from 'agama-wallet-lib/src/bitcoinjs-networks';
+import { addressVersionCheck } from 'safewallet-wallet-lib/src/keys';
+import networks from 'safewallet-wallet-lib/src/bitcoinjs-networks';
 import { getAddress } from 'ethers/utils/address';
 
 let _prepCoinsList;
@@ -22,7 +22,7 @@ const prepCoinsList = () => {
 
   for (let i = 0; i < coins.length; i++) {
     if (Config.experimentalFeatures ||
-        (!Config.experimentalFeatures && (_coins[i] === 'KMD' || _coins[i] === 'CHIPS'))) {
+        (!Config.experimentalFeatures && (_coins[i] === 'SAFE' || _coins[i] === 'CHIPS'))) {
       try {
         if (staticVar.electrumServers &&
             staticVar.electrumServers[coins[i].toLowerCase()] &&
@@ -53,7 +53,7 @@ class AddressBookPanel extends React.Component {
       action: null,
       createNewItem: false,
       address: '',
-      coin: 'KMD',
+      coin: 'SAFE',
       title: '',
     };
     this.defaultState = JSON.parse(JSON.stringify(this.state));
@@ -68,7 +68,7 @@ class AddressBookPanel extends React.Component {
     this.setState({
       createNewItem: !this.state.createNewItem,
       address: '',
-      coin: 'KMD',
+      coin: 'SAFE',
       title: '',
     });
   }
@@ -116,7 +116,7 @@ class AddressBookPanel extends React.Component {
         _validateAddress = 'Invalid pub address';
       }
     } else {
-      _validateAddress = addressVersionCheck(networks[_coin.toLowerCase()] || networks.kmd, _address);
+      _validateAddress = addressVersionCheck(networks[_coin.toLowerCase()] || networks.safe, _address);
     }
 
     if (_validateAddress === 'Invalid pub address') {
@@ -126,7 +126,7 @@ class AddressBookPanel extends React.Component {
     }
 
     // allow zc addresses
-    if (_coin === 'KMD' &&
+    if (_coin === 'SAFE' &&
         _address.substring(0, 2) === 'zc' &&
         _address.substring(0, 2) === 'zs' &&
         (_address.length === 95 || _address.length === 78)) {
@@ -231,7 +231,7 @@ class AddressBookPanel extends React.Component {
           key={ `coind-stdout-coins-${i}` }
           value={ `${_coins[i]}` }>
           { translate('CRYPTO.' + _coins[i]) }
-          { _coins[i].toLowerCase() === 'kmd' && ' (Chips/Asset chains)' }
+          { _coins[i].toLowerCase() === 'safe' && ' (Chips/Asset chains)' }
           { _coins[i].toLowerCase() === 'eth' && ' (ERC20)' }
         </option>
       );
@@ -261,7 +261,7 @@ class AddressBookPanel extends React.Component {
             <td className="seletable word-break--all">{ key }</td>
             <td>
             { translate('CRYPTO.' + _addressBookItems[key].coin) }
-            { _addressBookItems[key].coin.toLowerCase() === 'kmd' && ' (Chips/Asset chains)' }
+            { _addressBookItems[key].coin.toLowerCase() === 'safe' && ' (Chips/Asset chains)' }
             { _addressBookItems[key].coin.toLowerCase() === 'eth' && ' (ERC20)' }
             </td>
             <td className="seletable">{ _addressBookItems[key].title }</td>

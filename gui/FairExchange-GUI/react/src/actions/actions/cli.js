@@ -2,7 +2,7 @@ import { triggerToaster } from '../actionCreators';
 import { CLI } from '../storeType';
 import Config, {
   token,
-  agamaPort,
+  safewalletPort,
 } from '../../config';
 import Store from '../../store';
 import urlParams from '../../util/url';
@@ -23,7 +23,7 @@ export const apiCliPromise = (mode, chain, cmd, params) => {
 
   return new Promise((resolve, reject) => {
     fetch(
-      `http://127.0.0.1:${agamaPort}/api/cli`,
+      `http://127.0.0.1:${safewalletPort}/api/cli`,
       fetchType(JSON.stringify({ payload })).post
     )
     .catch((error) => {
@@ -51,7 +51,7 @@ export const apiCli = (mode, chain, cmd) => {
 
   return dispatch => {
     return fetch(
-      `http://127.0.0.1:${agamaPort}/api/cli`,
+      `http://127.0.0.1:${safewalletPort}/api/cli`,
       fetchType(JSON.stringify({ payload })).post
     )
     .catch((error) => {

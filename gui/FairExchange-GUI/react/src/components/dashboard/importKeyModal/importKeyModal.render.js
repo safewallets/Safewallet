@@ -25,7 +25,7 @@ const ImportKeyModalRender = function() {
               <h4 className="modal-title white text-left">{ translate('IMPORT_KEY.IMPORT_KEY') }</h4>
             </div>
             <div className="modal-body">
-              { (this.props.ActiveCoin.coin === 'KMD' ||
+              { (this.props.ActiveCoin.coin === 'SAFE' ||
                 (staticVar.chainParams &&
                   staticVar.chainParams[this.props.ActiveCoin.coin] &&
                  !staticVar.chainParams[this.props.ActiveCoin.coin].ac_private)) &&
@@ -42,8 +42,8 @@ const ImportKeyModalRender = function() {
                     <p className="margin-top-10">
                       <strong>{ translate('IMPORT_KEY.NOTICE') }:</strong>&nbsp;
                       { translate('IMPORT_KEY.NOTICE_DESC') }.&nbsp;
-                      <span className={ this.props.ActiveCoin.coin === 'KMD' ? '' : 'hide' }>
-                      { translate('IMPORT_KEY.KMD_RESCAN_WARNING_TIME') }.
+                      <span className={ this.props.ActiveCoin.coin === 'SAFE' ? '' : 'hide' }>
+                      { translate('IMPORT_KEY.SAFE_RESCAN_WARNING_TIME') }.
                       </span>
                     </p>
                     <div
