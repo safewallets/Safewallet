@@ -705,7 +705,7 @@ module.exports = (api) => {
                   api.log('rpcport: NOT FOUND', 'native.confd');
                   api.writeLog('rpcport: NOT FOUND');
 
-                  fs.appendFile(DaemonConfPath, '\nrpcport=7771', (err) => {
+                  fs.appendFile(DaemonConfPath, '\nrpcport=8771', (err) => {
                     if (err) {
                       api.writeLog(`append daemon conf err: ${err}`);
                       api.log(`append daemon conf err: ${err}`, 'native.confd');
