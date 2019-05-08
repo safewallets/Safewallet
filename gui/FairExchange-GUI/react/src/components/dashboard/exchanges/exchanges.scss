@@ -1,0 +1,94 @@
+.exchanges-selector-main {
+  img {
+    border-bottom: dashed 1px #fff;
+
+    &.active {
+      border-bottom: dashed 1px #000;
+    }
+  }
+}
+
+.exchanges-history {
+  .btn-exchange-new {
+    position: absolute;
+    right: 20px;
+    margin-top: -41px;
+    padding: 4px 10px;
+    font-size: 13px;
+  }
+}
+
+.exchanges-new-order-form {
+  .panel {
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.4);
+  }
+  .coin-send-form {
+    overflow: visible;
+  }
+  .form-material {
+    .control-label {
+      &.select {
+        top: -7px;
+      }
+    }
+  }
+  .exchange-order-clear {
+    color: #757575;
+    position: absolute;
+    right: 20px;
+    margin-top: -5px;
+  }
+}
+
+.col-warning {
+  color: #fb8c00;
+}
+
+.buy-fixed-dest-coin-toggle {
+  .toggle-label {
+    top: -6px;
+  }
+  &.disabled {
+    opacity: 0.5;
+    cursor: default !important;
+    pointer-events: none;
+  }
+}
+
+.btn-exchange-sync {
+  position: absolute;
+  border-bottom: dashed 1px;
+  right: 20px;
+  margin-top: -85px;
+  cursor: pointer;
+
+  &.rotate {
+    i {
+      animation: rotate 2s linear infinite;
+    }
+  }
+}
+
+.btn-exchange-tos-modal {
+  position: absolute;
+  margin-top: -85px;
+  border-bottom: dashed 1px;
+  cursor: pointer;
+}
+
+.exchanges-refresh-btn {
+  position: absolute;
+  cursor: pointer;
+  margin-top: -35px;
+  margin-left: 172px;
+
+  &.rotate {
+    animation: rotate 2s linear infinite;
+  }
+}
+
+.supported-coins-btn {
+  position: absolute;
+  right: 46px;
+  margin-top: -25px;
+}

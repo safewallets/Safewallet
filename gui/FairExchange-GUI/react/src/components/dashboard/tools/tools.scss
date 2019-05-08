@@ -1,0 +1,92 @@
+.tools {
+  padding: 0 30px 0 30px;
+
+  .toggle-label {
+    top: -5px;
+  }
+  .no-margin-bottom {
+    margin-bottom: 0;
+  }
+  .btn-send-self-offlinesig {
+    position: absolute;
+    top: 3px;
+    left: 50%;
+    padding: 0 10px;
+  }
+
+  &.background--white {
+    background: #fff;
+    height: 100vh;
+  }
+
+  .form-control.col-sm-3 {
+    width: 33.3333%;
+  }
+
+  label {
+    position: relative;
+    top: 7px;
+  }
+
+  .offlinesig-qr {
+    position: fixed;
+    top: 68px;
+    left: 0;
+    background: #fff;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+
+    .btn {
+      position: fixed;
+      bottom: 28px;
+      right: 10px;
+    }
+  }
+
+  .iguana-core-toggle {
+    position: relative;
+    top: -6px;
+    left: 18px;
+  }
+
+  .tools-btn-block {
+    position: relative;
+    left: -20px;
+
+    .btn {
+      margin-bottom: 20px;
+      margin-left: 20px;
+    }
+  }
+}
+
+.table.dataTable.tools-balance-multi-table {
+  max-width: 600px !important;
+}
+
+.tools-multicoin-balance {
+  a {
+    color: #757575;
+
+    img {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+    }
+  }
+}
+
+.tools-multisig-storage {
+  .toggle-box {
+    .toggle-label {
+      top: -6px;
+    }
+    .login-help {
+      font-size: 18px;
+      position: relative;
+      top: -4px;
+      left: 20px;
+    }
+  }
+}

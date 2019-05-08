@@ -1,0 +1,13 @@
+.dropdown-menu {
+  li {
+    cursor: pointer;
+  }
+  .no--hover {
+    pointer-events: none;
+  }
+}
+
+.bootstrap-select.btn-group .dropdown-menu.inner {
+  max-height: 200px;
+  overflow-y: auto;
+}
