@@ -3,15 +3,15 @@
 var installer = require('electron-installer-debian');
 
 var options = {
-  src: 'build/Agama-linux-x64/',
+  src: 'build/Safewallet-linux-x64/',
   dest: 'build/',
   arch: 'amd64',
-  icon: 'assets/icons/agama_icons/64x64.png',
-  name: 'agama',
-  bin: 'Agama',
+  icon: 'assets/icons/safewallet_icons/64x64.png',
+  name: 'safewallet',
+  bin: 'Safewallet',
   categories: ['Office', 'Internet'],
-  homepage: 'https://komodoplatform.com',
-  maintainer: 'Komodo Platform <support@komodoplatform.com>',
+  homepage: 'https://safecoin.org',
+  maintainer: 'Safecoin <safe@safecoin.org>',
 }
 
 console.log('Creating package (this may take a while)');

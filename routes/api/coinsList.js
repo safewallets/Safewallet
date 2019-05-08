@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 const nativePorts = require('../ports');
-const erc20Contracts = require('agama-wallet-lib/src/eth-erc20-contract-id');
+const erc20Contracts = require('safewallet-wallet-lib/src/eth-erc20-contract-id');
 const modeToValueReversed = {
   '0': 'spv',
   '-1': 'native',
@@ -65,8 +65,8 @@ module.exports = (api) => {
 
   api.loadCoinsListFromFile = () => {
     try {
-      if (fs.existsSync(`${api.agamaDir}/shepherd/coinslist.json`)) {
-        let _coinsList = JSON.parse(fs.readFileSync(`${api.agamaDir}/shepherd/coinslist.json`, 'utf8'));
+      if (fs.existsSync(`${api.safewalletDir}/shepherd/coinslist.json`)) {
+        let _coinsList = JSON.parse(fs.readFileSync(`${api.safewalletDir}/shepherd/coinslist.json`, 'utf8'));
         _coinsList = api.fsCoinsListFilterOutDisabledCoins(_coinsList);
 
         for (let key in _coinsList) {
@@ -84,7 +84,7 @@ module.exports = (api) => {
             const _coin = _coinsList[key].coin.value.split('|')[0];
 
             api.log(`add native coin ${_coin} from file`, 'native.fs.coins');
-            api.startKMDNative(_coin);
+            api.startSAFENative(_coin);
           }
         }
       }
@@ -99,8 +99,8 @@ module.exports = (api) => {
    */
   api.get('/coinslist', (req, res, next) => {
     if (api.checkToken(req.query.token)) {
-      if (fs.existsSync(`${api.agamaDir}/shepherd/coinslist.json`)) {
-        fs.readFile(`${api.agamaDir}/shepherd/coinslist.json`, 'utf8', (err, data) => {
+      if (fs.existsSync(`${api.safewalletDir}/shepherd/coinslist.json`)) {
+        fs.readFile(`${api.safewalletDir}/shepherd/coinslist.json`, 'utf8', (err, data) => {
           if (err) {
             const retObj = {
               msg: 'error',
@@ -151,7 +151,7 @@ module.exports = (api) => {
 
         res.end(JSON.stringify(retObj));
       } else {
-        fs.writeFile(`${api.agamaDir}/shepherd/coinslist.json`, JSON.stringify(_payload), (err) => {
+        fs.writeFile(`${api.safewalletDir}/shepherd/coinslist.json`, JSON.stringify(_payload), (err) => {
           if (err) {
             const retObj = {
               msg: 'error',

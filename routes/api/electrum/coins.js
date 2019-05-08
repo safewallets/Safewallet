@@ -1,4 +1,4 @@
-const { getRandomIntInclusive } = require('agama-wallet-lib/src/utils');
+const { getRandomIntInclusive } = require('safewallet-wallet-lib/src/utils');
 
 module.exports = (api) => {
   api.findCoinName = (network) => {

@@ -11,7 +11,7 @@ module.exports = (api) => {
     }
 
     for (let key in api.coindInstanceRegistry) {
-      nativeCoindList.push(key === 'komodod' ? 'KMD' : key);
+      nativeCoindList.push(key === 'safecoind' ? 'SAFE' : key);
     }
 
     for (let key in api.eth.coins) {

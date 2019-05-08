@@ -1,11 +1,11 @@
 <project>
-    <shortName>AgamaApp</shortName>
-    <fullName>Agama</fullName>
+    <shortName>SafewalletApp</shortName>
+    <fullName>Safewallet</fullName>
     <version>0.1.6.2e-beta</version>
     <licenseFile>../../LICENSE</licenseFile>
-    <leftImage>../installer_imgs/Agama_installer_wizard_image.png</leftImage>
-    <logoImage>../installer_imgs/supernet-agama-logo.png</logoImage>
-    <splashImage>../installer_imgs/Agama_installer_splash_image.png</splashImage>
+    <leftImage>../installer_imgs/Safewallet_installer_wizard_image.png</leftImage>
+    <logoImage>../installer_imgs/supernet-safewallet-logo.png</logoImage>
+    <splashImage>../installer_imgs/Safewallet_installer_splash_image.png</splashImage>
     <allowLanguageSelection>1</allowLanguageSelection>
     <componentList>
         <component>
@@ -17,10 +17,10 @@
             <show>1</show>
             <desktopShortcutList>
                 <shortcut>
-                    <comment>Agama Desktop</comment>
-                    <exec>${installdir}/Agama</exec>
-                    <icon>${installdir}/resources/app/assets/icons/agama_icons/96x96.png</icon>
-                    <name>Agama Desktop</name>
+                    <comment>Safewallet Desktop</comment>
+                    <exec>${installdir}/Safewallet</exec>
+                    <icon>${installdir}/resources/app/assets/icons/safewallet_icons/96x96.png</icon>
+                    <name>Safewallet Desktop</name>
                     <path>${installdir}</path>
                     <platforms>all</platforms>
                     <runAsAdmin>0</runAsAdmin>
@@ -39,52 +39,52 @@
                     <platforms>all</platforms>
                     <distributionFileList>
                         <distributionDirectory>
-                            <origin>../../build/Agama-linux-x64/locales</origin>
+                            <origin>../../build/Safewallet-linux-x64/locales</origin>
                         </distributionDirectory>
                         <distributionDirectory>
-                            <origin>../../build/Agama-linux-x64/resources</origin>
+                            <origin>../../build/Safewallet-linux-x64/resources</origin>
                         </distributionDirectory>
                         <distributionFile>
-                            <origin>../../build/Agama-linux-x64/version</origin>
+                            <origin>../../build/Safewallet-linux-x64/version</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../build/Agama-linux-x64/content_resources_200_percent.pak</origin>
+                            <origin>../../build/Safewallet-linux-x64/content_resources_200_percent.pak</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../build/Agama-linux-x64/LICENSE</origin>
+                            <origin>../../build/Safewallet-linux-x64/LICENSE</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../build/Agama-linux-x64/blink_image_resources_200_percent.pak</origin>
+                            <origin>../../build/Safewallet-linux-x64/blink_image_resources_200_percent.pak</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../build/Agama-linux-x64/views_resources_200_percent.pak</origin>
+                            <origin>../../build/Safewallet-linux-x64/views_resources_200_percent.pak</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../build/Agama-linux-x64/ui_resources_200_percent.pak</origin>
+                            <origin>../../build/Safewallet-linux-x64/ui_resources_200_percent.pak</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../build/Agama-linux-x64/natives_blob.bin</origin>
+                            <origin>../../build/Safewallet-linux-x64/natives_blob.bin</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../build/Agama-linux-x64/snapshot_blob.bin</origin>
+                            <origin>../../build/Safewallet-linux-x64/snapshot_blob.bin</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../build/Agama-linux-x64/LICENSES.chromium.html</origin>
+                            <origin>../../build/Safewallet-linux-x64/LICENSES.chromium.html</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../build/Agama-linux-x64/libffmpeg.so</origin>
+                            <origin>../../build/Safewallet-linux-x64/libffmpeg.so</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../build/Agama-linux-x64/content_shell.pak</origin>
+                            <origin>../../build/Safewallet-linux-x64/content_shell.pak</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../build/Agama-linux-x64/icudtl.dat</origin>
+                            <origin>../../build/Safewallet-linux-x64/icudtl.dat</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../build/Agama-linux-x64/libnode.so</origin>
+                            <origin>../../build/Safewallet-linux-x64/libnode.so</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../build/Agama-linux-x64/Agama</origin>
+                            <origin>../../build/Safewallet-linux-x64/Safewallet</origin>
                         </distributionFile>
                     </distributionFileList>
                 </folder>
@@ -190,7 +190,7 @@
         </deleteFile>
         <deleteFile>
             <explanation>Deleting user data</explanation>
-            <path>${user_home_directory}/.config/Agama</path>
+            <path>${user_home_directory}/.config/Safewallet</path>
             <progressText>Deleting user data</progressText>
             <ruleList>
                 <compareValues>
@@ -322,18 +322,18 @@
     <postInstallationActionList>
         <createSymLink>
             <abortOnError>0</abortOnError>
-            <linkName>${user_home_directory}/bin/Agama</linkName>
-            <target>${installdir}/Agama</target>
+            <linkName>${user_home_directory}/bin/Safewallet</linkName>
+            <target>${installdir}/Safewallet</target>
         </createSymLink>
         <iniFileSet>
-            <file>${desktopDir}/Agama Desktop.desktop</file>
+            <file>${desktopDir}/Safewallet Desktop.desktop</file>
             <key>Categories</key>
             <section>Desktop Entry</section>
             <value>Office;</value>
         </iniFileSet>
         <copyFile>
-            <destination>${user_home_directory}/.local/share/applications/Agama Desktop.desktop</destination>
-            <origin>${desktopDir}/Agama Desktop.desktop</origin>
+            <destination>${user_home_directory}/.local/share/applications/Safewallet Desktop.desktop</destination>
+            <origin>${desktopDir}/Safewallet Desktop.desktop</origin>
         </copyFile>
 
         <!-- Store values of current installer in etc folder so we can find for uninstal -->
@@ -357,7 +357,7 @@
     <postUninstallationActionList>
         <deleteFile>
             <abortOnError>0</abortOnError>
-            <path>/bin/Agama</path>
+            <path>/bin/Safewallet</path>
         </deleteFile>
     </postUninstallationActionList>
     <allowComponentSelection>1</allowComponentSelection>
@@ -367,11 +367,11 @@
     <enableSslSupport>1</enableSslSupport>
     <enableTimestamp>1</enableTimestamp>
     <saveRelativePaths>1</saveRelativePaths>
-    <uninstallerName>Uninstall-Agama</uninstallerName>
+    <uninstallerName>Uninstall-Safewallet</uninstallerName>
     <vendor>SuperNETOrg</vendor>
     <finalPageActionList>
         <runProgram>
-            <program>${user_home_directory}/bin/Agama</program>
+            <program>${user_home_directory}/bin/Safewallet</program>
             <programArguments>&amp;</programArguments>
             <progressText>Do you want to launch ${project.fullName} now?</progressText>
         </runProgram>
@@ -382,7 +382,7 @@
             <description>Installer.Parameter.installdir.description</description>
             <explanation>Installer.Parameter.installdir.explanation</explanation>
             <value></value>
-            <default>${user_home_directory}/.AgamaApp</default>
+            <default>${user_home_directory}/.SafewalletApp</default>
             <allowEmptyValue>0</allowEmptyValue>
             <cliOptionName>prefix</cliOptionName>
             <mustBeWritable>1</mustBeWritable>

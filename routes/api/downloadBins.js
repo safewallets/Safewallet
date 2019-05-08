@@ -15,8 +15,8 @@ const localBinLocation = {
 };
 const latestBins = {
   win32: [
-    'komodo-cli.exe',
-    'komodod.exe',
+    'safecoin-cli.exe',
+    'safecoind.exe',
     'libcrypto-1_1.dll',
     'libcurl-4.dll',
     'libcurl.dll',
@@ -28,16 +28,16 @@ const latestBins = {
     'pthreadvc2.dll',
   ],
   darwin: [
-    'komodo-cli',
-    'komodod',
+    'safecoin-cli',
+    'safecoind',
     'libgcc_s.1.dylib',
     'libgomp.1.dylib',
     'libnanomsg.5.0.0.dylib',
     'libstdc++.6.dylib', // encode %2B
   ],
   linux: [
-    'komodo-cli',
-    'komodod',
+    'safecoin-cli',
+    'safecoind',
   ],
 };
 

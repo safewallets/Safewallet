@@ -1,7 +1,7 @@
 // default daemon ports
 
 const assetChainPorts = {
-  komodod: 7771,
+  safecoind: 8771,
   marketmaker: 7783,
   OOT: 12467,
   K64: 12245,

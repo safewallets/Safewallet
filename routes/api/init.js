@@ -11,7 +11,7 @@ module.exports = (api) => {
     return localVersionFile;
   }
 
-  api.createAgamaDirs = () => {
+  api.createSafewalletDirs = () => {
     if (!_foldersInitRan) {
       const rootLocation = path.join(__dirname, '../../');
 
@@ -24,26 +24,26 @@ module.exports = (api) => {
         }
       });
 
-      if (!fs.existsSync(api.agamaDir)) {
-        fs.mkdirSync(api.agamaDir);
+      if (!fs.existsSync(api.safewalletDir)) {
+        fs.mkdirSync(api.safewalletDir);
 
-        if (fs.existsSync(api.agamaDir)) {
-          api.log(`created agama folder at ${api.agamaDir}`, 'init');
-          api.writeLog(`created agama folder at ${api.agamaDir}`);
+        if (fs.existsSync(api.safewalletDir)) {
+          api.log(`created safewallet folder at ${api.safewalletDir}`, 'init');
+          api.writeLog(`created safewallet folder at ${api.safewalletDir}`);
         }
       } else {
-        api.log('agama folder already exists', 'init');
+        api.log('safewallet folder already exists', 'init');
       }
 
-      if (!fs.existsSync(`${api.agamaDir}/shepherd`)) {
-        fs.mkdirSync(`${api.agamaDir}/shepherd`);
+      if (!fs.existsSync(`${api.safewalletDir}/shepherd`)) {
+        fs.mkdirSync(`${api.safewalletDir}/shepherd`);
 
-        if (fs.existsSync(`${api.agamaDir}/shepherd`)) {
-          api.log(`created shepherd folder at ${api.agamaDir}/shepherd`, 'init');
-          api.writeLog(`create shepherd folder at ${api.agamaDir}/shepherd`);
+        if (fs.existsSync(`${api.safewalletDir}/shepherd`)) {
+          api.log(`created shepherd folder at ${api.safewalletDir}/shepherd`, 'init');
+          api.writeLog(`create shepherd folder at ${api.safewalletDir}/shepherd`);
         }
       } else {
-        api.log('agama/shepherd folder already exists', 'init');
+        api.log('safewallet/shepherd folder already exists', 'init');
       }
 
       const _subFolders = [
@@ -53,12 +53,12 @@ module.exports = (api) => {
       ];
 
       for (let i = 0; i < _subFolders.length; i++) {
-        if (!fs.existsSync(`${api.agamaDir}/shepherd/${_subFolders[i]}`)) {
-          fs.mkdirSync(`${api.agamaDir}/shepherd/${_subFolders[i]}`);
+        if (!fs.existsSync(`${api.safewalletDir}/shepherd/${_subFolders[i]}`)) {
+          fs.mkdirSync(`${api.safewalletDir}/shepherd/${_subFolders[i]}`);
 
-          if (fs.existsSync(`${api.agamaDir}/shepherd/${_subFolders[i]}`)) {
-            api.log(`created ${_subFolders[i]} folder at ${api.agamaDir}/shepherd/${_subFolders[i]}`, 'init');
-            api.writeLog(`create ${_subFolders[i]} folder at ${api.agamaDir}/shepherd/${_subFolders[i]}`);
+          if (fs.existsSync(`${api.safewalletDir}/shepherd/${_subFolders[i]}`)) {
+            api.log(`created ${_subFolders[i]} folder at ${api.safewalletDir}/shepherd/${_subFolders[i]}`, 'init');
+            api.writeLog(`create ${_subFolders[i]} folder at ${api.safewalletDir}/shepherd/${_subFolders[i]}`);
           }
         } else {
           api.log(`shepherd/${_subFolders[i]} folder already exists`, 'init');

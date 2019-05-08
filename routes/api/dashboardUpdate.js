@@ -319,7 +319,7 @@ module.exports = (api) => {
           }
 
           const options = {
-            url: `http://127.0.0.1:${api.appConfig.agamaPort}/api/cli`,
+            url: `http://127.0.0.1:${api.appConfig.safewalletPort}/api/cli`,
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

@@ -12,7 +12,7 @@ const encrypt = session.encrypt.bind(session);
 const decrypt = session.decrypt.bind(session);
 const pinObjSchema = require('./pinSchema');
 const nativePorts = require('../ports');
-const erc20Contracts = require('agama-wallet-lib/src/eth-erc20-contract-id');
+const erc20Contracts = require('safewallet-wallet-lib/src/eth-erc20-contract-id');
 const modes = [
   'native',
   'spv',
@@ -53,7 +53,7 @@ module.exports = (api) => {
 
     encrypt(fsObj, api.wallet.pin)
     .then((encryptedString) => {
-      fs.writeFile(`${api.agamaDir}/shepherd/pin/${api.wallet.fname}.pin`, encryptedString, (err) => {
+      fs.writeFile(`${api.safewalletDir}/shepherd/pin/${api.wallet.fname}.pin`, encryptedString, (err) => {
         if (err) {
           api.log(`error writing pin file ${api.wallet.fname}.pin`, 'pin');
         }
@@ -116,7 +116,7 @@ module.exports = (api) => {
 
               encrypt(fsObj, _pin)
               .then((encryptedString) => {
-                fs.writeFile(`${api.agamaDir}/shepherd/pin/${pubkey}.pin`, encryptedString, (err) => {
+                fs.writeFile(`${api.safewalletDir}/shepherd/pin/${pubkey}.pin`, encryptedString, (err) => {
                   if (err) {
                     api.log('error writing pin file', 'pin');
 
@@ -197,8 +197,8 @@ module.exports = (api) => {
 
       if (_key &&
           _pubkey) {
-        if (fs.existsSync(`${api.agamaDir}/shepherd/pin/${_pubkey}.pin`)) {
-          fs.readFile(`${api.agamaDir}/shepherd/pin/${_pubkey}.pin`, 'utf8', async(err, data) => {
+        if (fs.existsSync(`${api.safewalletDir}/shepherd/pin/${_pubkey}.pin`)) {
+          fs.readFile(`${api.safewalletDir}/shepherd/pin/${_pubkey}.pin`, 'utf8', async(err, data) => {
             if (err) {
               const retObj = {
                 msg: 'error',
@@ -215,7 +215,7 @@ module.exports = (api) => {
                 .then((encryptedString) => {
                   api.log(`seed encrypt old method detected for file ${_pubkey}`, 'pin');
 
-                  fs.writeFile(`${api.agamaDir}/shepherd/pin/${_pubkey}.pin`, encryptedString, (err) => {
+                  fs.writeFile(`${api.safewalletDir}/shepherd/pin/${_pubkey}.pin`, encryptedString, (err) => {
                     if (err) {
                       api.log(`error re-encrypt pin file ${_pubkey}`, 'pin');
                     } else {
@@ -337,8 +337,8 @@ module.exports = (api) => {
 
   api.get('/getpinlist', (req, res, next) => {
     if (api.checkToken(req.query.token)) {
-      if (fs.existsSync(`${api.agamaDir}/shepherd/pin`)) {
-        fs.readdir(`${api.agamaDir}/shepherd/pin`, (err, items) => {
+      if (fs.existsSync(`${api.safewalletDir}/shepherd/pin`)) {
+        fs.readdir(`${api.safewalletDir}/shepherd/pin`, (err, items) => {
           let _pins = [];
 
           for (let i = 0; i < items.length; i++) {
@@ -386,8 +386,8 @@ module.exports = (api) => {
       const pubkey = req.body.pubkey;
 
       if (pubkey) {
-        if (fs.existsSync(`${api.agamaDir}/shepherd/pin/${pubkey}.pin`)) {
-          fs.readFile(`${api.agamaDir}/shepherd/pin/${pubkey}.pin`, 'utf8', (err, data) => {
+        if (fs.existsSync(`${api.safewalletDir}/shepherd/pin/${pubkey}.pin`)) {
+          fs.readFile(`${api.safewalletDir}/shepherd/pin/${pubkey}.pin`, 'utf8', (err, data) => {
             if (err) {
               const retObj = {
                 msg: 'error',
@@ -397,7 +397,7 @@ module.exports = (api) => {
               res.end(JSON.stringify(retObj));
             } else {
               if (req.body.delete) {
-                fs.unlinkSync(`${api.agamaDir}/shepherd/pin/${pubkey}.pin`);
+                fs.unlinkSync(`${api.safewalletDir}/shepherd/pin/${pubkey}.pin`);
 
                 const retObj = {
                   msg: 'success',
@@ -411,7 +411,7 @@ module.exports = (api) => {
 
                 if (pubkeynew) {
                   if (_customPinFilenameTest.test(pubkeynew)) {
-                    fs.writeFile(`${api.agamaDir}/shepherd/pin/${pubkeynew}.pin`, data, (err) => {
+                    fs.writeFile(`${api.safewalletDir}/shepherd/pin/${pubkeynew}.pin`, data, (err) => {
                       if (err) {
                         api.log('error writing pin file', 'pin');
 
@@ -424,7 +424,7 @@ module.exports = (api) => {
                       } else {
                         api.wallet.fname = pubkeynew;
                         
-                        fs.unlinkSync(`${api.agamaDir}/shepherd/pin/${pubkey}.pin`);
+                        fs.unlinkSync(`${api.safewalletDir}/shepherd/pin/${pubkey}.pin`);
 
                         const retObj = {
                           msg: 'success',

@@ -3,7 +3,7 @@ const bitcoinJSForks = require('bitcoinforksjs-lib');
 const bitcoinZcash = require('bitgo-utxo-lib');
 const bitcoinPos = require('bitcoinjs-lib-pos');
 const coinSelect = require('coinselect');
-const bitcoinjsNetworks = require('agama-wallet-lib/src/bitcoinjs-networks');
+const bitcoinjsNetworks = require('safewallet-wallet-lib/src/bitcoinjs-networks');
 
 // not prod ready, only for voting!
 // needs a fix
@@ -62,8 +62,8 @@ module.exports = (api) => {
             let utxoVerified = true;
 
             for (let i = 0; i < utxoList.length; i++) {
-              if (network === 'komodo' ||
-                  network.toLowerCase() === 'kmd') {
+              if (network === 'safecoin' ||
+                  network.toLowerCase() === 'safe') {
                 utxoListFormatted.push({
                   txid: utxoList[i].txid,
                   vout: utxoList[i].vout,
@@ -229,8 +229,8 @@ module.exports = (api) => {
               // api.log(`sendto ${outputAddress} amount ${value} (${value * 0.00000001})`, true);
               api.log(`changeto ${changeAddress} amount ${_change} (${_change * 0.00000001})`, 'spv.createrawtx');
 
-              // account for KMD interest
-              if ((network === 'komodo' || network.toLowerCase() === 'kmd') &&
+              // account for SAFE interest
+              if ((network === 'safecoin' || network.toLowerCase() === 'safe') &&
                   totalInterest > 0) {
                 // account for extra vout
                 const _feeOverhead = 0;
@@ -457,7 +457,7 @@ module.exports = (api) => {
 
   // single sig
   api.buildSignedTxMulti = (sendTo, changeAddress, wif, network, utxo, changeValue, spendValue, opreturn) => {
-    network = bitcoinjsNetworks[network.toLowerCase()] || bitcoinjsNetworks.kmd;
+    network = bitcoinjsNetworks[network.toLowerCase()] || bitcoinjsNetworks.safe;
     let key = network && network.isZcash ? bitcoinZcash.ECPair.fromWIF(wif, network) : bitcoinJS.ECPair.fromWIF(wif, network);
     let tx;
 
@@ -520,10 +520,10 @@ module.exports = (api) => {
     tx.setVersion(4);
 
     if (network &&
-        network.kmdInterest) {
+        network.safeInterest) {
       const _locktime = Math.floor(Date.now() / 1000) - 777;
       tx.setLockTime(_locktime);
-      api.log(`kmd tx locktime set to ${_locktime}`, 'spv.createrawtx');
+      api.log(`safe tx locktime set to ${_locktime}`, 'spv.createrawtx');
     }
 
     api.log('buildSignedTx unsigned tx data vin', 'spv.createrawtx');

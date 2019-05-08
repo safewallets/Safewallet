@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" href="../FairExchange-GUI/assets/global/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../FairExchange-GUI/assets/mainWindow/css/loading.css">
+    <script type="text/javascript" src="../FairExchange-GUI/assets/mainWindow/js/module-hack.js"></script>
+    <script type="text/javascript" src="../FairExchange-GUI/assets/global/vendor/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../FairExchange-GUI/assets/scripts/config.js"></script>
+    <script type="text/javascript" src="../FairExchange-GUI/assets/mainWindow/js/bluebird.min.js"></script>
+    <script type="text/javascript" src="../FairExchange-GUI/assets/mainWindow/js/loading.js"></script>
+    <script>if (window.module) module = window.module;</script>
+  </head>
+  <body class="safewalletMode safewallet-default-window-height">
+    <div class="text-center">
+      <div id="safewalletMode">
+        <img
+          src="../FairExchange-GUI/assets/mainWindow/img/safewallet-icon.svg"
+          class="safewallet-logo"
+          alt="Safewallet Wallet"
+          width="80"
+          height="100" />
+        <div id="safewalletModeStatus">Another Safewallet instance is already running!</div>
+        <div>Please close all other instances and restart the app.</div>
+        <br />
+        <button
+          onClick="quitApp()"
+          class="btn btn-primary btn-close-app">Quit</button>
+      </div>
+    </div>
+  </body>
+</html>

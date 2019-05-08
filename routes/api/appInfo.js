@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 const os = require('os');
-const { formatBytes } = require('agama-wallet-lib/src/utils');
+const { formatBytes } = require('safewallet-wallet-lib/src/utils');
 
 module.exports = (api) => {
   api.SystemInfo = () => {
@@ -22,16 +22,16 @@ module.exports = (api) => {
     const sysInfo = api.SystemInfo();
     const releaseInfo = api.appBasicInfo;
     const dirs = {
-      agamaDir: api.agamaDir,
-      komodoDir: api.komodoDir,
-      komododBin: api.komododBin,
-      configLocation: `${api.agamaDir}/config.json`,
-      cacheLocation: `${api.agamaDir}/spv-cache.json`,
+      safewalletDir: api.safewalletDir,
+      safecoinDir: api.safecoinDir,
+      safecoindBin: api.safecoindBin,
+      configLocation: `${api.safewalletDir}/config.json`,
+      cacheLocation: `${api.safewalletDir}/spv-cache.json`,
     };
     let spvCacheSize = '2 Bytes';
 
     try {
-      spvCacheSize = formatBytes(fs.lstatSync(`${api.agamaDir}/spv-cache.json`).size);
+      spvCacheSize = formatBytes(fs.lstatSync(`${api.safewalletDir}/spv-cache.json`).size);
     } catch (e) {}
 
     return {

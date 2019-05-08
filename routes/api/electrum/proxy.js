@@ -1,5 +1,5 @@
 const request = require('request');
-const { getRandomIntInclusive } = require('agama-wallet-lib/src/utils');
+const { getRandomIntInclusive } = require('safewallet-wallet-lib/src/utils');
 
 // TODO: reduce code
 // abstraction layer to communicate with electrum proxies

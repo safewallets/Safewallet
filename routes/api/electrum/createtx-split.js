@@ -3,9 +3,9 @@ const bitcoinJSForks = require('bitcoinforksjs-lib');
 const bitcoinZcash = require('bitcoinjs-lib-zcash');
 const bitcoinZcashSapling = require('bitgo-utxo-lib');
 const bitcoinPos = require('bitcoinjs-lib-pos');
-const bitcoinjsNetworks = require('agama-wallet-lib/src/bitcoinjs-networks');
+const bitcoinjsNetworks = require('safewallet-wallet-lib/src/bitcoinjs-networks');
 
-// merge into agama-wallet-lib
+// merge into safewallet-wallet-lib
 
 module.exports = (api) => {
   // utxo split 1 -> 1, multiple outputs
@@ -17,7 +17,7 @@ module.exports = (api) => {
       const change = req.body.payload.change;
       const outputAddress = req.body.payload.outputAddress;
       const changeAddress = req.body.payload.changeAddress;      
-      const network = bitcoinjsNetworks[req.body.payload.network.toLowerCase()] || bitcoinjsNetworks.kmd;
+      const network = bitcoinjsNetworks[req.body.payload.network.toLowerCase()] || bitcoinjsNetworks.safe;
 
       let key = network && network.isZcash ? bitcoinZcash.ECPair.fromWIF(wif, network) : bitcoinJS.ECPair.fromWIF(wif, network);
       let tx;
@@ -97,7 +97,7 @@ module.exports = (api) => {
         }
       }
 
-      if (network.kmdInterest) {
+      if (network.safeInterest) {
         const _locktime = Math.floor(Date.now() / 1000) - 777;
         tx.setLockTime(_locktime);
       }

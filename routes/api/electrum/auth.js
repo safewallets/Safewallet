@@ -4,7 +4,7 @@ const bitcoin = require('bitcoinjs-lib');
 const {
   seedToPriv,
   stringToWif,
-} = require('agama-wallet-lib/src/keys');
+} = require('safewallet-wallet-lib/src/keys');
 
 // TODO: merge spv and eth login/logout into a single func
 

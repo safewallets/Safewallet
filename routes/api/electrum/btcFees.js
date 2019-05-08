@@ -1,6 +1,6 @@
 const request = require('request');
-const { getRandomIntInclusive } = require('agama-wallet-lib/src/utils');
-const { checkTimestamp } = require('agama-wallet-lib/src/time');
+const { getRandomIntInclusive } = require('safewallet-wallet-lib/src/utils');
+const { checkTimestamp } = require('safewallet-wallet-lib/src/time');
 
 let btcFeeBlocks = [];
 

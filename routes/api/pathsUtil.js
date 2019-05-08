@@ -2,20 +2,20 @@ const path = require('path');
 const fixPath = require('fix-path');
 const os = require('os');
 
-const pathsAgama = () => {
+const pathsSafewallet = () => {
   switch (os.platform()) {
     case 'darwin':
       fixPath();
-      return `${process.env.HOME}/Library/Application Support/Agama`;
+      return `${process.env.HOME}/Library/Application Support/Safewallet`;
       break;
 
     case 'linux':
-      return `${process.env.HOME}/.agama`;
+      return `${process.env.HOME}/.safewallet`;
       break;
 
     case 'win32':
-      const agamaDir = `${process.env.APPDATA}/Agama`;
-      return path.normalize(agamaDir);
+      const safewalletDir = `${process.env.APPDATA}/Safewallet`;
+      return path.normalize(safewalletDir);
       break;
   }
 };
@@ -26,11 +26,11 @@ const pathsDaemons = (api) => {
   switch (os.platform()) {
     case 'darwin':
       fixPath();
-      api.agamaTestDir = `${process.env.HOME}/Library/Application Support/Agama/test`,
-      api.komododBin = path.join(__dirname, '../../assets/bin/osx/komodod'),
-      api.komodocliBin = path.join(__dirname, '../../assets/bin/osx/komodo-cli'),
-      api.komodocliDir = path.join(__dirname, '../../assets/bin/osx'),
-      api.komodoDir = api.appConfig && api.appConfig.native.dataDir.length ? api.appConfig.native.dataDir : `${process.env.HOME}/Library/Application Support/Komodo`,
+      api.safewalletTestDir = `${process.env.HOME}/Library/Application Support/Safewallet/test`,
+      api.safecoindBin = path.join(__dirname, '../../assets/bin/osx/safecoind'),
+      api.safecoincliBin = path.join(__dirname, '../../assets/bin/osx/safecoin-cli'),
+      api.safecoincliDir = path.join(__dirname, '../../assets/bin/osx'),
+      api.safecoinDir = api.appConfig && api.appConfig.native.dataDir.length ? api.appConfig.native.dataDir : `${process.env.HOME}/Library/Application Support/Safecoin`,
       api.zcashdBin = '/Applications/ZCashSwingWalletUI.app/Contents/MacOS/zcashd',
       api.zcashcliBin = '/Applications/ZCashSwingWalletUI.app/Contents/MacOS/zcash-cli',
       api.zcashDir = `${process.env.HOME}/Library/Application Support/Zcash`,
@@ -44,11 +44,11 @@ const pathsDaemons = (api) => {
       break;
 
     case 'linux':
-      api.agamaTestDir = `${process.env.HOME}/.agama/test`,
-      api.komododBin = path.join(__dirname, '../../assets/bin/linux64/komodod'),
-      api.komodocliBin = path.join(__dirname, '../../assets/bin/linux64/komodo-cli'),
-      api.komodocliDir = path.join(__dirname, '../../assets/bin/linux64'),
-      api.komodoDir = api.appConfig && api && api.appConfig.native.dataDir.length ? api.appConfig.native.dataDir : `${process.env.HOME}/.komodo`,
+      api.safewalletTestDir = `${process.env.HOME}/.safewallet/test`,
+      api.safecoindBin = path.join(__dirname, '../../assets/bin/linux64/safecoind'),
+      api.safecoincliBin = path.join(__dirname, '../../assets/bin/linux64/safecoin-cli'),
+      api.safecoincliDir = path.join(__dirname, '../../assets/bin/linux64'),
+      api.safecoinDir = api.appConfig && api && api.appConfig.native.dataDir.length ? api.appConfig.native.dataDir : `${process.env.HOME}/.safecoin`,
       api.zcashParamsDir = `${process.env.HOME}/.zcash-params`,
       api.chipsBin = path.join(__dirname, '../../assets/bin/linux64/chipsd'),
       api.chipscliBin = path.join(__dirname, '../../assets/bin/linux64/chips-cli'),
@@ -59,16 +59,16 @@ const pathsDaemons = (api) => {
       break;
 
     case 'win32':
-      api.agamaTestDir = `${process.env.APPDATA}/Agama/test`;
-      api.agamaTestDir = path.normalize(api.agamaTestDir);
-      api.komododBin = path.join(__dirname, '../../assets/bin/win64/komodod.exe'),
-      api.komododBin = path.normalize(api.komododBin),
-      api.komodocliBin = path.join(__dirname, '../../assets/bin/win64/komodo-cli.exe'),
-      api.komodocliBin = path.normalize(api.komodocliBin),
-      api.komodocliDir = path.join(__dirname, '../../assets/bin/win64'),
-      api.komodocliDir = path.normalize(api.komodocliDir),
-      api.komodoDir = api.appConfig && api && api.appConfig.native.dataDir.length ? api.appConfig.native.dataDir : `${process.env.APPDATA}/Komodo`,
-      api.komodoDir = path.normalize(api.komodoDir);
+      api.safewalletTestDir = `${process.env.APPDATA}/Safewallet/test`;
+      api.safewalletTestDir = path.normalize(api.safewalletTestDir);
+      api.safecoindBin = path.join(__dirname, '../../assets/bin/win64/safecoind.exe'),
+      api.safecoindBin = path.normalize(api.safecoindBin),
+      api.safecoincliBin = path.join(__dirname, '../../assets/bin/win64/safecoin-cli.exe'),
+      api.safecoincliBin = path.normalize(api.safecoincliBin),
+      api.safecoincliDir = path.join(__dirname, '../../assets/bin/win64'),
+      api.safecoincliDir = path.normalize(api.safecoincliDir),
+      api.safecoinDir = api.appConfig && api && api.appConfig.native.dataDir.length ? api.appConfig.native.dataDir : `${process.env.APPDATA}/Safecoin`,
+      api.safecoinDir = path.normalize(api.safecoinDir);
       api.chipsBin = path.join(__dirname, '../../assets/bin/win64/chipsd.exe'),
       api.chipsBin = path.normalize(api.chipsBin),
       api.chipscliBin = path.join(__dirname, '../../assets/bin/win64/chips-cli.exe'),
@@ -87,6 +87,6 @@ const pathsDaemons = (api) => {
 }
 
 module.exports = {
-  pathsAgama,
+  pathsSafewallet,
   pathsDaemons,
 };

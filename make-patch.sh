@@ -1,4 +1,4 @@
-cd gui/EasyDEX-GUI/react
+cd gui/FairExchange-GUI/react
 echo "building gui..."
 rm -rf ./build
 mkdir build
@@ -11,11 +11,11 @@ rm -rf ./patch.zip
 rm -rf ./patch
 mkdir patch
 mkdir patch/gui
-mkdir patch/gui/EasyDEX-GUI
-mkdir patch/gui/EasyDEX-GUI/react
-mkdir patch/gui/EasyDEX-GUI/react
-cp -R gui/EasyDEX-GUI/react/build patch/gui/EasyDEX-GUI/react/build
-cp -R gui/EasyDEX-GUI/assets patch/gui/EasyDEX-GUI
+mkdir patch/gui/FairExchange-GUI
+mkdir patch/gui/FairExchange-GUI/react
+mkdir patch/gui/FairExchange-GUI/react
+cp -R gui/FairExchange-GUI/react/build patch/gui/FairExchange-GUI/react/build
+cp -R gui/FairExchange-GUI/assets patch/gui/FairExchange-GUI
 cp -R gui/startup patch/gui/startup
 cp ./main.js patch
 cp ./version patch

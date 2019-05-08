@@ -6,8 +6,8 @@ const path = require('path');
 const os = require('os');
 const portscanner = require('portscanner');
 const execFile = require('child_process').execFile;
-const md5 = require('agama-wallet-lib/src/crypto/md5');
-const { kmdAssetChains } = require('agama-wallet-lib/src/coin-helpers');
+const md5 = require('safewallet-wallet-lib/src/crypto/md5');
+const { safeAssetChains } = require('safewallet-wallet-lib/src/coin-helpers');
 
 module.exports = (api) => {
   const getConf = (flock, coind) => {
@@ -38,8 +38,8 @@ module.exports = (api) => {
     }
 
     switch (flock) {
-      case 'komodod':
-        DaemonConfPath = api.komodoDir;
+      case 'safecoind':
+        DaemonConfPath = api.safecoinDir;
         if (_platform === 'win32') {
           DaemonConfPath = path.normalize(DaemonConfPath);
           api.log('===>>> API OUTPUT ===>>>', 'native.confd');
@@ -61,7 +61,7 @@ module.exports = (api) => {
         DaemonConfPath = _platform === 'win32' ? path.normalize(`${api.coindRootDir}/${coind.toLowerCase()}`) : `${api.coindRootDir}/${coind.toLowerCase()}`;
         break;
       default:
-        DaemonConfPath = `${api.komodoDir}/${flock}`;
+        DaemonConfPath = `${api.safecoinDir}/${flock}`;
         if (_platform === 'win32') {
           DaemonConfPath = path.normalize(DaemonConfPath);
         }
@@ -86,11 +86,11 @@ module.exports = (api) => {
 
     // TODO: notify gui that reindex/rescan param is used to reflect on the screen
     //       asset chain debug.log unlink
-    if (flock === 'komodod') {
-      let kmdDebugLogLocation = (data.ac_name !== 'komodod' ? `${api.komodoDir}/${data.ac_name}` : api.komodoDir) + '/debug.log';
+    if (flock === 'safecoind') {
+      let safeDebugLogLocation = (data.ac_name !== 'safecoind' ? `${api.safecoinDir}/${data.ac_name}` : api.safecoinDir) + '/debug.log';
 
       // get custom coind port
-      const _coindConf = data.ac_name !== 'komodod' ? `${api.komodoDir}/${data.ac_name}/${data.ac_name}.conf` : `${api.komodoDir}/komodo.conf`;
+      const _coindConf = data.ac_name !== 'safecoind' ? `${api.safecoinDir}/${data.ac_name}/${data.ac_name}.conf` : `${api.safecoinDir}/safecoin.conf`;
 
       try {
         const _coindConfContents = fs.readFileSync(_coindConf, 'utf8');
@@ -100,90 +100,90 @@ module.exports = (api) => {
 
           if (_coindCustomPort[1]) {
             api.assetChainPorts[data.ac_name] = _coindCustomPort[1];
-            api.rpcConf[data.ac_name === 'komodod' ? 'KMD' : data.ac_name].port = _coindCustomPort[1];
+            api.rpcConf[data.ac_name === 'safecoind' ? 'SAFE' : data.ac_name].port = _coindCustomPort[1];
             api.log(`${data.ac_name} custom port ${_coindCustomPort[1]}`, 'native.confd');
           } else {
             api.assetChainPorts[data.ac_name] = api.assetChainPortsDefault[data.ac_name];
-            api.rpcConf[data.ac_name === 'komodod' ? 'KMD' : data.ac_name].port = api.assetChainPortsDefault[data.ac_name];
+            api.rpcConf[data.ac_name === 'safecoind' ? 'SAFE' : data.ac_name].port = api.assetChainPortsDefault[data.ac_name];
             api.log(`${data.ac_name} port ${api.assetChainPorts[data.ac_name]}`, 'native.confd');
           }
         } else {
           api.assetChainPorts[data.ac_name] = api.assetChainPortsDefault[data.ac_name];
-          api.rpcConf[data.ac_name === 'komodod' ? 'KMD' : data.ac_name].port = api.assetChainPortsDefault[data.ac_name];
+          api.rpcConf[data.ac_name === 'safecoind' ? 'SAFE' : data.ac_name].port = api.assetChainPortsDefault[data.ac_name];
           api.log(`${data.ac_name} port ${api.assetChainPorts[data.ac_name]}`, 'native.confd');
         }
       } catch (e) {
-        if (api.rpcConf[data.ac_name === 'komodod' ? 'KMD' : data.ac_name]) {
-          api.rpcConf[data.ac_name === 'komodod' ? 'KMD' : data.ac_name].port = api.assetChainPortsDefault[data.ac_name];
+        if (api.rpcConf[data.ac_name === 'safecoind' ? 'SAFE' : data.ac_name]) {
+          api.rpcConf[data.ac_name === 'safecoind' ? 'SAFE' : data.ac_name].port = api.assetChainPortsDefault[data.ac_name];
         }
         api.assetChainPorts[data.ac_name] = api.assetChainPortsDefault[data.ac_name];
         api.log(`${data.ac_name} port ${api.assetChainPorts[data.ac_name]}`, 'native.confd');
       }
 
-      api.log('komodod flock selected...', 'native.confd');
+      api.log('safecoind flock selected...', 'native.confd');
       api.log(`selected data: ${JSON.stringify(data, null, '\t')}`, 'native.confd');
-      api.writeLog('komodod flock selected...', 'native.confd');
+      api.writeLog('safecoind flock selected...', 'native.confd');
       api.writeLog(`selected data: ${data}`, 'native.confd');
 
-      // datadir case, check if komodo/chain folder exists
+      // datadir case, check if safecoin/chain folder exists
       if (api.appConfig.native.dataDir.length &&
-          data.ac_name !== 'komodod') {
-        const _dir = data.ac_name !== 'komodod' ? `${api.komodoDir}/${data.ac_name}` : api.komodoDir;
+          data.ac_name !== 'safecoind') {
+        const _dir = data.ac_name !== 'safecoind' ? `${api.safecoinDir}/${data.ac_name}` : api.safecoinDir;
 
         try {
           _fs.accessSync(_dir, fs.R_OK | fs.W_OK);
 
-          api.log(`komodod datadir ${_dir} exists`, 'native.confd');
+          api.log(`safecoind datadir ${_dir} exists`, 'native.confd');
         } catch (e) {
-          api.log(`komodod datadir ${_dir} access err: ${e}`, 'native.confd');
-          api.log(`attempting to create komodod datadir ${_dir}`, 'native.confd');
+          api.log(`safecoind datadir ${_dir} access err: ${e}`, 'native.confd');
+          api.log(`attempting to create safecoind datadir ${_dir}`, 'native.confd');
 
           fs.mkdirSync(_dir);
 
           if (fs.existsSync(_dir)) {
-            api.log(`created komodod datadir folder at ${_dir}`, 'native.confd');
+            api.log(`created safecoind datadir folder at ${_dir}`, 'native.confd');
           } else {
-            api.log(`unable to create komodod datadir folder at ${_dir}`, 'native.confd');
+            api.log(`unable to create safecoind datadir folder at ${_dir}`, 'native.confd');
           }
         }
       }
 
       // truncate debug.log
-      if (!api.kmdMainPassiveMode) {
+      if (!api.safeMainPassiveMode) {
         try {
           const _confFileAccess = _fs.accessSync(
-            kmdDebugLogLocation,
+            safeDebugLogLocation,
             fs.R_OK | fs.W_OK
           );
 
           if (_confFileAccess) {
-            api.log(`error accessing ${kmdDebugLogLocation}`, 'native.debug');
-            api.writeLog(`error accessing ${kmdDebugLogLocation}`, 'native.debug');
+            api.log(`error accessing ${safeDebugLogLocation}`, 'native.debug');
+            api.writeLog(`error accessing ${safeDebugLogLocation}`, 'native.debug');
           } else {
             try {
-              fs.unlinkSync(kmdDebugLogLocation);
-              api.log(`truncate ${kmdDebugLogLocation}`, 'native.debug');
-              api.writeLog(`truncate ${kmdDebugLogLocation}`);
+              fs.unlinkSync(safeDebugLogLocation);
+              api.log(`truncate ${safeDebugLogLocation}`, 'native.debug');
+              api.writeLog(`truncate ${safeDebugLogLocation}`);
             } catch (e) {
               api.log('cant unlink debug.log', 'native.debug');
             }
           }
         } catch (e) {
-          api.log(`komodod debug.log access err: ${e}`, 'native.debug');
-          api.writeLog(`komodod debug.log access err: ${e}`, 'native.debug');
+          api.log(`safecoind debug.log access err: ${e}`, 'native.debug');
+          api.writeLog(`safecoind debug.log access err: ${e}`, 'native.debug');
         }
       }
 
-      // get komodod instance port
+      // get safecoind instance port
       const _port = api.assetChainPorts[data.ac_name];
 
       try {
-        // check if komodod instance is already running
+        // check if safecoind instance is already running
         portscanner.checkPortStatus(_port, '127.0.0.1', (error, status) => {
           // Status is 'open' if currently in use or 'closed' if available
           if (status === 'closed' ||
               !api.appConfig.native.stopNativeDaemonsOnQuit) {
-            // start komodod via exec
+            // start safecoind via exec
             const _customParamDict = {
               silent: '&',
               reindex: '-reindex',
@@ -209,25 +209,25 @@ module.exports = (api) => {
             }
 
             if (api.appConfig.native.dataDir.length) {
-              _customParam = `${_customParam} -datadir=${api.appConfig.native.dataDir}${(data.ac_name !== 'komodod' ? `/${data.ac_name}` : '')}`;
+              _customParam = `${_customParam} -datadir=${api.appConfig.native.dataDir}${(data.ac_name !== 'safecoind' ? `/${data.ac_name}` : '')}`;
             }
 
-            const isChain = kmdAssetChains.indexOf(data.ac_name) > -1 ? true : false;
+            const isChain = safeAssetChains.indexOf(data.ac_name) > -1 ? true : false;
             const coindACParam = isChain && data.ac_options.indexOf('ac_name') === -1 ? ` -ac_name=${data.ac_name} ` : '';
 
-            api.log(`exec ${api.komododBin} ${coindACParam} ${data.ac_options.join(' ')}${_customParam}`, 'native.process');
-            api.writeLog(`exec ${api.komododBin} ${coindACParam} ${data.ac_options.join(' ')}${_customParam}`, 'native.process');
+            api.log(`exec ${api.safecoindBin} ${coindACParam} ${data.ac_options.join(' ')}${_customParam}`, 'native.process');
+            api.writeLog(`exec ${api.safecoindBin} ${coindACParam} ${data.ac_options.join(' ')}${_customParam}`, 'native.process');
             api.log(`daemon param ${data.ac_custom_param}`, 'native.confd');
 
             api.coindInstanceRegistry[data.ac_name] = true;
 
-            if (!api.kmdMainPassiveMode) {
+            if (!api.safeMainPassiveMode) {
               let _arg = `${coindACParam}${data.ac_options.join(' ')}${_customParam}`;
               _arg = _arg.trim().split(' ');
               api.native.startParams[data.ac_name] = _arg;
               
-              const _daemonName = data.ac_name !== 'komodod' ? data.ac_name : 'komodod';
-              const _daemonLogName = `${api.agamaDir}/${_daemonName}.log`;
+              const _daemonName = data.ac_name !== 'safecoind' ? data.ac_name : 'safecoind';
+              const _daemonLogName = `${api.safewalletDir}/${_daemonName}.log`;
 
               try {
                 fs.accessSync(_daemonLogName, fs.R_OK | fs.W_OK);
@@ -246,7 +246,7 @@ module.exports = (api) => {
                 let spawnOut = fs.openSync(_daemonLogName, 'a');
                 let spawnErr = fs.openSync(_daemonLogName, 'a');
 
-                spawn(api.komododBin, _arg, {
+                spawn(api.safecoindBin, _arg, {
                   stdio: [
                     'ignore',
                     spawnOut,
@@ -261,7 +261,7 @@ module.exports = (api) => {
                   { flags: 'a' }
                 );
 
-                let _daemonChildProc = execFile(`${api.komododBin}`, _arg, {
+                let _daemonChildProc = execFile(`${api.safecoindBin}`, _arg, {
                   maxBuffer: 1024 * 1000000, // 1000 mb
                 }, (error, stdout, stderr) => {
                   api.writeLog(`stdout: ${stdout}`, 'native.debug');
@@ -274,7 +274,7 @@ module.exports = (api) => {
                     // TODO: check other edge cases
                     if (error.toString().indexOf('using -reindex') > -1) {
                       api.io.emit('service', {
-                        komodod: {
+                        safecoind: {
                           error: 'run -reindex',
                         },
                       });
@@ -312,7 +312,7 @@ module.exports = (api) => {
               }
             }
           } else { // deprecated(?)
-            if (api.kmdMainPassiveMode) {
+            if (api.safeMainPassiveMode) {
               api.coindInstanceRegistry[data.ac_name] = true;
             }
             api.log(`port ${_port} (${data.ac_name}) is already in use`, 'native.process');
@@ -320,14 +320,14 @@ module.exports = (api) => {
           }
         });
       } catch(e) {
-        api.log(`failed to start komodod err: ${e}`, 'native.process');
-        api.writeLog(`failed to start komodod err: ${e}`);
+        api.log(`failed to start safecoind err: ${e}`, 'native.process');
+        api.writeLog(`failed to start safecoind err: ${e}`);
       }
     }
 
     // TODO: refactor
     if (flock === 'chipsd') {
-      let kmdDebugLogLocation = `${api.chipsDir}/debug.log`;
+      let safeDebugLogLocation = `${api.chipsDir}/debug.log`;
 
       api.log('chipsd flock selected...', 'native.confd');
       api.log(`selected data: ${JSON.stringify(data, null, '\t')}`, 'native.confd');
@@ -337,18 +337,18 @@ module.exports = (api) => {
       // truncate debug.log
       try {
         const _confFileAccess = _fs.accessSync(
-          kmdDebugLogLocation,
+          safeDebugLogLocation,
           fs.R_OK | fs.W_OK
         );
 
         if (_confFileAccess) {
-          api.log(`error accessing ${kmdDebugLogLocation}`, 'native.debug');
-          api.writeLog(`error accessing ${kmdDebugLogLocation}`);
+          api.log(`error accessing ${safeDebugLogLocation}`, 'native.debug');
+          api.writeLog(`error accessing ${safeDebugLogLocation}`);
         } else {
           try {
-            fs.unlinkSync(kmdDebugLogLocation);
-            api.log(`truncate ${kmdDebugLogLocation}`, 'native.debug');
-            api.writeLog(`truncate ${kmdDebugLogLocation}`);
+            fs.unlinkSync(safeDebugLogLocation);
+            api.log(`truncate ${safeDebugLogLocation}`, 'native.debug');
+            api.writeLog(`truncate ${safeDebugLogLocation}`);
           } catch (e) {
             api.log('cant unlink debug.log', 'native.debug');
           }
@@ -358,15 +358,15 @@ module.exports = (api) => {
         api.writeLog(`chipsd debug.log access err: ${e}`);
       }
 
-      // get komodod instance port
+      // get safecoind instance port
       const _port = api.assetChainPorts.chipsd;
 
       try {
-        // check if komodod instance is already running
+        // check if safecoind instance is already running
         portscanner.checkPortStatus(_port, '127.0.0.1', (error, status) => {
           // Status is 'open' if currently in use or 'closed' if available
           if (status === 'closed') {
-            // start komodod via exec
+            // start safecoind via exec
             const _customParamDict = {
               silent: '&',
               reindex: '-reindex',
@@ -410,7 +410,7 @@ module.exports = (api) => {
 
                   if (error.toString().indexOf('using -reindex') > -1) {
                     api.io.emit('service', {
-                      komodod: {
+                      safecoind: {
                         error: 'run -reindex',
                       },
                     });
@@ -430,7 +430,7 @@ module.exports = (api) => {
 
                   if (error.toString().indexOf('using -reindex') > -1) {
                     api.io.emit('service', {
-                      komodod: {
+                      safecoind: {
                         error: 'run -reindex',
                       },
                     });
@@ -447,7 +447,7 @@ module.exports = (api) => {
     }
 
     if (flock === 'zcashd') { // TODO: fix(?)
-      let kmdDebugLogLocation = `${api.zcashDir}/debug.log`;
+      let safeDebugLogLocation = `${api.zcashDir}/debug.log`;
 
       api.log('zcashd flock selected...', 'native.confd');
       api.log(`selected data: ${data}`, 'native.confd');
@@ -481,7 +481,7 @@ module.exports = (api) => {
         api.writeLog(`coind ${coind} debug.log access err: ${e}`);
       }
 
-      // get komodod instance port
+      // get safecoind instance port
       const _port = api.nativeCoindList[coind.toLowerCase()].port;
       const coindBin = `${api.coindRootDir}/${coind.toLowerCase()}/${api.nativeCoindList[coind.toLowerCase()].bin.toLowerCase()}d`;
 
@@ -540,8 +540,8 @@ module.exports = (api) => {
     }
 
     switch (flock) {
-      case 'komodod':
-        DaemonConfPath = `${api.komodoDir}/komodo.conf`;
+      case 'safecoind':
+        DaemonConfPath = `${api.safecoinDir}/safecoin.conf`;
 
         if (_platform === 'win32') {
           DaemonConfPath = path.normalize(DaemonConfPath);
@@ -569,7 +569,7 @@ module.exports = (api) => {
         }
         break;
       default:
-        DaemonConfPath = `${api.komodoDir}/${flock}/${flock}.conf`;
+        DaemonConfPath = `${api.safecoinDir}/${flock}/${flock}.conf`;
 
         if (_platform === 'win32') {
           DaemonConfPath = path.normalize(DaemonConfPath);
@@ -697,7 +697,7 @@ module.exports = (api) => {
             return new Promise((resolve, reject) => {
               const result = 'checking rpcport...';
 
-              if (flock === 'komodod') {
+              if (flock === 'safecoind') {
                 if (status[0].hasOwnProperty('rpcport')) {
                   api.log('rpcport: OK', 'native.confd');
                   api.writeLog('rpcport: OK');
@@ -751,7 +751,7 @@ module.exports = (api) => {
               const result = 'checking addnode...';
 
               if (flock === 'chipsd' ||
-                  flock === 'komodod') {
+                  flock === 'safecoind') {
                 if (status[0].hasOwnProperty('addnode')) {
                   api.log('addnode: OK', 'native.confd');
                   api.writeLog('addnode: OK');
@@ -770,7 +770,7 @@ module.exports = (api) => {
                     '\naddnode=217.182.194.216' +
                     '\naddnode=94.130.96.114' +
                     '\naddnode=5.9.253.195';
-                  } else if (flock === 'komodod') {
+                  } else if (flock === 'safecoind') {
                     nodesList = '\naddnode=78.47.196.146' +
                     '\naddnode=5.9.102.210' +
                     '\naddnode=178.63.69.164' +
@@ -832,7 +832,7 @@ module.exports = (api) => {
       api.log(_body, 'native.confd');
 
       if (_body.options &&
-          !api.kmdMainPassiveMode) {
+          !api.safeMainPassiveMode) {
         const testCoindPort = (skipError) => {
           const _acName = req.body.options.ac_name;
 
@@ -844,10 +844,10 @@ module.exports = (api) => {
               if (status === 'open' &&
                   api.appConfig.native.stopNativeDaemonsOnQuit) {
                 if (!skipError) {
-                  api.log(`komodod service start error at port ${_port}, reason: port is closed`, 'native.process');
-                  api.writeLog(`komodod service start error at port ${_port}, reason: port is closed`);
+                  api.log(`safecoind service start error at port ${_port}, reason: port is closed`, 'native.process');
+                  api.writeLog(`safecoind service start error at port ${_port}, reason: port is closed`);
                   api.io.emit('service', {
-                    komodod: {
+                    safecoind: {
                       error: `error starting ${_body.herd} ${_acName} daemon. Port ${_port} is already taken!`,
                     },
                   });
@@ -860,8 +860,8 @@ module.exports = (api) => {
                   res.status(500);
                   res.end(JSON.stringify(retObj));
                 } else {
-                  api.log(`komodod service start success at port ${_port}`, 'native.process');
-                  api.writeLog(`komodod service start success at port ${_port}`);
+                  api.log(`safecoind service start success at port ${_port}`, 'native.process');
+                  api.writeLog(`safecoind service start success at port ${_port}`);
                 }
               } else {
                 if (!skipError) {
@@ -874,16 +874,16 @@ module.exports = (api) => {
 
                   res.end(JSON.stringify(retObj));
                 } else {
-                  api.log(`komodod service start error at port ${_port}, reason: unknown`, 'native.process');
-                  api.writeLog(`komodod service start error at port ${_port}, reason: unknown`);
+                  api.log(`safecoind service start error at port ${_port}, reason: unknown`, 'native.process');
+                  api.writeLog(`safecoind service start error at port ${_port}, reason: unknown`);
                 }
               }
             });
           }
         }
 
-        if (_body.herd === 'komodod') {
-          // check if komodod instance is already running
+        if (_body.herd === 'safecoind') {
+          // check if safecoind instance is already running
           testCoindPort();
           setTimeout(() => {
             testCoindPort(true);
@@ -930,8 +930,8 @@ module.exports = (api) => {
       api.log(_body, 'native.confd');
 
       if (os.platform() === 'win32' &&
-          _body.chain == 'komodod') {
-        setkomodoconf = spawn(path.join(__dirname, '../assets/bin/win64/genkmdconf.bat'));
+          _body.chain == 'safecoind') {
+        setsafecoinconf = spawn(path.join(__dirname, '../assets/bin/win64/gensafeconf.bat'));
       } else {
         api.setConf(_body.chain);
       }
@@ -983,23 +983,23 @@ module.exports = (api) => {
     }
   });
 
-  api.setConfKMD = (isChips) => {
-    // check if kmd conf exists
-    _fs.access(isChips ? `${api.chipsDir}/chips.conf` : `${api.komodoDir}/komodo.conf`, fs.constants.R_OK, (err) => {
+  api.setConfSAFE = (isChips) => {
+    // check if safe conf exists
+    _fs.access(isChips ? `${api.chipsDir}/chips.conf` : `${api.safecoinDir}/safecoin.conf`, fs.constants.R_OK, (err) => {
       if (err) {
-        api.log(isChips ? 'creating chips conf' : 'creating komodo conf', 'native.confd');
-        api.writeLog(isChips ? `creating chips conf in ${api.chipsDir}/chips.conf` : `creating komodo conf in ${api.komodoDir}/komodo.conf`);
-        setConf(isChips ? 'chipsd' : 'komodod');
+        api.log(isChips ? 'creating chips conf' : 'creating safecoin conf', 'native.confd');
+        api.writeLog(isChips ? `creating chips conf in ${api.chipsDir}/chips.conf` : `creating safecoin conf in ${api.safecoinDir}/safecoin.conf`);
+        setConf(isChips ? 'chipsd' : 'safecoind');
       } else {
-        const _confSize = fs.lstatSync(isChips ? `${api.chipsDir}/chips.conf` : `${api.komodoDir}/komodo.conf`);
+        const _confSize = fs.lstatSync(isChips ? `${api.chipsDir}/chips.conf` : `${api.safecoinDir}/safecoin.conf`);
 
         if (_confSize.size === 0) {
-          api.log(isChips ? 'err: chips conf file is empty, creating chips conf' : 'err: komodo conf file is empty, creating komodo conf', 'native.confd');
-          api.writeLog(isChips ? `creating chips conf in ${api.chipsDir}/chips.conf` : `creating komodo conf in ${api.komodoDir}/komodo.conf`);
-          setConf(isChips ? 'chipsd' : 'komodod');
+          api.log(isChips ? 'err: chips conf file is empty, creating chips conf' : 'err: safecoin conf file is empty, creating safecoin conf', 'native.confd');
+          api.writeLog(isChips ? `creating chips conf in ${api.chipsDir}/chips.conf` : `creating safecoin conf in ${api.safecoinDir}/safecoin.conf`);
+          setConf(isChips ? 'chipsd' : 'safecoind');
         } else {
-          api.writeLog(isChips ? 'chips conf exists' : 'komodo conf exists');
-          api.log(isChips ? 'chips conf exists' : 'komodo conf exists', 'native.confd');
+          api.writeLog(isChips ? 'chips conf exists' : 'safecoin conf exists');
+          api.log(isChips ? 'chips conf exists' : 'safecoin conf exists', 'native.confd');
         }
       }
     });

@@ -46,7 +46,7 @@ api.appConfig = api._appConfig.config;
 // core
 api = require('./api/paths.js')(api);
 
-api.pathsAgama();
+api.pathsSafewallet();
 
 // core
 api = require('./api/log.js')(api);
@@ -58,7 +58,7 @@ api.pathsDaemons();
 
 api.appConfigSchema = api._appConfig.schema;
 api.defaultAppConfig = Object.assign({}, api.appConfig);
-api.kmdMainPassiveMode = false;
+api.safeMainPassiveMode = false;
 api.native = {
   startParams: {},
 };
@@ -151,7 +151,7 @@ api.printDirs();
 
 // default route
 api.get('/', (req, res, next) => {
-  res.send('Agama app server2');
+  res.send('Safewallet app server2');
 });
 
 // expose sockets obj

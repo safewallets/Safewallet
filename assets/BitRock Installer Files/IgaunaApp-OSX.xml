@@ -1,11 +1,11 @@
 <project>
-    <shortName>AgamaApp</shortName>
-    <fullName>Agama</fullName>
+    <shortName>SafewalletApp</shortName>
+    <fullName>Safewallet</fullName>
     <version>0.1.6.2e-beta</version>
     <licenseFile>../../LICENSE</licenseFile>
-    <leftImage>../installer_imgs/Agama_installer_wizard_image.png</leftImage>
-    <logoImage>../installer_imgs/supernet-agama-logo.png</logoImage>
-    <splashImage>../installer_imgs/Agama_installer_splash_image.png</splashImage>
+    <leftImage>../installer_imgs/Safewallet_installer_wizard_image.png</leftImage>
+    <logoImage>../installer_imgs/supernet-safewallet-logo.png</logoImage>
+    <splashImage>../installer_imgs/Safewallet_installer_splash_image.png</splashImage>
     <allowLanguageSelection>1</allowLanguageSelection>
     <componentList>
         <component>
@@ -41,7 +41,7 @@
                     <platforms>osx</platforms>
                     <distributionFileList>
                         <distributionFile>
-                            <origin>../../build/Agama-darwin-x64/Agama.app</origin>
+                            <origin>../../build/Safewallet-darwin-x64/Safewallet.app</origin>
                         </distributionFile>
                     </distributionFileList>
                 </folder>
@@ -85,7 +85,7 @@
     <readyToInstallActionList>
         <runProgram>
             <program>open</program>
-            <programArguments>-W ${oldInstalldir}/Agama.app/${uninstallerName}.app</programArguments>
+            <programArguments>-W ${oldInstalldir}/Safewallet.app/${uninstallerName}.app</programArguments>
             <ruleList>
                 <compareValues>
                     <logic>equals</logic>
@@ -96,7 +96,7 @@
         </runProgram>
         <deleteFile>
             <explanation>Deleting user data</explanation>
-            <path>${user_home_directory}/Library/Application Support/Agama</path>
+            <path>${user_home_directory}/Library/Application Support/Safewallet</path>
             <progressText>Deleting user data</progressText>
             <ruleList>
                 <compareValues>
@@ -272,13 +272,13 @@
     <enableTimestamp>1</enableTimestamp>
     <requireInstallationByRootUser>1</requireInstallationByRootUser>
     <saveRelativePaths>1</saveRelativePaths>
-    <uninstallerDirectory>${installdir}/Agama.app/</uninstallerDirectory>
-    <uninstallerName>Uninstall-Agama</uninstallerName>
+    <uninstallerDirectory>${installdir}/Safewallet.app/</uninstallerDirectory>
+    <uninstallerName>Uninstall-Safewallet</uninstallerName>
     <vendor>SuperNETOrg</vendor>
     <finalPageActionList>
         <runProgram>
             <program>open</program>
-            <programArguments>/Applications/Agama.app</programArguments>
+            <programArguments>/Applications/Safewallet.app</programArguments>
             <progressText>Do you want to launch ${project.fullName} now?</progressText>
             <runAs>$USER</runAs>
         </runProgram>

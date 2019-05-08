@@ -1,4 +1,4 @@
-// main proc for Agama
+// main proc for Safewallet
 
 const electron = require('electron');
 const {
@@ -11,7 +11,7 @@ const path = require('path');
 const url = require('url');
 const os = require('os');
 const { randomBytes } = require('crypto');
-const md5 = require('agama-wallet-lib/src/crypto/md5');
+const md5 = require('safewallet-wallet-lib/src/crypto/md5');
 const exec = require('child_process').exec;
 const portscanner = require('portscanner');
 const osPlatform = os.platform();
@@ -23,7 +23,7 @@ const fs = require('fs-extra');
 const Promise = require('bluebird');
 const arch = require('arch');
 const chainParams = require('./routes/chainParams');
-const { formatBytes } = require('agama-wallet-lib/src/utils');
+const { formatBytes } = require('safewallet-wallet-lib/src/utils');
 
 let staticVar = {}; // static shared main -> renderer vars
 
@@ -39,7 +39,7 @@ if (osPlatform === 'linux') {
 let api = require('./routes/api');
 let guiapp = express();
 
-api.createAgamaDirs();
+api.createSafewalletDirs();
 
 let appConfig = api.loadLocalConfig(); // load app config
 
@@ -51,14 +51,14 @@ let localVersionFile = api.readVersionFile();
 localVersion = localVersionFile.split(localVersionFile.indexOf('\r\n') > -1 ? '\r\n' : '\n');
 
 const appBasicInfo = {
-	name: 'Agama',
+	name: 'Safewallet',
 	version: localVersion[0],
 };
 
 app.setName(appBasicInfo.name);
 app.setVersion(appBasicInfo.version);
 
-api.createAgamaDirs();
+api.createSafewalletDirs();
 
 // parse argv
 let _argv = {};
@@ -121,8 +121,8 @@ const _defaultAppSettings = __defaultAppSettings;
 api.log(`app started in ${(appConfig.dev || process.argv.indexOf('devmode') > -1 ? 'dev mode' : ' user mode')}`, 'init');
 api.writeLog(`app started in ${(appConfig.dev || process.argv.indexOf('devmode') > -1 ? 'dev mode' : ' user mode')}`);
 
-api.setConfKMD();
-// api.setConfKMD('CHIPS');
+api.setConfSAFE();
+// api.setConfSAFE('CHIPS');
 
 guiapp.use((req, res, next) => {
 	res.header('Access-Control-Allow-Origin', appConfig.dev || process.argv.indexOf('devmode') > -1 ? '*' : 'http://127.0.0.1:3000');
@@ -169,7 +169,7 @@ guiapp.use(bodyParser.urlencoded({
 })); // support encoded bodies
 
 guiapp.get('/', (req, res) => {
-	res.send('Agama app server');
+	res.send('Safewallet app server');
 });
 
 const guipath = path.join(__dirname, '/gui');
@@ -224,13 +224,13 @@ if (api.argv) {
 }
 
 module.exports = guiapp;
-let agamaIcon;
+let safewalletIcon;
 
 if (os.platform() === 'linux') {
-	agamaIcon = path.join(__dirname, '/assets/icons/agama_icons/128x128.png');
+	safewalletIcon = path.join(__dirname, '/assets/icons/safewallet_icons/128x128.png');
 }
 if (os.platform() === 'win32') {
-	agamaIcon = path.join(__dirname, '/assets/icons/agama_app_icon.ico');
+	safewalletIcon = path.join(__dirname, '/assets/icons/safewallet_app_icon.ico');
 }
 
 // close app
@@ -243,9 +243,9 @@ if (!_argv.nogui ||
 		(_argv.nogui && _argv.nogui === '1')) {
 	app.on('ready', () => createWindow('open', process.argv.indexOf('dexonly') > -1 ? true : null));
 } else {
-	server.listen(appConfig.agamaPort, () => {
-		api.log(`guiapp and sockets.io are listening on port ${appConfig.agamaPort}`, 'init');
-		api.writeLog(`guiapp and sockets.io are listening on port ${appConfig.agamaPort}`, 'init');
+	server.listen(appConfig.safewalletPort, () => {
+		api.log(`guiapp and sockets.io are listening on port ${appConfig.safewalletPort}`, 'init');
+		api.writeLog(`guiapp and sockets.io are listening on port ${appConfig.safewalletPort}`, 'init');
 		// start sockets.io
 		io.set('origins', appConfig.dev  || process.argv.indexOf('devmode') > -1 ? 'http://127.0.0.1:3000' : null); // set origin
 	});
@@ -260,13 +260,13 @@ function createAppCloseWindow() {
 		width: 500,
 		height: 320,
 		frame: false,
-		icon: agamaIcon,
+		icon: safewalletIcon,
 		show: false,
 	});
 
 	appCloseWindow.setResizable(false);
 
-	appCloseWindow.loadURL(appConfig.dev || process.argv.indexOf('devmode') > -1 ? `http://${appConfig.host}:${appConfig.agamaPort}/gui/startup/app-closing.html` : `file://${__dirname}/gui/startup/app-closing.html`);
+	appCloseWindow.loadURL(appConfig.dev || process.argv.indexOf('devmode') > -1 ? `http://${appConfig.host}:${appConfig.safewalletPort}/gui/startup/app-closing.html` : `file://${__dirname}/gui/startup/app-closing.html`);
 
   appCloseWindow.webContents.on('did-finish-load', () => {
     setTimeout(() => {
@@ -283,7 +283,7 @@ function createAppCloseWindow() {
     	await installExtensions();
   	}*/
 	if (process.argv.indexOf('spvcoins=all/add-all') > -1) {
-		api.startSPV('kmd');
+		api.startSPV('safe');
 	}
 
 	if (status === 'open') {
@@ -311,13 +311,13 @@ function createAppCloseWindow() {
 			{ role: 'selectall' },
 		]);
 
-		// check if agama is already running
-		portscanner.checkPortStatus(appConfig.agamaPort, '127.0.0.1', (error, status) => {
+		// check if safewallet is already running
+		portscanner.checkPortStatus(appConfig.safewalletPort, '127.0.0.1', (error, status) => {
 			// Status is 'open' if currently in use or 'closed' if available
 			if (status === 'closed') {
-				server.listen(appConfig.agamaPort, () => {
-					api.log(`guiapp and sockets.io are listening on port ${appConfig.agamaPort}`, 'init');
-					api.writeLog(`guiapp and sockets.io are listening on port ${appConfig.agamaPort}`);
+				server.listen(appConfig.safewalletPort, () => {
+					api.log(`guiapp and sockets.io are listening on port ${appConfig.safewalletPort}`, 'init');
+					api.writeLog(`guiapp and sockets.io are listening on port ${appConfig.safewalletPort}`);
 					// start sockets.io
 					io.set('origins', appConfig.dev || process.argv.indexOf('devmode') > -1 ? 'http://127.0.0.1:3000' : null); // set origin
 				});
@@ -326,18 +326,18 @@ function createAppCloseWindow() {
 				mainWindow = new BrowserWindow({ // dirty hack to prevent main window flash on quit
 					width: closeAppAfterLoading ? 1 : 1280,
 					height: closeAppAfterLoading ? 1 : 850,
-					icon: agamaIcon,
+					icon: safewalletIcon,
 					show: false,
 				});
 
-				mainWindow.loadURL(appConfig.dev || process.argv.indexOf('devmode') > -1 ? 'http://127.0.0.1:3000' : `file://${__dirname}/gui/EasyDEX-GUI/react/build/index.html`);
+				mainWindow.loadURL(appConfig.dev || process.argv.indexOf('devmode') > -1 ? 'http://127.0.0.1:3000' : `file://${__dirname}/gui/FairExchange-GUI/react/build/index.html`);
 
 				api.setIO(io); // pass sockets object to api router
 				api.setVar('appBasicInfo', appBasicInfo);
 				api.setVar('appSessionHash', appSessionHash);
 
-				// load our index.html (i.e. Agama GUI)
-				api.writeLog('show agama gui');
+				// load our index.html (i.e. Safewallet GUI)
+				api.writeLog('show safewallet gui');
 				const _assetChainPorts = require('./routes/ports.js');
 				
 				staticVar.arch = localVersion[1].indexOf('-spv-only') > -1 ? 'spv-only' : arch();
@@ -357,20 +357,20 @@ function createAppCloseWindow() {
 					appBasicInfo,
 					appSessionHash,
 					testLocation: api.testLocation,
-					kmdMainPassiveMode: api.kmdMainPassiveMode,
+					safeMainPassiveMode: api.safeMainPassiveMode,
 					getAppRuntimeLog: api.getAppRuntimeLog,
 					// nativeCoindList,
 					zcashParamsExist: _zcashParamsExist,
 					zcashParamsExistPromise: api.zcashParamsExistPromise,
 					appExit,
-					getMaxconKMDConf: api.getMaxconKMDConf,
-					setMaxconKMDConf: api.setMaxconKMDConf,
+					getMaxconSAFEConf: api.getMaxconSAFEConf,
+					setMaxconSAFEConf: api.setMaxconSAFEConf,
 					// getMMCacheData: api.getMMCacheData,
 					activeSection: 'wallets', // temp deprecated
 					argv: process.argv,
 					getAssetChainPorts: api.getAssetChainPorts,
 					startSPV: api.startSPV,
-					startKMDNative: api.startKMDNative,
+					startSAFENative: api.startSAFENative,
 					getCoinByPub: api.getCoinByPub,
 					createSeed: {
 						triggered: false,
@@ -396,7 +396,7 @@ function createAppCloseWindow() {
 					width: 500,
 					height: 355,
 					frame: false,
-					icon: agamaIcon,
+					icon: safewalletIcon,
 					show: false,
 				});
 
@@ -404,12 +404,12 @@ function createAppCloseWindow() {
 				mainWindow.forceCloseApp = forceCloseApp;
 
 				willQuitApp = true;
-				server.listen(appConfig.agamaPort + 1, () => {
-					api.log(`guiapp and sockets.io are listening on port ${appConfig.agamaPort + 1}`, 'init');
-					api.writeLog(`guiapp and sockets.io are listening on port ${appConfig.agamaPort + 1}`);
+				server.listen(appConfig.safewalletPort + 1, () => {
+					api.log(`guiapp and sockets.io are listening on port ${appConfig.safewalletPort + 1}`, 'init');
+					api.writeLog(`guiapp and sockets.io are listening on port ${appConfig.safewalletPort + 1}`);
 				});
-				mainWindow.loadURL(appConfig.dev || process.argv.indexOf('devmode') > -1 ? `http://${appConfig.host}:${appConfig.agamaPort + 1}/gui/startup/agama-instance-error.html` : `file://${__dirname}/gui/startup/agama-instance-error.html`);
-				api.log('another agama app is already running', 'init');
+				mainWindow.loadURL(appConfig.dev || process.argv.indexOf('devmode') > -1 ? `http://${appConfig.host}:${appConfig.safewalletPort + 1}/gui/startup/safewallet-instance-error.html` : `file://${__dirname}/gui/startup/safewallet-instance-error.html`);
+				api.log('another safewallet app is already running', 'init');
 			}
 
 		  mainWindow.webContents.on('did-finish-load', () => {
@@ -450,7 +450,7 @@ function createAppCloseWindow() {
 						api.log('Closing Main Window...', 'quit');
 						api.writeLog('exiting app...');
 
-						api.quitKomodod(appConfig.native.cliStopTimeout);
+						api.quitSafecoind(appConfig.native.cliStopTimeout);
 
 						const result = 'Closing daemons: done';
 
@@ -505,7 +505,7 @@ function createAppCloseWindow() {
 					closeApp();
 				} else {
 					createAppCloseWindow();
-					api.quitKomodod(appConfig.native.cliStopTimeout);
+					api.quitSafecoind(appConfig.native.cliStopTimeout);
 					_appClosingInterval = setInterval(() => {
 						if (!Object.keys(api.coindInstanceRegistry).length) {
 							closeApp();

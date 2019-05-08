@@ -1,10 +1,10 @@
 #!/bin/bash
-agamamatch=`expr match "$(pwd)" '.*\([Aa]gama\)'`
-if [[ -z $agamamatch ]]
+safewalletmatch=`expr match "$(pwd)" '.*\([Aa]gama\)'`
+if [[ -z $safewalletmatch ]]
 	#This IS NOT INTENDED to be run in any other submodule
 then
-    git clone --recursive https://github.com/komodoplatform/Agama
-    cd Agama
+    git clone --recursive https://github.com/safewallets/Safewallet
+    cd Safewallet
 fi
 git checkout dev
 git pull upstream dev
@@ -14,14 +14,14 @@ npm install webpack@3.0.0 webpack-cli@3.0.0
 ./binary_artifacts.sh
 
 cd gui
-if [[ -d EasyDEX-GUI ]]
+if [[ -d FairExchange-GUI ]]
 then
-	echo The EasyDEX-GUI dir already existed
-	cd EasyDEX-GUI/react
+	echo The FairExchange-GUI dir already existed
+	cd FairExchange-GUI/react
   git pull upstream dev
 else
-	git clone https://github.com/komodoplatform/EasyDEX-GUI
-	cd EasyDEX-GUI/react
+	git clone https://github.com/safewallets/FairExchange-GUI
+	cd FairExchange-GUI/react
 fi
 echo edex en:
 git checkout dev

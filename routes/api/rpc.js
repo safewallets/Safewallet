@@ -6,7 +6,7 @@ const request = require('request');
 
 module.exports = (api) => {
   api.getConf = (chain) => {
-    let _confLocation = chain === 'komodod' ? `${api.komodoDir}/komodo.conf` : `${api.komodoDir}/${chain}/${chain}.conf`;
+    let _confLocation = chain === 'safecoind' ? `${api.safecoinDir}/safecoin.conf` : `${api.safecoinDir}/${chain}/${chain}.conf`;
     _confLocation = chain === 'CHIPS' ? `${api.chipsDir}/chips.conf` : _confLocation;
 
     // any coind
@@ -47,7 +47,7 @@ module.exports = (api) => {
           if (api.nativeCoindList[chain.toLowerCase()]) {
             api.rpcConf[chain] = parsedRpcConfig;
           } else {
-            api.rpcConf[chain === 'komodod' ? 'KMD' : chain] = parsedRpcConfig;
+            api.rpcConf[chain === 'safecoind' ? 'SAFE' : chain] = parsedRpcConfig;
           }
         } else {
           api.log(`${_confLocation} is empty`, 'native.confd');
@@ -82,17 +82,17 @@ module.exports = (api) => {
         res.end(JSON.stringify(retObj));*/
       } else {
         const _mode = payload.mode === 'passthru' ? 'passthru' : 'default';
-        const _chain = payload.chain === 'KMD' ? null : payload.chain;
+        const _chain = payload.chain === 'SAFE' ? null : payload.chain;
         let _params = payload.params ? ` ${payload.params}` : '';
         let _cmd = payload.cmd;
 
         if (!api.rpcConf[_chain]) {
-          api.getConf(payload.chain === 'KMD' || !payload.chain && api.kmdMainPassiveMode ? 'komodod' : payload.chain);
+          api.getConf(payload.chain === 'SAFE' || !payload.chain && api.safeMainPassiveMode ? 'safecoind' : payload.chain);
         }
 
         if (_mode === 'default') {
           if (payload.rpc2cli === true) {
-            let _coindCliBin = api.komodocliBin;
+            let _coindCliBin = api.safecoincliBin;
 
             api.log(`${payload.chain} ${payload.cmd} ${payload.rpc2cli}`, 'native.rpc2cli');
 
@@ -134,7 +134,7 @@ module.exports = (api) => {
                 let _res;
                 let _error;
 
-                if (_chain !== 'komodod' &&
+                if (_chain !== 'safecoind' &&
                     stderr.indexOf(`error creating`) > -1) {
                   api.log(`replace error creating (gen${_chain})`, 'native.debug');
                   stderr = stderr.replace(`error creating (gen${_chain})`, '');
@@ -175,7 +175,7 @@ module.exports = (api) => {
                 let _res;
                 let _error;
 
-                if (_chain !== 'komodod' &&
+                if (_chain !== 'safecoind' &&
                     stdout.indexOf(`error creating`) > -1) {
                   api.log(`replace error creating (gen${_chain})`, 'native.debug');
                   stdout = stdout.replace(`error creating (gen${_chain})`, '');
@@ -215,7 +215,7 @@ module.exports = (api) => {
               }
 
               res.end(JSON.stringify(retObj));
-              // api.killRogueProcess('komodo-cli');
+              // api.killRogueProcess('safecoin-cli');
             });
           } else {
             if (_cmd === 'debug' &&
@@ -309,7 +309,7 @@ module.exports = (api) => {
             }
           }
         } else {
-          let _coindCliBin = api.komodocliBin;
+          let _coindCliBin = api.safecoincliBin;
 
           if (api.nativeCoindList &&
               _chain &&
@@ -349,7 +349,7 @@ module.exports = (api) => {
             }
 
             res.end(JSON.stringify(retObj));
-            api.killRogueProcess('komodo-cli');
+            api.killRogueProcess('safecoin-cli');
           });
         }
       }

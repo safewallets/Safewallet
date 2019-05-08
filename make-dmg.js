@@ -3,15 +3,15 @@
 var installer = require('electron-installer-dmg');
 
 var options = {
-  appPath: 'build/Agama-darwin-x64/Agama.app',
+  appPath: 'build/Safewallet-darwin-x64/Safewallet.app',
   dest: 'build/',
   arch: 'amd64',
-  icon: 'assets/icons/agama_icons/64x64.png',
-  name: 'agama-app',
-  bin: 'Agama',
+  icon: 'assets/icons/safewallet_icons/64x64.png',
+  name: 'safewallet-app',
+  bin: 'Safewallet',
   categories: ['Office', 'Internet'],
-  homepage: 'https://komodoplatform.com',
-  maintainer: 'Komodo Platform <support@komodoplatform.com>',
+  homepage: 'https://safecoin.org',
+  maintainer: 'Safecoin <safe@safecoin.org>',
 }
 
 console.log('Creating package (this may take a while)');

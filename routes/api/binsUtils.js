@@ -8,8 +8,8 @@ module.exports = (api) => {
   api.binFixRights = () => {
     const osPlatform = os.platform();
     const _bins = [
-      api.komododBin,
-      api.komodocliBin,
+      api.safecoindBin,
+      api.safecoincliBin,
     ];
 
     if (osPlatform === 'darwin' ||

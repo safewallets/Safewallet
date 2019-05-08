@@ -3,15 +3,15 @@
 var installer = require('electron-installer-redhat');
 
 var options = {
-  src: 'build/Agama-linux-x64/',
+  src: 'build/Safewallet-linux-x64/',
   dest: 'build/',
   arch: 'x86_64',
-  icon: 'assets/icons/agama_icons/64x64.png',
-  name: 'agama-app',
-  bin: 'Agama',
+  icon: 'assets/icons/safewallet_icons/64x64.png',
+  name: 'safewallet-app',
+  bin: 'Safewallet',
   categories: ['Office', 'Internet'],
-  homepage: 'http://supernet.org',
-  maintainer: 'SuperNET <dev@supernet.org>',
+  homepage: 'https://safecoin.org',
+  maintainer: 'Safecoin <safe@safecoin.org>',
 };
 
 console.log('Creating package (this may take a while)');

@@ -1,6 +1,6 @@
-const { checkTimestamp } = require('agama-wallet-lib/src/time');
-const { pubToElectrumScriptHashHex } = require('agama-wallet-lib/src/keys');
-const btcnetworks = require('agama-wallet-lib/src/bitcoinjs-networks');
+const { checkTimestamp } = require('safewallet-wallet-lib/src/time');
+const { pubToElectrumScriptHashHex } = require('safewallet-wallet-lib/src/keys');
+const btcnetworks = require('safewallet-wallet-lib/src/bitcoinjs-networks');
 const UTXO_1MONTH_THRESHOLD_SECONDS = 2592000;
 
 module.exports = (api) => {
@@ -9,7 +9,7 @@ module.exports = (api) => {
       (async function() {
         const network = req.query.network || api.findNetworkObj(req.query.coin);
         const ecl = await api.ecl(network);
-        const _address = ecl.protocolVersion && ecl.protocolVersion === '1.4' ? pubToElectrumScriptHashHex(req.query.address, btcnetworks[network.toLowerCase()] || btcnetworks.kmd) : req.query.address;
+        const _address = ecl.protocolVersion && ecl.protocolVersion === '1.4' ? pubToElectrumScriptHashHex(req.query.address, btcnetworks[network.toLowerCase()] || btcnetworks.safe) : req.query.address;
   
         api.log('electrum getbalance =>', 'spv.getbalance');
         
@@ -19,13 +19,13 @@ module.exports = (api) => {
           if (json &&
               json.hasOwnProperty('confirmed') &&
               json.hasOwnProperty('unconfirmed')) {
-            if (network === 'komodo' ||
-                network.toLowerCase() === 'kmd') {
+            if (network === 'safecoin' ||
+                network.toLowerCase() === 'safe') {
               ecl.blockchainAddressListunspent(req.query.address)
               .then((utxoList) => {
                 if (utxoList &&
                     utxoList.length) {
-                  // filter out < 10 KMD amounts
+                  // filter out < 10 SAFE amounts
                   let _utxo = [];
                   let utxoIssues = false;
                   
@@ -72,7 +72,7 @@ module.exports = (api) => {
                           if (decodedTx &&
                               decodedTx.format &&
                               decodedTx.format.locktime > 0) {
-                            interestTotal += api.kmdCalcInterest(
+                            interestTotal += api.safeCalcInterest(
                               decodedTx.format.locktime,
                               _utxoItem.value,
                               _utxoItem.height,

@@ -1,12 +1,12 @@
-const { isKomodoCoin } = require('agama-wallet-lib/src/coin-helpers');
-const _txDecoder = require('agama-wallet-lib/src/transaction-decoder');
+const { isSafecoinCoin } = require('safewallet-wallet-lib/src/coin-helpers');
+const _txDecoder = require('safewallet-wallet-lib/src/transaction-decoder');
 const semverCmp = require('semver-compare');
 const electrumMinVersionProtocolV1_4 = '1.9.0';
 
 module.exports = (api) => {
   api.isZcash = (network) => {
-    if (isKomodoCoin(network)) {
-      network = 'kmd';
+    if (isSafecoinCoin(network)) {
+      network = 'safe';
     }
 
     if (api.electrumJSNetworks[network.toLowerCase()] &&
@@ -41,9 +41,9 @@ module.exports = (api) => {
       coin = network.toUpperCase();
     }
 
-    if (isKomodoCoin(coin) ||
-        isKomodoCoin(coinUC)) {
-      return api.electrumJSNetworks.kmd;
+    if (isSafecoinCoin(coin) ||
+        isSafecoinCoin(coinUC)) {
+      return api.electrumJSNetworks.safe;
     } else {
       return api.electrumJSNetworks[network];
     }

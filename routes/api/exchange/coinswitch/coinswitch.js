@@ -1,6 +1,6 @@
 const request = require('request');
 const { randomBytes } = require('crypto');
-const signature = require('agama-wallet-lib/src/message');
+const signature = require('safewallet-wallet-lib/src/message');
 const API_KEY_DEV = 'cRbHFJTlL6aSfZ0K2q7nj6MgV5Ih4hbA2fUG0ueO';
 const COINSWITCH_TIMEOUT = 2000;
 // TODO: fixed api(?)

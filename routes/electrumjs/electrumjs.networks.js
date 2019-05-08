@@ -1,3 +1,3 @@
-let networks = require('agama-wallet-lib/src/bitcoinjs-networks');
+let networks = require('safewallet-wallet-lib/src/bitcoinjs-networks');
 
 module.exports = networks;

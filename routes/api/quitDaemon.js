@@ -2,16 +2,16 @@ const portscanner = require('portscanner');
 const execFile = require('child_process').execFile;
 
 module.exports = (api) => {
-  api.quitKomodod = (timeout = 100) => {
-    // if komodod is under heavy load it may not respond to cli stop the first time
-    // exit komodod gracefully
+  api.quitSafecoind = (timeout = 100) => {
+    // if safecoind is under heavy load it may not respond to cli stop the first time
+    // exit safecoind gracefully
     let coindExitInterval = {};
     api.lockDownAddCoin = true;
 
     for (let key in api.coindInstanceRegistry) {
       if (api.appConfig.native.stopNativeDaemonsOnQuit) {
-        const chain = key !== 'komodod' ? key : null;
-        let _coindQuitCmd = api.komodocliBin;
+        const chain = key !== 'safecoind' ? key : null;
+        let _coindQuitCmd = api.safecoincliBin;
 
          // any coind
         if (api.nativeCoindList[key.toLowerCase()]) {
@@ -30,10 +30,10 @@ module.exports = (api) => {
             _arg.push(`-ac_name=${chain}`);
 
             if (api.appConfig.native.dataDir.length) {
-              _arg.push(`-datadir=${api.appConfig.native.dataDir + (key !== 'komodod' ? '/' + key : '')}`);
+              _arg.push(`-datadir=${api.appConfig.native.dataDir + (key !== 'safecoind' ? '/' + key : '')}`);
             }
           } else if (
-            key === 'komodod' &&
+            key === 'safecoind' &&
             api.appConfig.native.dataDir.length
           ) {
             _arg.push(`-datadir=${api.appConfig.native.dataDir}`);
@@ -73,7 +73,7 @@ module.exports = (api) => {
             }
 
             setTimeout(() => {
-              api.killRogueProcess(key === 'CHIPS' ? 'chips-cli' : 'komodo-cli');
+              api.killRogueProcess(key === 'CHIPS' ? 'chips-cli' : 'safecoin-cli');
             }, 100);
           });
         }
@@ -91,7 +91,7 @@ module.exports = (api) => {
   api.post('/coind/stop', (req, res) => {
     if (api.checkToken(req.body.token)) {
       const _chain = req.body.chain;
-      let _coindQuitCmd = api.komodocliBin;
+      let _coindQuitCmd = api.safecoincliBin;
       let _arg = [];
 
 
@@ -112,15 +112,15 @@ module.exports = (api) => {
       execFile(`${_coindQuitCmd}`, _arg, (error, stdout, stderr) => {
         api.log(`stdout: ${stdout}`, 'native.debug');
         api.log(`stderr: ${stderr}`, 'native.debug');
-        api.log(`send stop sig to ${_chain ? _chain : 'komodo'}`, 'native.process');
+        api.log(`send stop sig to ${_chain ? _chain : 'safecoin'}`, 'native.process');
 
         if (stdout.indexOf('EOF reached') > -1 ||
             stderr.indexOf('EOF reached') > -1 ||
             (error && error.toString().indexOf('Command failed') > -1 && !stderr) || // win "special snowflake" case
             stdout.indexOf('connect to server: unknown (code -1)') > -1 ||
             stderr.indexOf('connect to server: unknown (code -1)') > -1) {
-          delete api.coindInstanceRegistry[_chain ? _chain : 'komodod'];
-          delete api.native.startParams[_chain ? _chain : 'komodod'];
+          delete api.coindInstanceRegistry[_chain ? _chain : 'safecoind'];
+          delete api.native.startParams[_chain ? _chain : 'safecoind'];
 
           const retObj = {
             msg: 'success',
@@ -129,9 +129,9 @@ module.exports = (api) => {
 
           res.end(JSON.stringify(retObj));
         } else {
-          if (stdout.indexOf('Komodo server stopping') > -1) {
-            delete api.coindInstanceRegistry[_chain ? _chain : 'komodod'];
-            delete api.native.startParams[_chain ? _chain : 'komodod'];
+          if (stdout.indexOf('Safecoin server stopping') > -1) {
+            delete api.coindInstanceRegistry[_chain ? _chain : 'safecoind'];
+            delete api.native.startParams[_chain ? _chain : 'safecoind'];
             
             const retObj = {
               msg: 'success',
@@ -164,8 +164,8 @@ module.exports = (api) => {
       const _chain = req.body.chain;
 
       if (req.body.mode === 'native') {
-        delete api.coindInstanceRegistry[_chain ? _chain : 'komodod'];
-        delete api.native.startParams[_chain ? _chain : 'komodod'];
+        delete api.coindInstanceRegistry[_chain ? _chain : 'safecoind'];
+        delete api.native.startParams[_chain ? _chain : 'safecoind'];
 
         if (api.wallet.fname) {
           api.wallet.data.coins = api.getActiveCoins();

@@ -13,7 +13,7 @@ module.exports = (api) => {
       const chain = req.query.chain;
 
       // ref: https://gist.github.com/kendricktan/1e62495150ad236b38616d733aac4eb9
-      let _walletDatLocation = chain === 'komodo' || chain === 'KMD' || chain === 'null' ? `${api.komodoDir}/wallet.dat` : `${api.komodoDir}/${chain}/wallet.dat`;
+      let _walletDatLocation = chain === 'safecoin' || chain === 'SAFE' || chain === 'null' ? `${api.safecoinDir}/wallet.dat` : `${api.safecoinDir}/${chain}/wallet.dat`;
       _walletDatLocation = chain === 'CHIPS' ? `${api.chipsDir}/wallet.dat` : _walletDatLocation;
 
       try {
@@ -69,7 +69,7 @@ module.exports = (api) => {
 
                     const keyPair = bitcoinJS.ECPair.fromWIF(
                       wifKey,
-                      api.electrumJSNetworks.kmd
+                      api.electrumJSNetworks.safe
                     );
                     const _keyPair = {
                       priv: keyPair.toWIF(),

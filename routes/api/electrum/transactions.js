@@ -1,9 +1,9 @@
 const asyncNPM = require('async');
-const { hex2str } = require('agama-wallet-lib/src/crypto/utils');
-const { isKomodoCoin } = require('agama-wallet-lib/src/coin-helpers');
-const { pubToElectrumScriptHashHex } = require('agama-wallet-lib/src/keys');
-const btcnetworks = require('agama-wallet-lib/src/bitcoinjs-networks');
-const { sortTransactions } = require('agama-wallet-lib/src/utils');
+const { hex2str } = require('safewallet-wallet-lib/src/crypto/utils');
+const { isSafecoinCoin } = require('safewallet-wallet-lib/src/coin-helpers');
+const { pubToElectrumScriptHashHex } = require('safewallet-wallet-lib/src/keys');
+const btcnetworks = require('safewallet-wallet-lib/src/bitcoinjs-networks');
+const { sortTransactions } = require('safewallet-wallet-lib/src/utils');
 
 // TODO: add z -> pub, pub -> z flag for zcash forks
 
@@ -39,7 +39,7 @@ module.exports = (api) => {
         const ecl = await api.ecl(network);
         const isKv = config.kv;
         const _maxlength = isKv ? 10 : config.maxlength;
-        const _address = ecl.protocolVersion && ecl.protocolVersion === '1.4' ? pubToElectrumScriptHashHex(config.address, btcnetworks[network.toLowerCase()] || btcnetworks.kmd) : config.address;
+        const _address = ecl.protocolVersion && ecl.protocolVersion === '1.4' ? pubToElectrumScriptHashHex(config.address, btcnetworks[network.toLowerCase()] || btcnetworks.safe) : config.address;
 
         api.log('electrum listtransactions ==>', 'spv.listtransactions');
         ecl.connect();
@@ -194,7 +194,7 @@ module.exports = (api) => {
                             for (let i = 0; i < decodedTx.outputs.length; i++) {
                               if (decodedTx.outputs[i].scriptPubKey.type === 'nulldata') {
                                 if (isKv &&
-                                    isKomodoCoin(network)) {
+                                    isSafecoinCoin(network)) {
                                   opreturn = {
                                     kvHex: decodedTx.outputs[i].scriptPubKey.hex,
                                     kvAsm: decodedTx.outputs[i].scriptPubKey.asm,
@@ -230,7 +230,7 @@ module.exports = (api) => {
                                   const formattedTx = api.parseTransactionAddresses(
                                     _parsedTx,
                                     config.address,
-                                    network.toLowerCase() === 'kmd'
+                                    network.toLowerCase() === 'safe'
                                   );
 
                                   if (formattedTx.type) {
@@ -378,7 +378,7 @@ module.exports = (api) => {
                             const formattedTx = api.parseTransactionAddresses(
                               _parsedTx,
                               _address,
-                              network.toLowerCase() === 'kmd'
+                              network.toLowerCase() === 'safe'
                             );
                             _rawtx.push(formattedTx);
                             index++;
@@ -422,7 +422,7 @@ module.exports = (api) => {
                         const formattedTx = api.parseTransactionAddresses(
                           _parsedTx,
                           _address,
-                          network.toLowerCase() === 'kmd'
+                          network.toLowerCase() === 'safe'
                         );
                         _rawtx.push(formattedTx);
                         index++;

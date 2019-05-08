@@ -15,8 +15,8 @@ const {
   wifToWif,
   fromWif,
   stringToWif,
-} = require('agama-wallet-lib/src/keys');
-const networks = require('agama-wallet-lib/src/bitcoinjs-networks');
+} = require('safewallet-wallet-lib/src/keys');
+const networks = require('safewallet-wallet-lib/src/bitcoinjs-networks');
 
 module.exports = (api) => {
   api.wifToWif = (wif, network) => {
@@ -163,7 +163,7 @@ module.exports = (api) => {
       'via',
       'fair',
       'doge',
-      'kmd',
+      'safe',
       'mona',
     ];
 
@@ -203,7 +203,7 @@ module.exports = (api) => {
   api.get('/electrum/keys/validateaddress', (req, res, next) => {
     const retObj = {
       msg: 'success',
-      result: addressVersionCheck(networks[req.query.network.toLowerCase()] || networks.kmd, req.query.address),
+      result: addressVersionCheck(networks[req.query.network.toLowerCase()] || networks.safe, req.query.address),
     };
 
     res.end(JSON.stringify(retObj));
@@ -307,7 +307,7 @@ module.exports = (api) => {
   api.post('/electrum/seed/bip39/match', (req, res, next) => {
     if (api.checkToken(req.body.token)) {
       const seed = bip39.mnemonicToSeed(req.body.seed);
-      const hdMaster = bitcoin.HDNode.fromSeedBuffer(seed, api.electrumJSNetworks.kmd);
+      const hdMaster = bitcoin.HDNode.fromSeedBuffer(seed, api.electrumJSNetworks.safe);
       const matchPattern = req.body.match;
       const _defaultAddressDepth = req.body.addressdepth;
       const _defaultAccountCount = req.body.accounts;

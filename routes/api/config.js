@@ -6,8 +6,8 @@ const deepmerge = require('./deepmerge.js');
 
 module.exports = (api) => {
   api.loadLocalConfig = () => {
-    if (fs.existsSync(`${api.agamaDir}/config.json`)) {
-      let localAppConfig = fs.readFileSync(`${api.agamaDir}/config.json`, 'utf8');
+    if (fs.existsSync(`${api.safewalletDir}/config.json`)) {
+      let localAppConfig = fs.readFileSync(`${api.safewalletDir}/config.json`, 'utf8');
 
       try {
         JSON.parse(localAppConfig);
@@ -112,9 +112,9 @@ module.exports = (api) => {
   };
 
   api.saveLocalAppConf = (appSettings) => {
-    const appConfFileName = `${api.agamaDir}/config.json`;
+    const appConfFileName = `${api.safewalletDir}/config.json`;
 
-    _fs.access(api.agamaDir, fs.constants.R_OK, (err) => {
+    _fs.access(api.safewalletDir, fs.constants.R_OK, (err) => {
       if (!err) {
         const FixFilePermissions = () => {
           return new Promise((resolve, reject) => {
@@ -147,8 +147,8 @@ module.exports = (api) => {
             fsnode.chmodSync(appConfFileName, '0666');
             setTimeout(() => {
               api.log(result, 'settings');
-              api.log(`app conf.json file is created successfully at: ${api.agamaDir}`, 'settings');
-              api.writeLog(`app conf.json file is created successfully at: ${api.agamaDir}`);
+              api.log(`app conf.json file is created successfully at: ${api.safewalletDir}`, 'settings');
+              api.writeLog(`app conf.json file is created successfully at: ${api.safewalletDir}`);
               resolve(result);
             }, 2000);
           });

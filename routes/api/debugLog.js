@@ -18,29 +18,29 @@ module.exports = (api) => {
 
       switch (_platform) {
         case 'darwin':
-          api.komodoDir = api.appConfig.native.dataDir.length ? api.appConfig.native.dataDir : `${process.env.HOME}/Library/Application Support/Komodo`;
+          api.safecoinDir = api.appConfig.native.dataDir.length ? api.appConfig.native.dataDir : `${process.env.HOME}/Library/Application Support/Safecoin`;
           break;
         case 'linux':
-          api.komodoDir = api.appConfig.native.dataDir.length ? api.appConfig.native.dataDir : `${process.env.HOME}/.komodo`;
+          api.safecoinDir = api.appConfig.native.dataDir.length ? api.appConfig.native.dataDir : `${process.env.HOME}/.safecoin`;
           break;
         case 'win32':
-          api.komodoDir = api.appConfig.native.dataDir.length ? api.appConfig.native.dataDir : `${process.env.APPDATA}/Komodo`;
-          api.komodoDir = path.normalize(api.komodoDir);
+          api.safecoinDir = api.appConfig.native.dataDir.length ? api.appConfig.native.dataDir : `${process.env.APPDATA}/Safecoin`;
+          api.safecoinDir = path.normalize(api.safecoinDir);
           break;
       }
 
-      if (_herd === 'komodo') {
-        _location = api.komodoDir;
+      if (_herd === 'safecoin') {
+        _location = api.safecoinDir;
       }
 
       if (_ac) {
-        _location = `${api.komodoDir}/${_ac}${api.native.startParams && api.native.startParams[_ac] && api.native.startParams[_ac].indexOf('-regtest') > 0 ? '/regtest' : ''}`;
+        _location = `${api.safecoinDir}/${_ac}${api.native.startParams && api.native.startParams[_ac] && api.native.startParams[_ac].indexOf('-regtest') > 0 ? '/regtest' : ''}`;
 
         if (_ac === 'CHIPS') {
           _location = api.chipsDir;
         }
       } else {
-        _location = `${api.komodoDir}${api.native.startParams && api.native.startParams.KMD && api.native.startParams.KMD.indexOf('-regtest') > 0 ? '/regtest' : ''}`;
+        _location = `${api.safecoinDir}${api.native.startParams && api.native.startParams.SAFE && api.native.startParams.SAFE.indexOf('-regtest') > 0 ? '/regtest' : ''}`;
       }
 
       api.readDebugLog(`${_location}/debug.log`, _lastNLines)
@@ -71,8 +71,8 @@ module.exports = (api) => {
 
   api.get('/coind/stdout', (req, res) => {
     if (api.checkToken(req.query.token)) {
-      const _daemonName = req.query.chain !== 'komodod' && req.query.chain.toLowerCase() !== 'kmd' ? req.query.chain : 'komodod';
-      const _daemonLogName = `${api.agamaDir}/${_daemonName}.log`;
+      const _daemonName = req.query.chain !== 'safecoind' && req.query.chain.toLowerCase() !== 'safe' ? req.query.chain : 'safecoind';
+      const _daemonLogName = `${api.safewalletDir}/${_daemonName}.log`;
 
       api.readDebugLog(_daemonLogName, 'all')
       .then((result) => {

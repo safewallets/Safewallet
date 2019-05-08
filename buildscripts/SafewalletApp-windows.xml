@@ -1,11 +1,11 @@
 <project>
-    <shortName>AgamaApp</shortName>
-    <fullName>Agama</fullName>
+    <shortName>SafewalletApp</shortName>
+    <fullName>Safewallet</fullName>
     <version>${PKG_VERSION}</version>
     <licenseFile>../LICENSE</licenseFile>
-    <leftImage>../assets/installer_imgs/Agama_installer_wizard_image.png</leftImage>
-    <logoImage>../assets/installer_imgs/supernet-agama-logo.png</logoImage>
-    <splashImage>../assets/installer_imgs/Agama_installer_splash_image.png</splashImage>
+    <leftImage>../assets/installer_imgs/Safewallet_installer_wizard_image.png</leftImage>
+    <logoImage>../assets/installer_imgs/supernet-safewallet-logo.png</logoImage>
+    <splashImage>../assets/installer_imgs/Safewallet_installer_splash_image.png</splashImage>
     <allowLanguageSelection>1</allowLanguageSelection>
     <componentList>
         <component>
@@ -17,15 +17,15 @@
             <show>1</show>
             <desktopShortcutList>
                 <shortcut>
-                    <comment>Start Agama App</comment>
+                    <comment>Start Safewallet App</comment>
                     <exec></exec>
                     <icon></icon>
-                    <name>Agama App</name>
+                    <name>Safewallet App</name>
                     <path></path>
                     <platforms>all</platforms>
                     <runAsAdmin>0</runAsAdmin>
                     <runInTerminal>0</runInTerminal>
-                    <windowsExec>${installdir}/Agama.exe</windowsExec>
+                    <windowsExec>${installdir}/Safewallet.exe</windowsExec>
                     <windowsExecArgs></windowsExecArgs>
                     <windowsIcon></windowsIcon>
                     <windowsPath>${installdir}/</windowsPath>
@@ -67,79 +67,79 @@
                     <platforms>windows</platforms>
                     <distributionFileList>
                         <distributionDirectory>
-                            <origin>../build/Agama-win32-ia32/locales</origin>
+                            <origin>../build/Safewallet-win32-ia32/locales</origin>
                         </distributionDirectory>
                         <distributionDirectory>
-                            <origin>../build/Agama-win32-ia32/resources</origin>
+                            <origin>../build/Safewallet-win32-ia32/resources</origin>
                         </distributionDirectory>
                         <distributionDirectory>
-                            <origin>../build/Agama-win32-ia32/swiftshader</origin>
+                            <origin>../build/Safewallet-win32-ia32/swiftshader</origin>
                         </distributionDirectory>
                         <distributionFile>
-                            <origin>../build/Agama-win32-ia32/chrome_200_percent.pak</origin>
+                            <origin>../build/Safewallet-win32-ia32/chrome_200_percent.pak</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../build/Agama-win32-ia32/chrome_100_percent.pak</origin>
+                            <origin>../build/Safewallet-win32-ia32/chrome_100_percent.pak</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../build/Agama-win32-ia32/resources.pak</origin>
+                            <origin>../build/Safewallet-win32-ia32/resources.pak</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../build/Agama-win32-ia32/osmesa.dll</origin>
+                            <origin>../build/Safewallet-win32-ia32/osmesa.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../build/Agama-win32-ia32/v8_context_snapshot.bin</origin>
+                            <origin>../build/Safewallet-win32-ia32/v8_context_snapshot.bin</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../build/Agama-win32-ia32/icudtl.dat</origin>
+                            <origin>../build/Safewallet-win32-ia32/icudtl.dat</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../build/Agama-win32-ia32/LICENSES.chromium.html</origin>
+                            <origin>../build/Safewallet-win32-ia32/LICENSES.chromium.html</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../build/Agama-win32-ia32/natives_blob.bin</origin>
+                            <origin>../build/Safewallet-win32-ia32/natives_blob.bin</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../build/Agama-win32-ia32/snapshot_blob.bin</origin>
+                            <origin>../build/Safewallet-win32-ia32/snapshot_blob.bin</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../build/Agama-win32-ia32/d3dcompiler_47.dll</origin>
+                            <origin>../build/Safewallet-win32-ia32/d3dcompiler_47.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../build/Agama-win32-ia32/ffmpeg.dll</origin>
+                            <origin>../build/Safewallet-win32-ia32/ffmpeg.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../build/Agama-win32-ia32/libEGL.dll</origin>
+                            <origin>../build/Safewallet-win32-ia32/libEGL.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../build/Agama-win32-ia32/libGLESv2.dll</origin>
+                            <origin>../build/Safewallet-win32-ia32/libGLESv2.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../build/Agama-win32-ia32/VkICD_mock_icd.dll</origin>
+                            <origin>../build/Safewallet-win32-ia32/VkICD_mock_icd.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../build/Agama-win32-ia32/VkLayer_core_validation.dll</origin>
+                            <origin>../build/Safewallet-win32-ia32/VkLayer_core_validation.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../build/Agama-win32-ia32/VkLayer_object_tracker.dll</origin>
+                            <origin>../build/Safewallet-win32-ia32/VkLayer_object_tracker.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../build/Agama-win32-ia32/VkLayer_parameter_validation.dll</origin>
+                            <origin>../build/Safewallet-win32-ia32/VkLayer_parameter_validation.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../build/Agama-win32-ia32/VkLayer_threading.dll</origin>
+                            <origin>../build/Safewallet-win32-ia32/VkLayer_threading.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../build/Agama-win32-ia32/VkLayer_unique_objects.dll</origin>
+                            <origin>../build/Safewallet-win32-ia32/VkLayer_unique_objects.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../build/Agama-win32-ia32/LICENSE</origin>
+                            <origin>../build/Safewallet-win32-ia32/LICENSE</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../build/Agama-win32-ia32/version</origin>
+                            <origin>../build/Safewallet-win32-ia32/version</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../build/Agama-win32-ia32/Agama.exe</origin>
+                            <origin>../build/Safewallet-win32-ia32/Safewallet.exe</origin>
                         </distributionFile>
                     </distributionFileList>
                 </folder>
@@ -153,7 +153,7 @@
             <startMenuShortcutList>
                 <startMenuShortcut>
                     <comment>Uninstall ${product_fullname}</comment>
-                    <name>Uninstall Agama App</name>
+                    <name>Uninstall Safewallet App</name>
                     <runAsAdmin>0</runAsAdmin>
                     <runInTerminal>0</runInTerminal>
                     <windowsExec>${installdir}/${uninstallerName}.exe</windowsExec>
@@ -162,11 +162,11 @@
                     <windowsPath>${installdir}/</windowsPath>
                 </startMenuShortcut>
                 <startMenuShortcut>
-                    <comment>Start Agama App</comment>
-                    <name>Agama App</name>
+                    <comment>Start Safewallet App</comment>
+                    <name>Safewallet App</name>
                     <runAsAdmin>0</runAsAdmin>
                     <runInTerminal>0</runInTerminal>
-                    <windowsExec>${installdir}/Agama.exe</windowsExec>
+                    <windowsExec>${installdir}/Safewallet.exe</windowsExec>
                     <windowsExecArgs></windowsExecArgs>
                     <windowsIcon></windowsIcon>
                     <windowsPath>${installdir}/</windowsPath>
@@ -212,7 +212,7 @@
         </runProgram>
         <deleteFile>
             <explanation>Deleting user data</explanation>
-            <path>${windows_folder_appdata}/Agama</path>
+            <path>${windows_folder_appdata}/Safewallet</path>
             <progressText>Deleting user data</progressText>
             <ruleList>
                 <compareValues>
@@ -275,7 +275,7 @@
             <actionList>
                 <httpGet>
                     <abortOnError>0</abortOnError>
-                    <explanation>Visual C++ Redistributable for Visual Studio 2015 library files are needed for Agama daemon</explanation>
+                    <explanation>Visual C++ Redistributable for Visual Studio 2015 library files are needed for Safewallet daemon</explanation>
                     <filename>${system_temp_directory}/vc_redist.x64.exe</filename>
                     <progressText>Downloading Visual C++ Redistributable for Visual Studio 2015</progressText>
                     <showMessageOnError>0</showMessageOnError>
@@ -291,7 +291,7 @@
         </showProgressDialog>
         <runProgram>
             <abortOnError>0</abortOnError>
-            <explanation>Visual C++ Redistributable for Visual Studio 2015 library files are needed for Agama daemon</explanation>
+            <explanation>Visual C++ Redistributable for Visual Studio 2015 library files are needed for Safewallet daemon</explanation>
             <program>${system_temp_directory}/vc_redist.x64.exe</program>
             <programArguments>/install /passive</programArguments>
             <progressText>Downloading Visual C++ Redistributable for Visual Studio 2015</progressText>
@@ -302,7 +302,7 @@
             <actionList>
                 <httpGet>
                     <abortOnError>0</abortOnError>
-                    <explanation>Visual C++ Redistributable for Visual Studio 2015 library files are needed for Agama daemon</explanation>
+                    <explanation>Visual C++ Redistributable for Visual Studio 2015 library files are needed for Safewallet daemon</explanation>
                     <filename>${system_temp_directory}/vc_redist.x86.exe</filename>
                     <progressText>Downloading Visual C++ Redistributable for Visual Studio 2015</progressText>
                     <showMessageOnError>0</showMessageOnError>
@@ -318,7 +318,7 @@
         </showProgressDialog>
         <runProgram>
             <abortOnError>0</abortOnError>
-            <explanation>Visual C++ Redistributable for Visual Studio 2015 library files are needed for Agama daemon</explanation>
+            <explanation>Visual C++ Redistributable for Visual Studio 2015 library files are needed for Safewallet daemon</explanation>
             <program>${system_temp_directory}/vc_redist.x86.exe</program>
             <programArguments>/install /passive</programArguments>
             <progressText>Downloading Visual C++ Redistributable for Visual Studio 2015</progressText>
@@ -451,7 +451,7 @@
     <windows64bitMode>1</windows64bitMode>
     <finalPageActionList>
         <runProgram>
-            <program>${installdir}/Agama.exe</program>
+            <program>${installdir}/Safewallet.exe</program>
             <programArguments>&amp;</programArguments>
             <progressText>Do you want to launch ${project.fullName} now?</progressText>
         </runProgram>

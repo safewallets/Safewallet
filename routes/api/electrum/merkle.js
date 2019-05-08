@@ -3,7 +3,7 @@ const crypto = require('crypto');
 const _sha256 = (data) => {
   return crypto.createHash('sha256').update(data).digest();
 };
-const { getRandomIntInclusive } = require('agama-wallet-lib/src/utils');
+const { getRandomIntInclusive } = require('safewallet-wallet-lib/src/utils');
 
 module.exports = (api) => {
   // get merkle root

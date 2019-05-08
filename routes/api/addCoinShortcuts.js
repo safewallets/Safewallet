@@ -4,8 +4,8 @@ const chainParams = require('../chainParams');
 
 module.exports = (api) => {
   api.startSPV = (coin) => {
-    if (coin === 'KMD+REVS+JUMBLR') {
-      api.addElectrumCoin('KMD');
+    if (coin === 'SAFE+REVS+JUMBLR') {
+      api.addElectrumCoin('SAFE');
       api.addElectrumCoin('REVS');
       api.addElectrumCoin('JUMBLR');
     } else {
@@ -19,7 +19,7 @@ module.exports = (api) => {
     }
   }
 
-  api.startKMDNative = (selection, isManual) => {
+  api.startSAFENative = (selection, isManual) => {
     let herdData;
 
     const prepAcOptions = (srcObj, acName) => {
@@ -43,13 +43,13 @@ module.exports = (api) => {
 
     const httpRequest = () => {
       const options = {
-        url: `http://127.0.0.1:${api.appConfig.agamaPort}/api/herd`,
+        url: `http://127.0.0.1:${api.appConfig.safewalletPort}/api/herd`,
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          herd: 'komodod',
+          herd: 'safecoind',
           options: herdData,
           token: api.appSessionHash,
         }),
@@ -61,12 +61,12 @@ module.exports = (api) => {
     };
 
     if (isManual) {
-      api.kmdMainPassiveMode = true;
+      api.safeMainPassiveMode = true;
     }
 
-    if (selection === 'KMD') {
+    if (selection === 'SAFE') {
       herdData = {
-        ac_name: 'komodod',
+        ac_name: 'safecoind',
         ac_options: [
           '-daemon=0',
           '-addnode=78.47.196.146',
@@ -75,7 +75,7 @@ module.exports = (api) => {
 
       httpRequest();
     } else if (
-      selection !== 'KMD' &&
+      selection !== 'SAFE' &&
       chainParams[selection]
     ) {
       herdData = {
@@ -90,7 +90,7 @@ module.exports = (api) => {
       httpRequest();
     } else {
       const herdData = [{
-        ac_name: 'komodod',
+        ac_name: 'safecoind',
         ac_options: [
           '-daemon=0',
           '-addnode=78.47.196.146',
@@ -115,13 +115,13 @@ module.exports = (api) => {
       for (let i = 0; i < herdData.length; i++) {
         setTimeout(() => {
           const options = {
-            url: `http://127.0.0.1:${api.appConfig.agamaPort}/api/herd`,
+            url: `http://127.0.0.1:${api.appConfig.safewalletPort}/api/herd`,
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              herd: 'komodod',
+              herd: 'safecoind',
               options: herdData[i],
               token: api.appSessionHash,
             }),

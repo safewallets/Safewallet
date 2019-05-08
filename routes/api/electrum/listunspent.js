@@ -1,13 +1,13 @@
 // TODO: watchonly spendable switch
 
-const { checkTimestamp } = require('agama-wallet-lib/src/time');
-const { pubToElectrumScriptHashHex } = require('agama-wallet-lib/src/keys');
-const btcnetworks = require('agama-wallet-lib/src/bitcoinjs-networks');
+const { checkTimestamp } = require('safewallet-wallet-lib/src/time');
+const { pubToElectrumScriptHashHex } = require('safewallet-wallet-lib/src/keys');
+const btcnetworks = require('safewallet-wallet-lib/src/bitcoinjs-networks');
 const UTXO_1MONTH_THRESHOLD_SECONDS = 2592000;
 
 module.exports = (api) => {
   api.listunspent = (ecl, address, network, full, verify) => {
-    const _address = ecl.protocolVersion && ecl.protocolVersion === '1.4' ? pubToElectrumScriptHashHex(address, btcnetworks[network.toLowerCase()] || btcnetworks.kmd) : address;
+    const _address = ecl.protocolVersion && ecl.protocolVersion === '1.4' ? pubToElectrumScriptHashHex(address, btcnetworks[network.toLowerCase()] || btcnetworks.safe) : address;
     let _atLeastOneDecodeTxFailed = false;
 
     if (full &&
@@ -70,13 +70,13 @@ module.exports = (api) => {
                           _atLeastOneDecodeTxFailed = true;
                           resolve('cant decode tx');
                         } else {
-                          if (network === 'komodo' ||
-                              network.toLowerCase() === 'kmd') {
+                          if (network === 'safecoin' ||
+                              network.toLowerCase() === 'safe') {
                             let interest = 0;
 
                             if (Number(_utxoItem.value) * 0.00000001 >= 10 &&
                                 decodedTx.format.locktime > 0) {
-                              interest = api.kmdCalcInterest(
+                              interest = api.safeCalcInterest(
                                 decodedTx.format.locktime,
                                 _utxoItem.value,
                                 _utxoItem.height,

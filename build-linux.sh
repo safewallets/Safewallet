@@ -3,7 +3,7 @@
 
 rm -rf build
 
-[ -z $1 ] && echo "AGAMA_VERSION variable is not set." && exit 0
+[ -z $1 ] && echo "SAFEWALLET_VERSION variable is not set." && exit 0
 [ ! -d build ] && mkdir build
 
 echo
@@ -12,7 +12,7 @@ echo "Preparing electron package $1"
 
 npm run make-patch
 electron-packager . --platform=linux --arch=x64 \
-  --icon=assets/icons/agama_icons/128x128.png \
+  --icon=assets/icons/safewallet_icons/128x128.png \
   --out=build/ \
   --buildVersion=$1 \
   --ignore=assets/bin/win64 \
@@ -21,10 +21,10 @@ electron-packager . --platform=linux --arch=x64 \
   --ignore=react/src \
   --ignore=react/www \
   --overwrite
-cd build/Agama-linux-x64/resources/app
+cd build/Safewallet-linux-x64/resources/app
 rm -rf gui
 unzip -o patch.zip
 rm patch.zip
 cd ../../../
-zip -r Agama-linux-x64 Agama-linux-x64
-mv Agama-linux-x64.zip Agama-linux-x64-v$1.zip
+zip -r Safewallet-linux-x64 Safewallet-linux-x64
+mv Safewallet-linux-x64.zip Safewallet-linux-x64-v$1.zip

@@ -3,7 +3,7 @@ const fiatList = require('./fiatList');
 const appConfig = {
   config: { // default config
     host: '127.0.0.1',
-    agamaPort: 17777,
+    safewalletPort: 17777,
     maxDescriptors: {
       darwin: 90000,
       linux: 1000000,
@@ -60,11 +60,11 @@ const appConfig = {
       displayName: 'Hostname',
       info: 'Application hostname',
     },
-    agamaPort: {
+    safewalletPort: {
       display: true,
       type: 'number',
-      displayName: 'Agama Port',
-      info: 'Agama HTTP port. Required to run GUI.',
+      displayName: 'Safewallet Port',
+      info: 'Safewallet HTTP port. Required to run GUI.',
     },
     maxDescriptors: {
       display: false,
@@ -214,8 +214,8 @@ const appConfig = {
       dataDir: {
         display: true,
         initDisplay: true,
-        displayName: 'Komodo data directory',
-        info: 'The data directory is the location where Komodo data files are stored, including the wallet data file<br/>It must be an already existing folder e.g. /home/user/komodo_data_dir.',
+        displayName: 'Safecoin data directory',
+        info: 'The data directory is the location where Safecoin data files are stored, including the wallet data file<br/>It must be an already existing folder e.g. /home/user/safecoin_data_dir.',
         type: 'folder',
       },
       rpc2cli: {
@@ -233,7 +233,7 @@ const appConfig = {
       stopNativeDaemonsOnQuit: {
         display: true,
         displayName: 'Stop native daemons on app quit',
-        info: 'If set to false agama will run in detached coin daemon mode',
+        info: 'If set to false safewallet will run in detached coin daemon mode',
         type: 'boolean',
       },
       failedRPCAttemptsThreshold: {
@@ -274,7 +274,7 @@ const appConfig = {
       detectDaemons: {
         display: true,
         displayName: 'Enable "Detect native daemons" button',
-        info: 'A handy option if want to start KMD/asset chain native with your set of params or run it in background.',
+        info: 'A handy option if want to start SAFE/asset chain native with your set of params or run it in background.',
         type: 'boolean',
       },
     },

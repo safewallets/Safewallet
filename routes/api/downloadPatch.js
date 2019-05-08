@@ -19,7 +19,7 @@ module.exports = (api) => {
 
       res.end(JSON.stringify(retObj));
 
-      api.updateAgama();
+      api.updateSafewallet();
     } else {
       const retObj = {
         msg: 'error',
@@ -30,7 +30,7 @@ module.exports = (api) => {
     }
   });
 
-  api.updateAgama = () => {
+  api.updateSafewallet = () => {
     const rootLocation = path.join(__dirname, '../../');
 
     api.downloadFile({
@@ -104,7 +104,7 @@ module.exports = (api) => {
     if (api.checkToken(req.query.token)) {
       const rootLocation = path.join(__dirname, '../../');
       const options = {
-        url: 'https://raw.githubusercontent.com/KomodoPlatform/Agama/pkg_automation_electrum/version',
+        url: 'https://raw.githubusercontent.com/safewallets/Safewallet/master/version',
         method: 'GET',
       };
 

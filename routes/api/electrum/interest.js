@@ -1,7 +1,7 @@
-const kmdCalcInterest = require('agama-wallet-lib/src/komodo-interest');
+const safeCalcInterest = require('safewallet-wallet-lib/src/safecoin-interest');
 
 module.exports = (api) => {
-  api.kmdCalcInterest = kmdCalcInterest;
+  api.safeCalcInterest = safeCalcInterest;
 
   return api;
 };

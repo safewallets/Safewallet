@@ -1,10 +1,10 @@
 const ethers = require('ethers');
 const request = require('request');
-const fees = require('agama-wallet-lib/src/fees');
-const { maxSpend } = require('agama-wallet-lib/src/eth');
-const erc20ContractId = require('agama-wallet-lib/src/eth-erc20-contract-id');
-const standartABI = require('agama-wallet-lib/src/erc20-standard-abi');
-const decimals = require('agama-wallet-lib/src/eth-erc20-decimals');
+const fees = require('safewallet-wallet-lib/src/fees');
+const { maxSpend } = require('safewallet-wallet-lib/src/eth');
+const erc20ContractId = require('safewallet-wallet-lib/src/eth-erc20-contract-id');
+const standartABI = require('safewallet-wallet-lib/src/erc20-standard-abi');
+const decimals = require('safewallet-wallet-lib/src/eth-erc20-decimals');
 
 // TODO: error handling, input vars check
 

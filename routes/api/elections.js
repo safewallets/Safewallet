@@ -1,7 +1,7 @@
 const bs58check = require('bs58check');
 const bitcoin = require('bitcoinjs-lib');
-const { hex2str } = require('agama-wallet-lib/src/crypto/utils');
-const { sortTransactions } = require('agama-wallet-lib/src/utils');
+const { hex2str } = require('safewallet-wallet-lib/src/crypto/utils');
+const { sortTransactions } = require('safewallet-wallet-lib/src/utils');
 
 module.exports = (api) => {
   api.elections = {};
@@ -152,7 +152,7 @@ module.exports = (api) => {
             timestamp: Number(transaction.height) === 0 ? Math.floor(Date.now() / 1000) : blockInfo.timestamp,
           };
 
-          resolve(api.parseTransactionAddresses(_parsedTx, address, network.toLowerCase() === 'kmd', { skipTargetAddress: true }));
+          resolve(api.parseTransactionAddresses(_parsedTx, address, network.toLowerCase() === 'safe', { skipTargetAddress: true }));
         });
       } else {
         const _parsedTx = {
@@ -164,7 +164,7 @@ module.exports = (api) => {
           timestamp: Number(transaction.height) === 0 ? Math.floor(Date.now() / 1000) : blockInfo.timestamp,
         };
 
-        resolve(api.parseTransactionAddresses(_parsedTx, address, network.toLowerCase() === 'kmd'));
+        resolve(api.parseTransactionAddresses(_parsedTx, address, network.toLowerCase() === 'safe'));
       }
     });
   };
@@ -176,7 +176,7 @@ module.exports = (api) => {
         const ecl = await api.ecl(network);
         const type = req.query.type;
         const _address = req.query.address;
-        const __address = ecl.protocolVersion && ecl.protocolVersion === '1.4' ? pubToElectrumScriptHashHex(_address, btcnetworks[network.toLowerCase()] || btcnetworks.kmd) : _address;
+        const __address = ecl.protocolVersion && ecl.protocolVersion === '1.4' ? pubToElectrumScriptHashHex(_address, btcnetworks[network.toLowerCase()] || btcnetworks.safe) : _address;
         
         api.log('electrum elections listtransactions ==>', 'elections.listtransactions');
 

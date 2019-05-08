@@ -1,4 +1,4 @@
-// ref: https://github.com/VerusCoin/Agama/blob/master/routes/shepherd/downloadZcparams.js
+// ref: https://github.com/VerusCoin/Safewallet/blob/master/routes/shepherd/downloadZcparams.js
 
 const fs = require('fs-extra');
 const _fs = require('graceful-fs');

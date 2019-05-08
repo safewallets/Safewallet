@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 const request = require('request');
-const { secondsToString } = require('agama-wallet-lib/src/time');
+const { secondsToString } = require('safewallet-wallet-lib/src/time');
 
 // TODO: combine into a single function
 
@@ -34,7 +34,7 @@ module.exports = (api) => {
                       `${txhistory.result[i].txid}`);
           }
 
-          const _fname = `${api.agamaDir}/shepherd/csv/${_coin.toUpperCase()}-${req.query.address}-${_time}.csv`;
+          const _fname = `${api.safewalletDir}/shepherd/csv/${_coin.toUpperCase()}-${req.query.address}-${_time}.csv`;
           const err = fs.writeFileSync(_fname, _csv.join('\r\n'), 'utf8');
 
           if (err) {
@@ -85,7 +85,7 @@ module.exports = (api) => {
       };
 
       const options = {
-        url: `http://127.0.0.1:${api.appConfig.agamaPort}/api/cli`,
+        url: `http://127.0.0.1:${api.appConfig.safewalletPort}/api/cli`,
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -113,7 +113,7 @@ module.exports = (api) => {
                         `${txhistory.result[i].txid}`);
             }
 
-            const _fname = `${api.agamaDir}/shepherd/csv/${_coin.toUpperCase()}-native-all-${_time}.csv`;
+            const _fname = `${api.safewalletDir}/shepherd/csv/${_coin.toUpperCase()}-native-all-${_time}.csv`;
             const err = fs.writeFileSync(_fname, _csv.join('\r\n'), 'utf8');
 
             if (err) {

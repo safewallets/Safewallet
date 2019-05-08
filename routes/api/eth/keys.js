@@ -1,7 +1,7 @@
 const {
   etherKeys,
   seedToPriv,
-} = require('agama-wallet-lib/src/keys');
+} = require('safewallet-wallet-lib/src/keys');
 
 module.exports = (api) => {  
   api.get('/eth/priv', (req, res, next) => {
